@@ -1,0 +1,22 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}
+    {{ product.name }}
+{% endblock %}
+
+{% block content %}
+    <div class="product-detail">
+        <img src="{% if produk.gambar %}{{ produk.gambar.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
+        <h1>{{ produk.nama }}</h1>
+        <h2><a href="{{ produk.toko.get_absolute_url }}">{{ produk.toko }}</a></h2>
+        <p class="price">Rp.{{ produk.harga }}</p>
+        <form action="{% url "keranjang:keranjang_tambah" produk.id %}" method="post">
+            {{ keranjang_produk_form }}
+            {% csrf_token %}
+            <input type="submit" value="Tambah Keranjang">
+        </form>
+        {{ produk.deskripsi|linebreaks }}
+    Pedagang : {{ produk.toko_id }}
+    </div>
+{% endblock %}

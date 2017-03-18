@@ -1,0 +1,13 @@
+{% extends "shop/base.html" %}
+{% block title %}Register{% endblock %}
+{% block head %}Register{% endblock %}
+{% block content %}
+<form method="post" action=".">
+{{ form.as_p }}
+<p>
+<input class="btn btn-lg btn-success btn-block" type="submit" value="register" />
+{#    <input type="submit" value="register"/>#}
+{#<button type="submit" class="btn btn-primary" name="login" value="register">Register</button>#}
+    {% csrf_token %}
+</form>
+{% endblock %}

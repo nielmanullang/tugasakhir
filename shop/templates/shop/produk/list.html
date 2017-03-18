@@ -1,0 +1,34 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}
+    {% if kategori %}{{ kategori.nama }}{% else %}My Shop{% endif %}
+{% endblock %}
+
+{% block content %}
+    <div id="sidebar">
+        <h3>Kategoris</h3>
+        <ul>
+            <li {% if not kategori %}class="selected"{% endif %}>
+                <a href="{% url "shop:produk_list" %}">All</a>
+            </li>
+        {% for c in kategoris %}
+            <li {% if kategori.slug == c.slug %}class="selected"{% endif %}>
+                <a href="{{ c.get_absolute_url }}">{{ c.nama }}</a>
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+    <div id="main" class="product-list">
+        <h1>{% if kategori %}{{ kategori.nama }}{% else %}Produks{% endif %}</h1>
+        {% for produk in produks %}
+            <div class="item">
+                <a href="{{ produk.get_absolute_url }}">
+                    <img src="{% if produk.gambar %}{{ produk.gambar.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
+                </a>
+                <a href="{{ produk.get_absolute_url }}">{{ produk.nama }}</a><br>
+                Rp.{{ produk.harga }}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

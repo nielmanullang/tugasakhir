@@ -1,0 +1,39 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}
+    {% if tokos %}{{ toko.nama }}{% else %}My Shop{% endif %}
+{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<htmL>
+    <head>
+        <title>Toko Saya</title>
+    </head>
+    <body>
+        <form>
+            <h1>Profil Anda {{ toko.nama }}</h1>
+            <p>Hi, {{ request.session.username }}</p>
+            <p>Nama Toko: {{ toko.nama }}</p>
+            <p>Slogan Toko: {{ toko.slogan }}</p>
+            <p>Deskripsi Toko: {{ toko.deskripsi }}</p>
+            <p>Alamat Toko: {{ toko.alamat }}</p>
+            <p><a href="/logout/">Log out</a></p>
+        </form>
+
+        <div id="main" class="product-list">
+        <h1>{% if toko %}{{ toko.nama }}{% else %}Produks{% endif %}</h1>
+        {% for produks in produk %}
+            <div class="item">
+                <a href="{{ produks.get_absolute_url }}">
+                    <img src="{% if produks.gambar %}{{ produks.gambar.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
+                </a>
+                <a href="{{ produks.get_absolute_url }}">{{ produks.nama }}</a><br>
+                Rp.{{ produks.harga }}
+            </div>
+        {% endfor %}
+    </div>
+    </body>
+</htmL>
+{% endblock %}

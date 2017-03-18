@@ -1,0 +1,17 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}
+    Akun Pelanggan
+{% endblock %}
+
+{% block content %}
+        <h1>Selamat Datang {{ request.session.username }}</h1>
+        <form>
+            <p>Nama: {{ pelanggan.nama }}</p>
+            <p>Alamat: {{ pelanggan.alamat }}</p>
+            <p>Jenis Kelamin: {{ pelanggan.jenis_kelamin }}</p>
+            <p>No Telepon: {{ pelanggan.no_telepon }}</p>
+
+        </form>
+{% endblock %}
