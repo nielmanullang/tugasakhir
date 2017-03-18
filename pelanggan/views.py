@@ -10,5 +10,8 @@ from pelanggan.models import Pelanggan
 
 # @login_required(login_url=settings.LOGIN_URL)
 def profil(request):
-    pelanggan = Pelanggan.objects.get(id=request.session['pelanggan_id'])
+    if request.user.is_authenticated():
+        pelanggan = Pelanggan.objects.get(id=request.session['pelanggan_id'])
+    else:
+        return render(request, 'create_pelanggan.html')
     return render(request, 'profil.html', {"pelanggan":pelanggan})

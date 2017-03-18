@@ -27,3 +27,4 @@ def keranjang_detail(request):
     for item in keranjang:
         item['update_jumlah_form'] = KeranjangTambahProdukForm(initial={'jumlah': item['jumlah'], 'update': True})
     return render(request, 'keranjang/detail.html', {'keranjang': keranjang})
+
