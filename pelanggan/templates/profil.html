@@ -6,12 +6,18 @@
 {% endblock %}
 
 {% block content %}
-        <h1>Selamat Datang {{ request.session.username }}</h1>
-        <form>
-            <p>Nama: {{ pelanggan.nama }}</p>
-            <p>Alamat: {{ pelanggan.alamat }}</p>
-            <p>Jenis Kelamin: {{ pelanggan.jenis_kelamin }}</p>
-            <p>No Telepon: {{ pelanggan.no_telepon }}</p>
-
-        </form>
+    {% if pelanggan %}
+        {% for pelanggans in pelanggan %}
+            <h1>Selamat Datang User{{ user.id  }}</h1>
+            <p>Pelanggan {{ pelanggans.user_id }}</p>
+            <form>
+                <p>Nama: {{ pelanggans.nama }}</p>
+                <p>Alamat: {{ pelanggans.alamat }}</p>
+                <p>Jenis Kelamin: {{ pelanggans.jenis_kelamin }}</p>
+                <p>No Telepon: {{ pelanggans.no_telepon }}</p>
+            </form>
+        {% endfor %}
+    {% else %}
+        <h3>No Pelanggan</h3>
+    {% endif %}
 {% endblock %}

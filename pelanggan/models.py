@@ -51,19 +51,20 @@ class Pelanggan(models.Model):
     kabupaten = models.CharField(max_length=32, choices=KABUPATEN_CHOICES)
     alamat = models.TextField(blank=True)
     kodepos = models.CharField(max_length=5)
+    user_id = models.ForeignKey(User, related_name='users')
 
     def __unicode__(self):
         return self.nama
 
-class Akun(models.Model):
-    JENIS_AKUN_CHOICES = (
-        ('pelanggan', 'Pelanggan'),
-        ('admin', 'Administrator'),
-    )
-
-    akun = models.ForeignKey(User)
-    pelanggan = models.ForeignKey(Pelanggan)
-    jenis_akun = models.CharField(max_length=20, choices=JENIS_AKUN_CHOICES, default=pelanggan)
-
-    def __unicode__(self):
-        return self.pelanggan.nama
+# class Akun(models.Model):
+#     JENIS_AKUN_CHOICES = (
+#         ('pelanggan', 'Pelanggan'),
+#         ('admin', 'Administrator'),
+#     )
+#
+#     akun = models.ForeignKey(User)
+#     pelanggan = models.ForeignKey(Pelanggan)
+#     jenis_akun = models.CharField(max_length=20, choices=JENIS_AKUN_CHOICES, default=pelanggan)
+#
+#     def __unicode__(self):
+#         return self.pelanggan.nama

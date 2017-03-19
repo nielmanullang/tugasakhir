@@ -1,17 +1,12 @@
 from django.shortcuts import render
-from django.contrib.sessions.models import Session
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.decorators import login_required
-from django.conf import settings
-from django.contrib.auth.models import User
 from pelanggan.models import Pelanggan
 
 # Create your views here.
 
-# @login_required(login_url=settings.LOGIN_URL)
 def profil(request):
     if request.user.is_authenticated():
-        pelanggan = Pelanggan.objects.get(id=request.session['pelanggan_id'])
+        current_user = request.user
+        pelanggan = Pelanggan.objects.filter(user_id=current_user.id)
     else:
         return render(request, 'create_pelanggan.html')
-    return render(request, 'profil.html', {"pelanggan":pelanggan})
+    return render(request, 'profil.html', {'pelanggan':pelanggan})

@@ -11,10 +11,10 @@ class PelangganAdmin (admin.ModelAdmin):
 
 admin.site.register(Pelanggan, PelangganAdmin)
 
-class AkunAdmin(admin.ModelAdmin):
-    list_display = ['akun', 'pelanggan', 'jenis_akun']
-    list_filter = ('jenis_akun',)
-    search_fields = []
-    list_per_page = 25
-
-admin.site.register(Akun, AkunAdmin)
+# class AkunAdmin(admin.ModelAdmin):
+#     list_display = ['akun', 'pelanggan', 'jenis_akun']
+#     list_filter = ('jenis_akun',)
+#     search_fields = []
+#     list_per_page = 25
+#
+# admin.site.register(Akun, AkunAdmin)
