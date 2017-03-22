@@ -2,38 +2,43 @@
 {% load static %}
 
 {% block title %}
-Toko
+    Toko
     {#    {% if toko %}{{ tokos.nama }}{% else %}My Shop{% endif %}#}
 {% endblock %}
 
 {% block content %}
     {% if toko %}
-        {% for tokos in toko %}
-            <form>
-                <h1>Profil Anda {{ tokos.nama }}</h1>
-{#                <p>Hi, {{ request.session.username }}</p>#}
-                <p>Nama Toko: {{ tokos.nama }}</p>
-                <p>Slogan Toko: {{ tokos.slogan }}</p>
-                <p>Deskripsi Toko: {{ tokos.deskripsi }}</p>
-                <p>Alamat Toko: {{ tokos.alamat }}</p>
-            </form>
-        {% endfor %}
+        {#        {% for toko in tokos %}#}
+        <form>
+            {#                Selamat datang1 {{ user.id }}#}
+            {#                Selamat datang2 {{ pelanggan.user_id }}#}
+            {#                Selamat datang3 {{ tokos.user_id }}#}
+            <h1>Profil Anda {{ toko.nama }}</h1>
+            <p>Nama Toko: {{ toko.nama }}</p>
+            <p>Slogan Toko: {{ toko.slogan }}</p>
+            <p>Deskripsi Toko: {{ toko.deskripsi }}</p>
+            <p>Alamat Toko: {{ toko.alamat }}</p>
+        </form>
+        {#        {% endfor %}#}
+<div id="main" class="product-list">
+    <h1>{% if toko %}{{ toko.nama }}{% else %}Produks{% endif %}</h1>
+    {% for produk in produks %}
+        <div class="item">
+            <a href="{{ produk.get_absolute_url }}">
+                <img src="
+
+                        {% if produk.gambar %}{{ produk.gambar.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
+            </a>
+            <a href="{{ produk.get_absolute_url }}">{{ produk.nama }}</a><br>
+            Rp.{{ produk.harga }}
+        </div>
+    {% endfor %}
+</div>
     {% else %}
         <h3>No Toko</h3>
     {% endif %}
-
-{#    <div id="main" class="product-list">#}
-{#        <h1>{% if toko %}{{ toko.nama }}{% else %}Produks{% endif %}</h1>#}
-{#        {% for produks in produk %}#}
-{#            <div class="item">#}
-{#                <a href="{{ produks.get_absolute_url }}">#}
-{#                    <img src="#}
-{#                            {% if produks.gambar %}{{ produks.gambar.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">#}
-{#                </a>#}
-{#                <a href="{{ produks.get_absolute_url }}">{{ produks.nama }}</a><br>#}
-{#                Rp.{{ produks.harga }}#}
-{#            </div>#}
-{#        {% endfor %}#}
-{#    </div>#}
-
 {% endblock %}
+
+
+
+

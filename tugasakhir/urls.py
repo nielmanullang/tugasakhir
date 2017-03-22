@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^pelanggan/', pelanggan_views.profil),
     url(r'^toko-saya/', toko_views.toko_profil),
     url(r'^toko/', include ('toko.urls', namespace='toko')),
+    url(r'^transaksi/', include('transaksi.urls', namespace='transaksi')),
     url(r'^keranjang/', include('keranjang.urls', namespace='keranjang')),
     url(r'^login/', homepage_views.login_view),
     url(r'^register/', homepage_views.register_page),

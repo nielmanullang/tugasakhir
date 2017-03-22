@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'shop',
     'keranjang',
     'toko',
+    'transaksi',
 ]
 
 MIDDLEWARE = [
@@ -67,6 +68,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'keranjang.context_processors.keranjang',
             ],
         },
     },

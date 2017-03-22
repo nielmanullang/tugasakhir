@@ -22,7 +22,7 @@
                 {% if keranjang|length > 0 %}
                     Your cart:
                     <a href="{% url "keranjang:keranjang_detail" %}">
-                        {{ total_items }} item{{ total_items|pluralize }}, ${{ keranjang.get_total_harga }}
+                        {{ total_items }} item{{ total_items|pluralize }}, Rp{{ keranjang.get_total_harga }}
                     </a>
                 {% else %}
                     <a href="{% url "keranjang:keranjang_detail" %}"> Keranjang </a>
