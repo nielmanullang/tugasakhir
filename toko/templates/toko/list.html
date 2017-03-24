@@ -7,14 +7,14 @@
 
 {% block content %}
     <div id="sidebar">
-        <h3>Tokos</h3>
+        <h3>Daftar Toko</h3>
         <ul>
             <li {% if not toko %}class="selected"{% endif %}>
                 <a href="{% url "toko:produk_list_toko" %}">All</a>
             </li>
-        {% for c in tokos %}
-            <li {% if toko.slug == c.slug %}class="selected"{% endif %}>
-                <a href="{{ c.get_absolute_url }}">{{ c.nama }}</a>
+        {% for t in tokos %}
+            <li {% if toko.slug == t.slug %}class="selected"{% endif %}>
+                <a href="{{ t.get_absolute_url }}">{{ t.nama }}</a>
             </li>
         {% endfor %}
         </ul>

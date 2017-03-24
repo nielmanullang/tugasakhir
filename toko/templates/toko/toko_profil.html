@@ -3,42 +3,61 @@
 
 {% block title %}
     Toko
-    {#    {% if toko %}{{ tokos.nama }}{% else %}My Shop{% endif %}#}
+{#        {% if toko %}{{ tokos.nama }}{% else %}My Shop{% endif %}#}
 {% endblock %}
 
 {% block content %}
     {% if toko %}
         {#        {% for toko in tokos %}#}
-        <form>
-            {#                Selamat datang1 {{ user.id }}#}
-            {#                Selamat datang2 {{ pelanggan.user_id }}#}
-            {#                Selamat datang3 {{ tokos.user_id }}#}
-            <h1>Profil Anda {{ toko.nama }}</h1>
-            <p>Nama Toko: {{ toko.nama }}</p>
-            <p>Slogan Toko: {{ toko.slogan }}</p>
-            <p>Deskripsi Toko: {{ toko.deskripsi }}</p>
-            <p>Alamat Toko: {{ toko.alamat }}</p>
+        <form><p>
+            <table>
+                <tr>
+                    <td width="100">Nama</td>
+                    <td width="10">:</td>
+                    <td>{{ toko.nama }}</td>
+                </tr>
+                <tr>
+                    <td>Slogan</td>
+                    <td>:</td>
+                    <td>{{ toko.slogan }}</td>
+                </tr>
+                <tr>
+                    <td>Deskripsi</td>
+                    <td>:</td>
+                    <td>{{ toko.deskripsi }}</td>
+                </tr>
+                <tr>
+                    <td>Alamat</td>
+                    <td>:</td>
+                    <td>{{ toko.alamat }}</td>
+                </tr>
+                <tr>
+                    <td>Pemilik</td>
+                    <td>:</td>
+                    <td>{{ toko.pelanggan_id }}</td>
+                </tr>
+            </table>
+            {#            <h1>Profil Anda {{ toko.nama }}</h1>#}
+            {#            <p>Nama Toko: {{ toko.nama }}</p>#}
+            {#            <p>Slogan Toko: {{ toko.slogan }}</p>#}
+            {#            <p>Deskripsi Toko: {{ toko.deskripsi }}</p>#}
+            {#            <p>Alamat Toko: {{ toko.alamat }}</p>#}
         </form>
-        {#        {% endfor %}#}
-<div id="main" class="product-list">
-    <h1>{% if toko %}{{ toko.nama }}{% else %}Produks{% endif %}</h1>
-    {% for produk in produks %}
-        <div class="item">
-            <a href="{{ produk.get_absolute_url }}">
-                <img src="
 
-                        {% if produk.gambar %}{{ produk.gambar.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
-            </a>
-            <a href="{{ produk.get_absolute_url }}">{{ produk.nama }}</a><br>
-            Rp.{{ produk.harga }}
+        {#        {% endfor %}#}
+        <div id="main" class="product-list">
+            <h1>{% if toko %}{{ toko.nama }}{% else %}Produks{% endif %}</h1>
+            {% for produk in produks %}
+                <div class="item">
+                    <a href="{{ produk.get_absolute_url }}">
+                        <img src="{% if produk.gambar %}{{ produk.gambar.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
+                    </a>
+                    <a href="{{ produk.get_absolute_url }}">{{ produk.nama }}</a><br>
+                    Rp.{{ produk.harga }}
+                </div>
+            {% endfor %}
         </div>
-    {% endfor %}
-</div>
     {% else %}
         <h3>No Toko</h3>
     {% endif %}
 {% endblock %}
-
-
-
-

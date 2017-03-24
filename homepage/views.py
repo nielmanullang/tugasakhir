@@ -20,7 +20,6 @@ def login_view(request):
                     login(request, user)
 
                     request.session['user_id'] = akun.pelanggan.id
-                    # request.session['jenis_akun'] = akun.jenis_akun
                     request.session['username'] = request.POST['username']
                 except:
                     messages.add_message(request, messages.INFO,
@@ -38,20 +37,24 @@ def logout_view(request):
     logout(request)
     return redirect('/login/')
 
+
 def register_page(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
+
         if form.is_valid():
-            user = User.objects.create_user(username=form.cleaned_data['username'],
-                                            password=form.cleaned_data['password1'], email=form.cleaned_data['email'])
-            # pelanggan = Pelanggan.objects.create(nama=form.cleaned_data['nama'],
-            #                                      no_telpon=form.cleaned_data['no_telpon'],
-            #                                      jenis_kelamin=form.cleaned_data['jenis_kelamin'],
-            #                                      kabupaten=form.cleaned_data['kabupaten'],
-            #                                      alamat=form.cleaned_data['alamat'],
-            #                                      kodepos=form.cleaned_data['kodepos'], )
-            # akun = Akun.objects.create(akun=form.cleaned_data['akun'], pelanggan=form.cleaned_data['pelanggan'],
-            #                            jenis_akun=form.cleaned_data['jenis_akun'], )
+            user = User.objects.create(username=form.cleaned_data['username'],
+                                       email=form.cleaned_data['email'])
+            user.set_password(form.cleaned_data['password1'], )
+            user.save()
+
+            pelanggan = Pelanggan.objects.create(nama=form.cleaned_data['nama'],
+                                                 no_telepon=form.cleaned_data['no_telpon'],
+                                                 jenis_kelamin=form.cleaned_data['jenis_kelamin'],
+                                                 kabupaten=form.cleaned_data['kabupaten'],
+                                                 alamat=form.cleaned_data['alamat'],
+                                                 kodepos=form.cleaned_data['kodepos'],
+                                                 user_id_id=user.id)
         return HttpResponseRedirect('/')
     form = RegistrationForm()
     variables = RequestContext(request, {'form': form})

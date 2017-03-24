@@ -6,8 +6,15 @@ import re
 class RegistrationForm(forms.Form):
     username = forms.CharField(label='Username', max_length=30)
     email = forms.EmailField(label='Email')
-    password1 = forms.CharField(label='Password', widget=forms.PasswordInput())
-    password2 = forms.CharField(label='Password (Again)', widget=forms.PasswordInput())
+    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Password (Again)', widget=forms.PasswordInput)
+    nama = forms.CharField(label='Nama', max_length=100)
+    no_telpon = forms.CharField(label='No Telpon', max_length=30)
+    jenis_kelamin = forms.CharField(label='Jenis Kelamin' , max_length=30)
+    kabupaten = forms.CharField(label='Kabupaten', max_length=32)
+    alamat = forms.CharField(label='Alamat', max_length=100)
+    kodepos = forms.CharField(label='Kode Pos', max_length=5)
+
 
     def clean_password2(self):
         if 'password1' in self.cleaned_data:

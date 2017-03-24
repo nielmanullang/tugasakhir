@@ -8,13 +8,46 @@
 {% block content %}
     {% if pelanggan %}
         {% for pelanggans in pelanggan %}
-            <h1>Selamat Datang User{{ user.id  }}</h1>
-            <p>Pelanggan {{ pelanggans.user_id }}</p>
+            <h1>Selamat Datang '{{ user.username }}'</h1>
             <form>
-                <p>Nama: {{ pelanggans.nama }}</p>
-                <p>Alamat: {{ pelanggans.alamat }}</p>
-                <p>Jenis Kelamin: {{ pelanggans.jenis_kelamin }}</p>
-                <p>No Telepon: {{ pelanggans.no_telepon }}</p>
+                <table>
+                    <tr>
+                        <td width="100">Nama</td>
+                        <td width="10">:</td>
+                        <td>{{ pelanggans.nama }}</td>
+                    </tr>
+                    <tr>
+                        <td>No Telepon</td>
+                        <td>:</td>
+                        <td>{{ pelanggans.no_telepon }}</td>
+                    </tr>
+                    <tr>
+                        <td>Jenis Kelamin</td>
+                        <td>:</td>
+                        <td>{{ pelanggans.jenis_kelamin }}</td>
+                    </tr>
+                    <tr>
+                        <td>Kabupaten</td>
+                        <td>:</td>
+                        <td>{{ pelanggans.kabupaten }}</td>
+                    </tr>
+                    <tr>
+                        <td>Alamat</td>
+                        <td>:</td>
+                        <td>{{ pelanggans.alamat }}</td>
+                    </tr>
+                    <tr>
+                        <td>Kode Pos</td>
+                        <td>:</td>
+                        <td>{{ pelanggans.kodepos }}</td>
+                    </tr>
+                </table>
+{#                <p>Nama: {{ pelanggans.nama }}</p>#}
+{#                <p>No Telepon: {{ pelanggans.no_telepon }}</p>#}
+{#                <p>Jenis Kelamin: {{ pelanggans.jenis_kelamin }}</p>#}
+{#                <p>Kabupaten: {{ pelanggans.kabupaten }}</p>#}
+{#                <p>Alamat: {{ pelanggans.alamat }}</p>#}
+{#                <p>Kode Pos: {{ pelanggans.kodepos }}</p>#}
             </form>
         {% endfor %}
     {% else %}

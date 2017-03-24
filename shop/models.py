@@ -3,6 +3,11 @@ from django.core.urlresolvers import reverse
 from pelanggan.models import Pelanggan
 from toko.models import Toko
 
+JENIS_DISKON_CHOICES = (
+    ('tidakada', 'Tidak Ada'),
+    ('Ada', 'Ada'),
+)
+
 class Kategori(models.Model):
     nama = models.CharField(max_length=200, db_index=True)
     slug = models.SlugField(max_length=200, db_index=True, unique=True)
@@ -22,6 +27,7 @@ class Produk(models.Model):
     harga = models.DecimalField(max_digits=10, decimal_places=2)
     stok = models.PositiveIntegerField()
     available = models.BooleanField(default=True)
+    diskon = models.CharField(max_length=10, choices=JENIS_DISKON_CHOICES)
     toko_id = models.ForeignKey(Toko, on_delete=models.CASCADE, null=True, related_name='tokopr')
 
     def __str__(self):

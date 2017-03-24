@@ -1,9 +1,13 @@
 from django.shortcuts import render, get_object_or_404
-from django.shortcuts import render, redirect
-from pelanggan.models import Pelanggan
 from toko.models import Toko
 from shop.models import Produk
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect
+from pelanggan.models import Pelanggan
+from django.template import RequestContext
+from django.shortcuts import render_to_response
+
+from . forms import CreateTokoForm
 
 def produk_list_toko(request, toko_slug=None):
     toko = None
@@ -15,11 +19,35 @@ def produk_list_toko(request, toko_slug=None):
     return render(request, 'toko/list.html', {'toko': toko, 'tokos': tokos, 'produks': produks})
 
 def toko_profil(request, toko_slug=None):
-    if request.user.is_authenticated():
-        current_user = request.user
-        pelanggan = Pelanggan.objects.get(user_id=current_user.id)
-        toko = Toko.objects.get(pelanggan_id=pelanggan.id)
-        produks = Produk.objects.filter(toko_id=toko.id)
+    current_user = request.user
+    pelanggan = Pelanggan.objects.get(user_id=current_user.id)
+    if (pelanggan is not None):
+        try:
+            toko = Toko.objects.get(pelanggan_id=pelanggan.id)
+        except Toko.DoesNotExist:
+            toko = None
+        if (toko is not None):
+            produks = Produk.objects.filter(toko_id=toko.id)
+        else:
+            return render(request, 'toko/views.html')
     else:
-        return render(request, 'toko/create_toko.html')
-    return render(request, 'toko/toko_profil.html', {'toko': toko, 'produks':produks})
+        return render(request, 'toko/views.html')
+    return render(request, 'toko/toko_profil.html', {'toko': toko, 'produks': produks})
+
+def register_toko(request):
+    if request.method == 'POST':
+        form = CreateTokoForm(request.POST)
+        if form.is_valid():
+            current_user = request.user
+            pelanggan = Pelanggan.objects.get(user_id=current_user.id)
+            toko = Toko.objects.create(nama=form.cleaned_data['nama'],
+                                       slogan=form.cleaned_data['slogan'],
+                                       deskripsi=form.cleaned_data['deskripsi'],
+                                       alamat=pelanggan.kabupaten,
+                                       pelanggan_id_id=pelanggan.id)
+        return HttpResponseRedirect('/')
+    context = {
+        'form':CreateTokoForm,
+    }
+
+    return render(request, 'toko/create.html', context)

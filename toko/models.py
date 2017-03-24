@@ -16,7 +16,7 @@ class Toko(models.Model):
         return self.nama
 
     def get_absolute_url(self):
-        return reverse('toko:produk_list_by_kategori', args=[self.slug])
+        return reverse('toko:produk_list_by_toko', args=[self.slug])
 
 class Ratingtoko(models.Model):
     toko_id = models.ForeignKey(Toko, related_name='tokor')

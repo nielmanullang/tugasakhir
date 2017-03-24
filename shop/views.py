@@ -4,7 +4,7 @@ from keranjang.forms import KeranjangTambahProdukForm
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 
-# @login_required(login_url=settings.LOGIN_URL)
+#@login_required(login_url=settings.LOGIN_URL)
 def produk_list(request, kategori_slug=None):
     kategori = None
     kategoris = Kategori.objects.all()
@@ -14,6 +14,7 @@ def produk_list(request, kategori_slug=None):
         produks = produks.filter(kategori=kategori)
     return render(request, 'shop/produk/list.html', {'kategori': kategori, 'kategoris': kategoris, 'produks': produks})
 
+#@login_required(login_url=settings.LOGIN_URL)
 def produk_detail(request, id, slug):
     produk = get_object_or_404(Produk, id=id, slug=slug, available=True)
     keranjang_produk_form = KeranjangTambahProdukForm()

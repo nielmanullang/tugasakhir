@@ -22,7 +22,8 @@
                 {% if keranjang|length > 0 %}
                     Your cart:
                     <a href="{% url "keranjang:keranjang_detail" %}">
-                        {{ total_items }} item{{ total_items|pluralize }}, Rp{{ keranjang.get_total_harga }}
+                        {{ total_items }} item{{ total_items|pluralize }}
+{#                        , Rp{{ keranjang.get_total_harga }}#}
                     </a>
                 {% else %}
                     <a href="{% url "keranjang:keranjang_detail" %}"> Keranjang </a>
@@ -39,9 +40,6 @@
             <a href="/"> Beranda </a>
         </div>
     </div>
-{#    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">#}
-{#        {% include "nav.html" %}#}
-{#    </nav>#}
     <div id="content">
         {% block content %}
         {% endblock %}

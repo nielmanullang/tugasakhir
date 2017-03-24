@@ -3,8 +3,11 @@ from django.views.decorators.http import require_POST
 from shop.models import Produk
 from .keranjang import Keranjang
 from .forms import KeranjangTambahProdukForm
+from django.contrib.auth.decorators import login_required
+from django.conf import settings
 
 @require_POST
+@login_required(login_url=settings.LOGIN_URL)
 def keranjang_tambah(request, produk_id):
     keranjang = Keranjang(request)
     produk = get_object_or_404(Produk, id=produk_id)

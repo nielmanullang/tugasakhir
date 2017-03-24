@@ -55,16 +55,3 @@ class Pelanggan(models.Model):
 
     def __unicode__(self):
         return self.nama
-
-# class Akun(models.Model):
-#     JENIS_AKUN_CHOICES = (
-#         ('pelanggan', 'Pelanggan'),
-#         ('admin', 'Administrator'),
-#     )
-#
-#     akun = models.ForeignKey(User)
-#     pelanggan = models.ForeignKey(Pelanggan)
-#     jenis_akun = models.CharField(max_length=20, choices=JENIS_AKUN_CHOICES, default=pelanggan)
-#
-#     def __unicode__(self):
-#         return self.pelanggan.nama
