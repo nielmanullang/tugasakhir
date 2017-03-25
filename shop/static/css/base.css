@@ -1,12 +1,12 @@
-@import url(http://fonts.googleapis.com/css?family=Ubuntu);
+/*@import url(http://fonts.googleapis.com/css?family=Ubuntu);*/
 
-body { 
+body {
     margin:0;
     padding:0;
-    font-family:helvetica, sans-serif; 
+    font-family:helvetica, sans-serif;
 }
 
-h1, h2, h3, h4, h5 , h6 { 
+h1, h2, h3, h4, h5 , h6 {
     font-family: 'Ubuntu', sans-serif; font-weight:normal;
 }
 
@@ -45,7 +45,7 @@ a.button.light {
 table {
     width:100%;
     border-spacing:0;
-    border-collapse: collapse; 
+    border-collapse: collapse;
 }
 
 table th, table td {
@@ -86,7 +86,7 @@ td input[type="submit"] {
     padding:4px 10px;
 }
 
-form p label, form p input {
+form p label, form p input, form p textarea, form p select{
     float:left;
     clear:both;
 }
@@ -96,8 +96,7 @@ form p label {
     padding-bottom:4px;
 }
 
-form p input {
-    width:200px;
+form p input, form p textarea, form p select{
     font-size:13px;
     margin-bottom:10px;
     padding:10px 12px;
@@ -112,7 +111,7 @@ ul.errorlist {
    color:#ff0000;
    clear:both;
    font-size:13px;
-   margin:0; 
+   margin:0;
    padding:0;
 }
 
@@ -206,7 +205,7 @@ ul.errorlist {
 #main {
     float:left;
     width: 96%;
-    margin-right:-220px; 
+    margin-right:-220px;
     overflow:hidden;
 }
 
@@ -339,4 +338,17 @@ ul.errorlist {
 
 .recommendations.cart img {
     width:120px;
+}
+
+.myCheckbox input {
+    // display: none;
+    // Better than display: none for accessibility reasons
+    position: relative;
+    z-index: -9999;
+}
+
+.myCheckbox span {
+    width: 20px;
+    height: 20px;
+    display: block;
 }

@@ -48,13 +48,13 @@ def register_page(request):
             user.set_password(form.cleaned_data['password1'], )
             user.save()
 
-            pelanggan = Pelanggan.objects.create(nama=form.cleaned_data['nama'],
-                                                 no_telepon=form.cleaned_data['no_telpon'],
-                                                 jenis_kelamin=form.cleaned_data['jenis_kelamin'],
-                                                 kabupaten=form.cleaned_data['kabupaten'],
-                                                 alamat=form.cleaned_data['alamat'],
-                                                 kodepos=form.cleaned_data['kodepos'],
-                                                 user_id_id=user.id)
+            # pelanggan = Pelanggan.objects.create(nama=form.cleaned_data['nama'],
+            #                                      no_telepon=form.cleaned_data['no_telpon'],
+            #                                      jenis_kelamin=form.cleaned_data['jenis_kelamin'],
+            #                                      kabupaten=form.cleaned_data['kabupaten'],
+            #                                      alamat=form.cleaned_data['alamat'],
+            #                                      kodepos=form.cleaned_data['kodepos'],
+            #                                      user_id_id=user.id)
         return HttpResponseRedirect('/')
     form = RegistrationForm()
     variables = RequestContext(request, {'form': form})

@@ -13,7 +13,7 @@
                 <a href="{% url "shop:produk_list" %}">All</a>
             </li>
         {% for c in kategoris %}
-            <li {% if kategori.slug == c.slug %}class="selected"{% endif %}>
+            <li {% if kategori.id == c.id %}class="selected"{% endif %}>
                 <a href="{{ c.get_absolute_url }}">{{ c.nama }}</a>
             </li>
         {% endfor %}

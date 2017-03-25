@@ -17,7 +17,6 @@
             <input type="submit" value="Tambah Keranjang">
         </form>
         {{ produk.deskripsi|linebreaks }}
-        Pedagang : {{ produk.toko_id }} <h2><a href="{{ produk.kategori.get_absolute_url }}">{{ produk.toko_id }}</a>
-    </h2>
+        Pedagang : <a href="/toko/{{ produk.toko_id_id}}">{{ produk.toko_id }}</a>
     </div>
 {% endblock %}

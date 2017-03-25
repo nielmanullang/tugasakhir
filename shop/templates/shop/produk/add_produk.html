@@ -1,0 +1,12 @@
+{% extends "shop/base.html" %}
+{% block title %}Tambah Produk{% endblock %}
+{% block head %}Tambah Produk{% endblock %}
+{% block content %}
+    <form method="post" action="." >
+        {% csrf_token %}
+        {{ form.as_p }}
+        <p>
+            <input class="btn btn-lg btn-success btn-block" type="submit" value="register"/>
+        </p>
+    </form>
+{% endblock %}

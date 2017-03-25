@@ -9,16 +9,16 @@ from django.shortcuts import render_to_response
 
 from . forms import CreateTokoForm
 
-def produk_list_toko(request, toko_slug=None):
+def produk_list_toko(request, toko_id=None):
     toko = None
     tokos = Toko.objects.all()
     produks = Produk.objects.filter(available=True)
-    if toko_slug:
-        toko = get_object_or_404(Toko, slug=toko_slug)
+    if toko_id:
+        toko = get_object_or_404(Toko, id=toko_id)
         produks = produks.filter(toko_id=toko)
     return render(request, 'toko/list.html', {'toko': toko, 'tokos': tokos, 'produks': produks})
 
-def toko_profil(request, toko_slug=None):
+def toko_profil(request, toko_id=None):
     current_user = request.user
     pelanggan = Pelanggan.objects.get(user_id=current_user.id)
     if (pelanggan is not None):

@@ -13,7 +13,7 @@
                 <a href="{% url "toko:produk_list_toko" %}">All</a>
             </li>
         {% for t in tokos %}
-            <li {% if toko.slug == t.slug %}class="selected"{% endif %}>
+            <li {% if toko.id == t.id %}class="selected"{% endif %}>
                 <a href="{{ t.get_absolute_url }}">{{ t.nama }}</a>
             </li>
         {% endfor %}

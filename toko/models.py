@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 # Create your models here.
 class Toko(models.Model):
     nama = models.CharField(max_length=32, db_index=True)
-    slug = models.SlugField(max_length=32, db_index=True)
+    # slug = models.SlugField(max_length=32, db_index=True)
     slogan = models.CharField(max_length=64)
     deskripsi = models.TextField(blank=True)
     alamat = models.CharField(max_length=32)
@@ -16,7 +16,7 @@ class Toko(models.Model):
         return self.nama
 
     def get_absolute_url(self):
-        return reverse('toko:produk_list_by_toko', args=[self.slug])
+        return reverse('toko:produk_list_by_toko', args=[self.id])
 
 class Ratingtoko(models.Model):
     toko_id = models.ForeignKey(Toko, related_name='tokor')
