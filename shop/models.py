@@ -34,7 +34,7 @@ class Produk(models.Model):
         return self.nama
 
     def get_absolute_url(self):
-        return reverse('shop:produk_detail', args=[self.id, self.id])
+        return reverse('shop:produk_detail', args=[self.kategori_id, self.id])
 
 class Ratingproduk(models.Model):
     produk_id = models.ForeignKey(Produk, related_name='produkr')

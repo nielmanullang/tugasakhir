@@ -1,8 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Kategori, Produk
 from keranjang.forms import KeranjangTambahProdukForm
-from django.contrib.auth.decorators import login_required
-from django.conf import settings
 from .forms import CreatePrudukForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
@@ -21,8 +19,8 @@ def produk_list(request, kategori_id=None):
     return render(request, 'shop/produk/list.html', {'kategori': kategori, 'kategoris': kategoris, 'produks': produks})
 
 #@login_required(login_url=settings.LOGIN_URL)
-def produk_detail(request, id, kategori_id):
-    produk = get_object_or_404(Produk, id=id, kategori_id=kategori_id, available=True)
+def produk_detail(request, kategori_id, id):
+    produk = get_object_or_404(Produk, kategori_id=kategori_id, id=id, available=True)
     keranjang_produk_form = KeranjangTambahProdukForm()
     return render(request, 'shop/produk/detail.html', {'produk': produk, 'keranjang_produk_form': keranjang_produk_form })
 
@@ -47,5 +45,4 @@ def addproduk(request):
     context = {
         'form': CreatePrudukForm,
     }
-
     return render(request, 'shop/produk/add_produk.html', context)
