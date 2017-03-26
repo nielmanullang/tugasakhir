@@ -1,7 +1,5 @@
 from django import forms
-from . models import Pelanggan
-from django.contrib.auth.models import User
-from django.core.exceptions import ObjectDoesNotExist
+from pelanggan.models import Pelanggan
 
 class CreatePelangganForm(forms.ModelForm):
     class Meta:

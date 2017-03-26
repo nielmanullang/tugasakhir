@@ -1,13 +1,12 @@
-from django.shortcuts import render, get_object_or_404
 from toko.models import Toko
 from shop.models import Produk
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
 from pelanggan.models import Pelanggan
-from django.template import RequestContext
-from django.shortcuts import render_to_response
-
+from django.contrib.auth.decorators import login_required
+from django.conf import settings
 from . forms import CreateTokoForm
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.http import require_POST
 
 def produk_list_toko(request, toko_id=None):
     toko = None
@@ -18,6 +17,8 @@ def produk_list_toko(request, toko_id=None):
         produks = produks.filter(toko_id=toko)
     return render(request, 'toko/list.html', {'toko': toko, 'tokos': tokos, 'produks': produks})
 
+#@require_POST
+@login_required(login_url=settings.LOGIN_URL)
 def toko_profil(request, toko_id=None):
     current_user = request.user
     pelanggan = Pelanggan.objects.get(user_id=current_user.id)
@@ -34,6 +35,7 @@ def toko_profil(request, toko_id=None):
         return render(request, 'toko/views.html')
     return render(request, 'toko/toko_profil.html', {'toko': toko, 'produks': produks})
 
+@login_required(login_url=settings.LOGIN_URL)
 def register_toko(request):
     if request.method == 'POST':
         form = CreateTokoForm(request.POST)

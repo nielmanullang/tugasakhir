@@ -6,7 +6,8 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from pelanggan.models import Pelanggan
 from toko.models import Toko
-
+from django.contrib.auth.decorators import login_required
+from django.conf import settings
 
 #@login_required(login_url=settings.LOGIN_URL)
 def produk_list(request, kategori_id=None):
@@ -24,6 +25,7 @@ def produk_detail(request, kategori_id, id):
     keranjang_produk_form = KeranjangTambahProdukForm()
     return render(request, 'shop/produk/detail.html', {'produk': produk, 'keranjang_produk_form': keranjang_produk_form })
 
+@login_required(login_url=settings.LOGIN_URL)
 def addproduk(request):
     if request.method == 'POST':
         form = CreatePrudukForm(request.POST)
