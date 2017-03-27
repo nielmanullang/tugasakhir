@@ -1,5 +1,6 @@
 from django import forms
-from . models import Toko
+from .models import Toko
+
 
 class CreateTokoForm(forms.ModelForm):
     class Meta:

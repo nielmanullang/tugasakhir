@@ -23,14 +23,14 @@ def create_pelanggan(request):
         form = CreatePelangganForm(request.POST)
         if form.is_valid():
             current_user = request.user
+            user = User.objects.get(id=current_user.id)
             pelanggan = Pelanggan.objects.create(nama=form.cleaned_data.get('nama'),
                                                  no_telepon=form.cleaned_data.get('no_telepon'),
                                                  jenis_kelamin=form.cleaned_data.get('jenis_kelamin'),
                                                  kabupaten=form.cleaned_data.get('kabupaten'),
                                                  alamat=form.cleaned_data.get('alamat'),
                                                  kodepos=form.cleaned_data.get('kodepos'),
-                                                 user_id_id=form.cleaned_data.get('user_id_id'))
-
+                                                 user_id_id=user.id)
         return HttpResponseRedirect('/')
     context = {
         'form': CreatePelangganForm,

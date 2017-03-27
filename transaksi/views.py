@@ -3,7 +3,9 @@ from .models import OrderItem
 from .forms import OrderCreateForm
 # from .tasks import order_created
 from keranjang.keranjang import Keranjang
-
+from django.contrib.auth.models import User
+from pelanggan.models import Pelanggan
+from transaksi.models import Order
 
 def order_create(request):
     keranjang = Keranjang(request)
@@ -22,6 +24,16 @@ def order_create(request):
             # order_created.delay(order.id)
             return render(request, 'transaksi/order/created.html', {'order': order})
     else:
-        form = OrderCreateForm()
-    return render(request, 'transaksi/order/create.html', {'keranjang': keranjang,
-                                                        'form': form})
+        current_user = request.user
+        user = User.objects.get(id=current_user.id)
+        pelanggan = Pelanggan.objects.get(user_id=current_user.id)
+        orders = Order.objects.create(nama=pelanggan.nama,
+                                   email=user.email,
+                                   alamat=pelanggan.alamat,
+                                   kabupaten=pelanggan.kabupaten,
+                                   kodepos=pelanggan.kodepos)
+#        form = OrderCreateForm()
+    context = {
+        'form': OrderCreateForm,
+    }
+    return render(request, 'transaksi/order/create.html', context) #'keranjang': keranjang, 'form': form})
