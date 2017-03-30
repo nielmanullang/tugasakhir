@@ -22,8 +22,10 @@ def produk_list(request, kategori_id=None):
 #@login_required(login_url=settings.LOGIN_URL)
 def produk_detail(request, kategori_id, id):
     produk = get_object_or_404(Produk, kategori_id=kategori_id, id=id, available=True)
-    keranjang_produk_form = KeranjangTambahProdukForm()
-    return render(request, 'shop/produk/detail.html', {'produk': produk, 'keranjang_produk_form': keranjang_produk_form })
+    #products = get_object_or_404(Produk,id=id)
+
+    # keranjang_produk_form = KeranjangTambahProdukForm()
+    return render(request, 'shop/produk/detail.html', {'produk': produk})
 
 @login_required(login_url=settings.LOGIN_URL)
 def addproduk(request):

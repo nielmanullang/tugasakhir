@@ -47,7 +47,6 @@ def register_page(request):
                                        email=form.cleaned_data['email'])
             user.set_password(form.cleaned_data['password1'], )
             user.save()
-
             # pelanggan = Pelanggan.objects.create(nama=form.cleaned_data['nama'],
             #                                      no_telepon=form.cleaned_data['no_telpon'],
             #                                      jenis_kelamin=form.cleaned_data['jenis_kelamin'],
