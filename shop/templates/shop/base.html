@@ -11,28 +11,39 @@
         <a href="/" class="logo">My shop</a>
     </div>
     <div id="subheader">
+        {% if user.is_authenticated %}
         <div class="logout">
             <a href="/logout/"> Logout </a>
         </div>
+        {% else %}
+        <div class="logout">
+            <a href="/login/"> Login </a>
+        </div>
+        {% endif %}
+        {% if user.is_authenticated %}
         <div class="akun">
             <a href="/pelanggan/"> Akun </a>
         </div>
-        <div class="cart">
-            {% with total_items=keranjang|length %}
-                {% if keranjang|length > 0 %}
-                    Your cart:
-                    <a href="{% url "keranjang:keranjang_detail" %}">
-                        {{ total_items }} item{{ total_items|pluralize }}
+{#        <div class="cart">#}
+{#            {% with total_items=keranjang|length %}#}
+{#                {% if keranjang|length > 0 %}#}
+{#                    Your cart:#}
+{#                    <a href="{% url "keranjang:keranjang_detail" %}">#}
+{#                        {{ total_items }} item{{ total_items|pluralize }}#}
 {#                        , Rp{{ keranjang.get_total_harga }}#}
-                    </a>
-                {% else %}
-                    <a href="{% url "keranjang:keranjang_detail" %}"> Keranjang </a>
-                {% endif %}
-            {% endwith %}
+{#                    </a>#}
+{#                {% else %}#}
+{#                    <a href="{% url "keranjang:keranjang_detail" %}"> Keranjang </a>#}
+{#                {% endif %}#}
+{#            {% endwith %}#}
+{#        </div>#}
+        <div class="cart">
+            <a href="/transaksi/"> Transaksi </a>
         </div>
         <div class="tokosaya">
             <a href="/toko-saya/"> Toko Saya </a>
         </div>
+        {% endif %}
         <div class="toko">
             <a href="/toko/"> Toko </a>
         </div>

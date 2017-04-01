@@ -9,7 +9,8 @@ from toko.models import Toko
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 
-#@login_required(login_url=settings.LOGIN_URL)
+
+# @login_required(login_url=settings.LOGIN_URL)
 def produk_list(request, kategori_id=None):
     kategori = None
     kategoris = Kategori.objects.all()
@@ -19,6 +20,7 @@ def produk_list(request, kategori_id=None):
         produks = produks.filter(kategori=kategori)
     return render(request, 'shop/produk/list.html', {'kategori': kategori, 'kategoris': kategoris, 'produks': produks})
 
+
 #@login_required(login_url=settings.LOGIN_URL)
 def produk_detail(request, kategori_id, id):
     produk = get_object_or_404(Produk, kategori_id=kategori_id, id=id, available=True)
@@ -26,6 +28,8 @@ def produk_detail(request, kategori_id, id):
 
     # keranjang_produk_form = KeranjangTambahProdukForm()
     return render(request, 'shop/produk/detail.html', {'produk': produk})
+
+
 
 @login_required(login_url=settings.LOGIN_URL)
 def addproduk(request):

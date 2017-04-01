@@ -1,0 +1,34 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}
+    Akun Pelanggan
+{% endblock %}
+
+{% block content %}
+    {% if transaksi %}
+        <h1>Selamat Datang '{{ user.username }}'</h1>
+        <table border="1">
+            <tr>
+                <td width="180">Waktu Pembelian</td>
+                <td width="180">Produk</td>
+                <td width="180">Harga</td>
+                <td width="180">Toko Penjual</td>
+                <td width="180">Dikirim dari</td>
+                <td width="180">Ongkos Kirim</td>
+            </tr>
+        </table>
+        {% for transaksis in transaksi %}
+        <table border="1">
+            <tr>
+                <td width="180">{{ transaksis.waktu_pembelian }}</td>
+                <td width="180">{{ transaksis.produk.nama }}</td>
+                <td width="180">{{ transaksis.produk.harga }}</td>
+                <td width="180">{{ transaksis.toko }}</td>
+                <td width="180">{{ transaksis.toko.alamat }}</td>
+                <td width="180">{{ transaksis.biaya_pengiriman }}</td>
+            </tr>
+        </table>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

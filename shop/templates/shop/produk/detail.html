@@ -12,32 +12,19 @@
         <h2><a href="{{ produk.kategori.get_absolute_url }}">{{ produk.kategori }}</a></h2>
         <p class="price">Rp.{{ produk.harga }}</p>
         {#            {% for transaksis in transaksi %}#}
+        {% if user.is_authenticated %}
         <form action="{% url "transaksi:beli" produk.id request.user.id %}" method="post">
             {#                {{ keranjang_produk_form }}#}
             {% csrf_token %}
             {#            <input type="submit" value="Beli">#}
-            <input type="submit" value="Tambah Keranjang">
+            <input type="submit" value="Beli">
         </form>
+        {% else %}
+            Silahkan <a href="/login/">Login</a>untuk melakukan pembelian.
+        {% endif %}
         {#            {% endfor %}#}
         {#        <input type="submit" value="Beli">#}
         {{ produk.deskripsi|linebreaks }}
         Pedagang : <a href="/toko/{{ produk.toko_id_id }}">{{ produk.toko_id }}</a>
     </div>
 {% endblock %}
-{#{% block content %}#}
-{#    <div class="product-detail">#}
-{#        <img src="{% if produk.gambar %}{{ produk.gambar.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">#}
-{#        <h1>{{ produk.nama }}</h1>#}
-{#        <h2><a href="{{ produk.kategori.get_absolute_url }}">{{ produk.kategori }}</a></h2>#}
-{#        <p class="price">Rp.{{ produk.harga }}</p>#}
-{#            <form action="{% url "keranjang:keranjang_tambah" produk.id %}" method="post">#}
-{#                {{ keranjang_produk_form }}#}
-{#                {% csrf_token %}#}
-{#            <input type="submit" value="Beli">#}
-{#                <input type="submit" value="Tambah Keranjang">#}
-{#            </form>#}
-{#        <input type="submit" value="Beli">#}
-{#        {{ produk.deskripsi|linebreaks }}#}
-{#        Pedagang : <a href="/toko/{{ produk.toko_id_id}}">{{ produk.toko_id }}</a>#}
-{#    </div>#}
-{#{% endblock %}#}

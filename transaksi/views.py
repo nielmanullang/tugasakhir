@@ -8,6 +8,30 @@ from pelanggan.models import Pelanggan
 from transaksi.models import Order
 from transaksi.models import Transaksi
 from shop.models import Produk
+from django.shortcuts import render, get_object_or_404
+
+def beli(request, produk_id, pelanggan_id):
+    if request.method == 'POST':
+        pelanggans = Pelanggan.objects.get(user_id=pelanggan_id)
+        produks = Produk.objects.get(id=produk_id)
+
+        transaksi=Transaksi.objects.create(
+                                        produk_id=produks.id,
+                                        harga=produks.harga,
+                                        kategori_harga='murah',
+                                        biaya_pengiriman=20,
+                                        pelanggan_id=pelanggans.id,
+                                        toko=produks.toko_id
+        )
+    return render(request,'transaksi/order/created.html')
+
+
+def transaksi(request):
+    if request.user.is_authenticated():
+        current_user = request.user
+        pelanggan = Pelanggan.objects.get(user_id=current_user.id)
+        transaksi = Transaksi.objects.filter(pelanggan_id=pelanggan.id)
+        return render(request, 'transaksi/transaksi.html', {'transaksi': transaksi})
 
 
 def order_create(request):
@@ -65,6 +89,7 @@ def beli_create(request, produk_id):
             pelanggan = Pelanggan.objects.get(user_id=current_user.id)
             produk = get_object_or_404(Produk, id=produk_id)
             orders = Transaksi.objects.create(produk=produk,
+                                              harga=produk.harga,
                                               biaya_pengiriman=produk.harga,
                                               pelanggan=pelanggan.id,
                                               toko=produk.toko_id)
@@ -75,17 +100,4 @@ def beli_create(request, produk_id):
     context = {
         'form': OrderTransaksiForm,
     }
-    return render(request, 'transaksi/order/created.html', context)  # 'keranjang': keranjang, 'form': form})
-
-def beli(request, produk_id, pelanggan_id):
-    if request.method == 'POST':
-        pelanggans = Pelanggan.objects.get(user_id=pelanggan_id)
-        produks = Produk.objects.get(id=produk_id)
-
-        transaksi=Transaksi.objects.create(
-                                        produk_id=produks.id,
-                                        biaya_pengiriman=20,
-                                        pelanggan_id=pelanggans.id,
-                                        toko=produks.toko_id
-        )
-    return render(request,'transaksi/order/created.html')
+    return render(request, 'transaksi/order/created.html', context)
