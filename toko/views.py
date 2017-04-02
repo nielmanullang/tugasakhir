@@ -1,4 +1,4 @@
-from toko.models import Toko
+from toko.models import Toko, Ratingtoko
 from shop.models import Produk
 from django.http import HttpResponseRedirect
 from pelanggan.models import Pelanggan
@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from . forms import CreateTokoForm
 from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Sum
 from django.views.decorators.http import require_POST
 
 def produk_list_toko(request, toko_id=None):
