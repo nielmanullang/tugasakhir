@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^pelanggan/', pelanggan_views.profil),
     url(r'^pembelian/', transaksi_views.pembelian),
+    url(r'^penjualan/', transaksi_views.penjualan),
     url(r'^toko-saya/', toko_views.toko_profil),
     url(r'^addproduk/', shop_views.addproduk),
     url(r'^register_toko/', toko_views.register_toko),

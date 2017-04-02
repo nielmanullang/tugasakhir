@@ -51,7 +51,7 @@
 
         {#        {% endfor %}#}
         <div id="main" class="product-list">
-            <h1>{% if toko %}{{ toko.nama }} <a href="/addproduk/">Tambah Produk</a> {% else %}Produks{% endif %}</h1>
+            <h1>{% if toko %}{{ toko.nama }} <a href="/addproduk/">Tambah Produk</a> <a href="/penjualan/">Penjualan</a>{% else %}Produks{% endif %}</h1>
             {% for produk in produks %}
                 <div class="item">
                     <a href="{{ produk.get_absolute_url }}">

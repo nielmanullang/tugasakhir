@@ -1,12 +1,9 @@
 from django.shortcuts import render
-from .models import OrderItem
-from .forms import OrderCreateForm
-from .forms import OrderTransaksiForm
 from django.contrib.auth.models import User
 from pelanggan.models import Pelanggan
-from transaksi.models import Order
 from transaksi.models import Transaksi
 from shop.models import Produk
+from toko.models import Toko
 from django.shortcuts import render, get_object_or_404
 
 
@@ -32,3 +29,12 @@ def pembelian(request):
         pelanggan = Pelanggan.objects.get(user_id=current_user.id)
         pembelian = Transaksi.objects.filter(pelanggan_id=pelanggan.id)
         return render(request, 'transaksi/pembelian.html', {'pembelian': pembelian})
+
+
+def penjualan(request):
+    if request.user.is_authenticated():
+        current_user = request.user
+        pelanggan = Pelanggan.objects.get(user_id=current_user.id)
+        toko = Toko.objects.get(pelanggan_id=pelanggan.id)
+        penjualan = Transaksi.objects.filter(toko_id=toko.id)
+        return render(request, 'transaksi/penjualan.html', {'penjualan': penjualan})
