@@ -1,6 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Kategori, Produk
-from keranjang.forms import KeranjangTambahProdukForm
+from .models import Kategori, Produk, Ratingproduk
 from .forms import CreatePrudukForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
@@ -8,7 +7,7 @@ from pelanggan.models import Pelanggan
 from toko.models import Toko
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
-
+from django.db.models import Sum
 
 # @login_required(login_url=settings.LOGIN_URL)
 def produk_list(request, kategori_id=None):
@@ -24,11 +23,14 @@ def produk_list(request, kategori_id=None):
 #@login_required(login_url=settings.LOGIN_URL)
 def produk_detail(request, kategori_id, id):
     produk = get_object_or_404(Produk, kategori_id=kategori_id, id=id, available=True)
-    #products = get_object_or_404(Produk,id=id)
-
-    # keranjang_produk_form = KeranjangTambahProdukForm()
-    return render(request, 'shop/produk/detail.html', {'produk': produk})
-
+    hargaakhir = produk.harga - (produk.harga * produk.diskon / 100)
+    ratings = Ratingproduk.objects.all().filter(produk_id=id).aggregate(Sum('ratingproduk'))
+    count = Ratingproduk.objects.all().filter(produk_id=id).count()
+    if count == 0:
+        rating = 0
+    else:
+        rating = ratings / count
+    return render(request, 'shop/produk/detail.html', {'produk': produk, 'hargaakhir':hargaakhir, 'rating':rating})
 
 
 @login_required(login_url=settings.LOGIN_URL)
@@ -45,9 +47,9 @@ def addproduk(request):
                                            gambar=form.cleaned_data['gambar'],
                                            deskripsi=form.cleaned_data['deskripsi'],
                                            harga=form.cleaned_data['harga'],
+                                           diskon=form.cleaned_data['diskon'],
                                            stok=form.cleaned_data['stok'],
                                            available=form.cleaned_data['available'],
-                                           diskon=form.cleaned_data['diskon'],
                                            toko_id_id=toko.id)
         return HttpResponseRedirect('/')
     context = {

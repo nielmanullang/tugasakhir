@@ -27,7 +27,7 @@
                     <img src="{% if produk.gambar %}{{ produk.gambar.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
                 </a>
                 <a href="{{ produk.get_absolute_url }}">{{ produk.nama }}</a><br>
-                Rp.{{ produk.harga }}
+                Rp.{{ produk.harga }} diskon {{ produk.diskon }}
             </div>
         {% endfor %}
     </div>

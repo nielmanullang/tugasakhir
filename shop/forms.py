@@ -10,7 +10,7 @@ class CreatePrudukForm(forms.ModelForm):
             'gambar',
             'deskripsi',
             'harga',
+            'diskon',
             'stok',
             'available',
-            'diskon',
         ]

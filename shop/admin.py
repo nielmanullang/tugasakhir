@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Kategori, Produk
+from .models import Kategori, Produk, Ratingproduk
 
 class KategoriAdmin(admin.ModelAdmin):
     list_display = ['nama']
@@ -12,3 +12,8 @@ class ProdukAdmin(admin.ModelAdmin):
     list_editable = ['harga', 'stok', 'available']
     # prepopulated_fields = {'slug': ('nama',)}
 admin.site.register(Produk, ProdukAdmin)
+
+class RatingprodukAdmin(admin.ModelAdmin):
+    list_display = ['produk_id', 'pelanggan_id', 'ratingproduk', 'komentar']
+    list_filter = ['produk_id', 'pelanggan_id', 'ratingproduk', 'komentar']
+admin.site.register(Ratingproduk, RatingprodukAdmin)

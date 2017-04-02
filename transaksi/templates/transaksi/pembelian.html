@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-    {% if transaksi %}
+    {% if pembelian %}
         <h1>Selamat Datang '{{ user.username }}'</h1>
         <table border="1">
             <tr>
@@ -18,15 +18,15 @@
                 <td width="180">Ongkos Kirim</td>
             </tr>
         </table>
-        {% for transaksis in transaksi %}
+        {% for pembelians in pembelian %}
         <table border="1">
             <tr>
-                <td width="180">{{ transaksis.waktu_pembelian }}</td>
-                <td width="180">{{ transaksis.produk.nama }}</td>
-                <td width="180">{{ transaksis.produk.harga }}</td>
-                <td width="180">{{ transaksis.toko }}</td>
-                <td width="180">{{ transaksis.toko.alamat }}</td>
-                <td width="180">{{ transaksis.biaya_pengiriman }}</td>
+                <td width="180">{{ pembelians.waktu_pembelian }}</td>
+                <td width="180">{{ pembelians.produk.nama }}</td>
+                <td width="180">{{ pembelians.harga }}</td>
+                <td width="180">{{ pembelians.toko }}</td>
+                <td width="180">{{ pembelians.toko.alamat }}</td>
+                <td width="180">{{ pembelians.biaya_pengiriman }}</td>
             </tr>
         </table>
         {% endfor %}

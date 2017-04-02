@@ -27,20 +27,18 @@ from transaksi import views as transaksi_views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^pelanggan/', pelanggan_views.profil),
-    url(r'^transaksi/', transaksi_views.transaksi),
+    url(r'^pembelian/', transaksi_views.pembelian),
     url(r'^toko-saya/', toko_views.toko_profil),
     url(r'^addproduk/', shop_views.addproduk),
     url(r'^register_toko/', toko_views.register_toko),
     url(r'^pelanggan-create/', pelanggan_views.create_pelanggan),
     url(r'^toko/', include ('toko.urls', namespace='toko')),
     url(r'^transaksi/', include('transaksi.urls', namespace='transaksi')),
-    url(r'^keranjang/', include('keranjang.urls', namespace='keranjang')),
     url(r'^login/', homepage_views.login_view),
     url(r'^register/', homepage_views.register_page),
     url(r'^logout/', homepage_views.logout_view),
     url(r'^', include('shop.urls', namespace='shop')),
     url(r'^beli/',transaksi_views.beli),
-    url(r'^ratings/', include('star_ratings.urls', namespace='ratings', app_name='ratings')),
 ]
 
 if settings.DEBUG:

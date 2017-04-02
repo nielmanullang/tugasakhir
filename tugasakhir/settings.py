@@ -40,10 +40,8 @@ INSTALLED_APPS = [
     'pelanggan',
     'homepage',
     'shop',
-    'keranjang',
     'toko',
     'transaksi',
-    'star_ratings',
     'referensiongkir',
 ]
 
@@ -70,7 +68,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'keranjang.context_processors.keranjang',
             ],
         },
     },
@@ -138,7 +135,6 @@ LOGIN_URL = '/login/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
-KERANJANG_SESSION_ID = 'keranjang'
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "assets"),

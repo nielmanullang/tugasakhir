@@ -3,7 +3,7 @@
 
 {% block title %}
     Toko
-{#        {% if toko %}{{ tokos.nama }}{% else %}My Shop{% endif %}#}
+    {#        {% if toko %}{{ tokos.nama }}{% else %}My Shop{% endif %}#}
 {% endblock %}
 
 {% block content %}
@@ -36,6 +36,11 @@
                     <td>:</td>
                     <td>{{ toko.pelanggan_id }}</td>
                 </tr>
+                <tr>
+                    <td>Rating</td>
+                    <td>:</td>
+                    <td>{{ toko.pelanggan_id }}</td>
+                </tr>
             </table>
             {#            <h1>Profil Anda {{ toko.nama }}</h1>#}
             {#            <p>Nama Toko: {{ toko.nama }}</p>#}
@@ -50,10 +55,11 @@
             {% for produk in produks %}
                 <div class="item">
                     <a href="{{ produk.get_absolute_url }}">
-                        <img src="{% if produk.gambar %}{{ produk.gambar.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
+                        <img src="
+                                {% if produk.gambar %}{{ produk.gambar.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
                     </a>
                     <a href="{{ produk.get_absolute_url }}">{{ produk.nama }}</a><br>
-                    Rp.{{ produk.harga }}
+                    Rp.{{ produk.harga }} diskon {{ produk.diskon }}%
                 </div>
             {% endfor %}
         </div>

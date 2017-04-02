@@ -3,11 +3,6 @@ from django.core.urlresolvers import reverse
 from pelanggan.models import Pelanggan
 from toko.models import Toko
 
-JENIS_DISKON_CHOICES = (
-    ('tidakada', 'Tidak Ada'),
-    ('Ada', 'Ada'),
-)
-
 class Kategori(models.Model):
     nama = models.CharField(max_length=200, db_index=True, unique=True)
     # slug = models.SlugField(max_length=200, db_index=True)
@@ -21,13 +16,12 @@ class Kategori(models.Model):
 class Produk(models.Model):
     kategori = models.ForeignKey(Kategori, related_name='produks')
     nama = models.CharField(max_length=200, db_index=True)
-    # slug = models.SlugField(max_length=200, db_index=True)
     gambar = models.ImageField(upload_to='produk', blank=True)
     deskripsi = models.TextField(blank=True)
-    harga = models.DecimalField(max_digits=10, decimal_places=2)
+    harga = models.DecimalField(max_digits=10, decimal_places=0)
+    diskon = models.DecimalField(max_digits=2, decimal_places=0)
     stok = models.PositiveIntegerField()
     available = models.BooleanField(default=True)
-    diskon = models.CharField(max_length=10, choices=JENIS_DISKON_CHOICES)
     toko_id = models.ForeignKey(Toko, on_delete=models.CASCADE, null=True, related_name='tokopr')
 
     def __str__(self):
@@ -39,5 +33,5 @@ class Produk(models.Model):
 class Ratingproduk(models.Model):
     produk_id = models.ForeignKey(Produk, related_name='produkr')
     pelanggan_id = models.ForeignKey(Pelanggan, related_name='pelangganr')
-    ratingproduk = models.DecimalField(max_digits=10, decimal_places=2)
+    ratingproduk = models.DecimalField(max_digits=2, decimal_places=0)
     komentar = models.TextField(blank=True)

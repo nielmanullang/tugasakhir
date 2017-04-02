@@ -45,5 +45,8 @@ class Transaksi(models.Model):
     pelanggan = models.ForeignKey(Pelanggan, related_name='transaksi_pelanggans')
     toko = models.ForeignKey(Toko, related_name='transaksi_tokos')
 
-    def __str__(self):
-        return self.waktu_pembelian
+    # def __unicode__(self):
+    #     return self.produk
+
+    # def __str__(self):
+    #     return self.waktu_pembelian
