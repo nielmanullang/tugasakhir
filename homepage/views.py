@@ -16,7 +16,8 @@ def login_view(request):
         if user is not None:
             if user.is_active:
                 try:
-                    akun = Pelanggan.objects.get(user_id=user.id)
+                    akun = User.objects.get(id=user.id)
+                    # akun = Pelanggan.objects.get(user_id=user.id)
                     login(request, user)
 
                     request.session['user_id'] = akun.pelanggan.id

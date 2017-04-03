@@ -24,12 +24,12 @@ def produk_list(request, kategori_id=None):
 def produk_detail(request, kategori_id, id):
     produk = get_object_or_404(Produk, kategori_id=kategori_id, id=id, available=True)
     hargaakhir = produk.harga - (produk.harga * produk.diskon / 100)
-    ratings = Ratingproduk.objects.all().filter(produk_id=id).aggregate(Sum('ratingproduk'))
+    ratings = Ratingproduk.objects.all().filter(produk_id=id).aggregate(sum=Sum('ratingproduk'))['sum']
     count = Ratingproduk.objects.all().filter(produk_id=id).count()
     if count == 0:
-        rating = 0
+        rating = ratings
     else:
-        rating = ratings / count
+        rating = ratings/count
     return render(request, 'shop/produk/detail.html', {'produk': produk, 'hargaakhir':hargaakhir, 'rating':rating})
 
 

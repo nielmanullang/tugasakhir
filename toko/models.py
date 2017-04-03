@@ -6,7 +6,6 @@ from django.core.urlresolvers import reverse
 # Create your models here.
 class Toko(models.Model):
     nama = models.CharField(max_length=32, db_index=True)
-    # slug = models.SlugField(max_length=32, db_index=True)
     slogan = models.CharField(max_length=64)
     deskripsi = models.TextField(blank=True)
     alamat = models.CharField(max_length=32)
@@ -21,5 +20,5 @@ class Toko(models.Model):
 class Ratingtoko(models.Model):
     toko_id = models.ForeignKey(Toko, related_name='tokor')
     pelanggan_id = models.ForeignKey(Pelanggan, related_name='pelangganrt')
-    ratingtoko = models.DecimalField(max_digits=10, decimal_places=2)
+    ratingtoko = models.DecimalField(max_digits=2, decimal_places=0)
     komentar = models.TextField(blank=True)

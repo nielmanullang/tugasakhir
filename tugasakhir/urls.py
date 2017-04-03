@@ -32,7 +32,7 @@ urlpatterns = [
     url(r'^toko-saya/', toko_views.toko_profil),
     url(r'^addproduk/', shop_views.addproduk),
     url(r'^register_toko/', toko_views.register_toko),
-    url(r'^pelanggan-create/', pelanggan_views.create_pelanggan),
+    url(r'^addpelanggan/', pelanggan_views.create_pelanggan),
     url(r'^toko/', include ('toko.urls', namespace='toko')),
     url(r'^transaksi/', include('transaksi.urls', namespace='transaksi')),
     url(r'^login/', homepage_views.login_view),

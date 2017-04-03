@@ -42,15 +42,10 @@
                         <td>{{ pelanggans.kodepos }}</td>
                     </tr>
                 </table>
-{#                <p>Nama: {{ pelanggans.nama }}</p>#}
-{#                <p>No Telepon: {{ pelanggans.no_telepon }}</p>#}
-{#                <p>Jenis Kelamin: {{ pelanggans.jenis_kelamin }}</p>#}
-{#                <p>Kabupaten: {{ pelanggans.kabupaten }}</p>#}
-{#                <p>Alamat: {{ pelanggans.alamat }}</p>#}
-{#                <p>Kode Pos: {{ pelanggans.kodepos }}</p>#}
             </form>
         {% endfor %}
     {% else %}
-        <h3>No Pelanggan</h3>
+    Anda belum memiliki informasi akun.<p>
+    Apakah anda ingin melengkapi akun anda? silahkan <a href="/addpelanggan/">klik disini</a>
     {% endif %}
 {% endblock %}

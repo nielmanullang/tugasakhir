@@ -29,12 +29,18 @@ def toko_profil(request, toko_id=None):
         except Toko.DoesNotExist:
             toko = None
         if (toko is not None):
+            # ratings = Ratingtoko.objects.all().filter(toko_id=id).aggregate(sum=Sum('ratingtoko'))['sum']
+            # count = Ratingtoko.objects.all().filter(toko_id=id).count()
+            # if count == 0:
+            #     rating = ratings
+            # else:
+            #     rating = ratings / count
             produks = Produk.objects.filter(toko_id=toko.id)
         else:
             return render(request, 'toko/views.html')
     else:
         return render(request, 'toko/views.html')
-    return render(request, 'toko/toko_profil.html', {'toko': toko, 'produks': produks})
+    return render(request, 'toko/toko_profil.html', {'toko': toko, 'produks': produks})#, 'rating':rating})
 
 @login_required(login_url=settings.LOGIN_URL)
 def register_toko(request):

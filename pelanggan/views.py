@@ -12,12 +12,11 @@ def profil(request):
     if request.user.is_authenticated():
         current_user = request.user
         pelanggan = Pelanggan.objects.filter(user_id=current_user.id)
+        return render(request, 'pelanggan/profil.html', {'pelanggan': pelanggan})
     else:
         return render(request, 'pelanggan/create_pelanggan.html')
-    return render(request, 'pelanggan/profil.html', {'pelanggan': pelanggan})
 
-
-@login_required(login_url=settings.LOGIN_URL)
+# @login_required(login_url=settings.LOGIN_URL)
 def create_pelanggan(request):
     if request.method == 'POST':
         form = CreatePelangganForm(request.POST)
