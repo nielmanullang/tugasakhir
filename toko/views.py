@@ -15,9 +15,15 @@ def produk_list_toko(request, toko_id=None):
     tokos = Toko.objects.all()
     produks = Produk.objects.filter(available=True)
     if toko_id:
+        ratings = Ratingtoko.objects.all().filter(toko_id=toko_id).aggregate(sum=Sum('ratingtoko'))['sum']
+        count = Ratingtoko.objects.all().filter(toko_id=toko_id).count()
+        if count == 0:
+            rating = ratings
+        else:
+            rating = ratings / count
         toko = get_object_or_404(Toko, id=toko_id)
         produks = produks.filter(toko_id=toko)
-    return render(request, 'toko/list.html', {'toko': toko, 'tokos': tokos, 'produks': produks})
+    return render(request, 'toko/list.html', {'toko': toko, 'tokos': tokos, 'produks': produks, 'rating':rating, 'count':count})
 
 
 # @require_POST
