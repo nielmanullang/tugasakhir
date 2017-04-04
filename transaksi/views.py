@@ -12,14 +12,14 @@ def beli(request, produk_id, pelanggan_id):
     if request.method == 'POST':
         pelanggans = Pelanggan.objects.get(user_id=pelanggan_id)
         produks = Produk.objects.get(id=produk_id)
-        # tokos = Toko.objects.get(id=produks.toko_id)
+        toko = Toko.objects.get(id=produks.toko_id_id)
         hargaakhir = produks.harga - (produks.harga * produks.diskon / 100)
-        # ongkoskirim = Ongkoskirim.objects.get(kabupaten_asal=pelanggans.kabupaten).objects.get(kabupaten_tujuan=tokos.alamat)
+        ongkoskirim = Ongkoskirim.objects.get(kabupaten_asal=pelanggans.kabupaten, kabupaten_tujuan=toko.alamat)
         transaksi = Transaksi.objects.create(
             produk_id=produks.id,
             harga=hargaakhir,
             kategori_harga='murah',
-            biaya_pengiriman=hargaakhir,
+            biaya_pengiriman=ongkoskirim.biaya,
             pelanggan_id=pelanggans.id,
             toko=produks.toko_id
         )
