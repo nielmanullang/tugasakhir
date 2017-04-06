@@ -14,13 +14,13 @@ def produk_list_toko(request, toko_id=None):
     toko = None
     tokos = Toko.objects.all()
     produks = Produk.objects.filter(available=True)
+    ratings = Ratingtoko.objects.all().filter(toko_id=toko_id).aggregate(sum=Sum('ratingtoko'))['sum']
+    count = Ratingtoko.objects.all().filter(toko_id=toko_id).count()
+    if count == 0:
+        rating = ratings
+    else:
+        rating = ratings / count
     if toko_id:
-        ratings = Ratingtoko.objects.all().filter(toko_id=toko_id).aggregate(sum=Sum('ratingtoko'))['sum']
-        count = Ratingtoko.objects.all().filter(toko_id=toko_id).count()
-        if count == 0:
-            rating = ratings
-        else:
-            rating = ratings / count
         toko = get_object_or_404(Toko, id=toko_id)
         produks = produks.filter(toko_id=toko)
     return render(request, 'toko/list.html', {'toko': toko, 'tokos': tokos, 'produks': produks, 'rating':rating, 'count':count})
@@ -31,13 +31,6 @@ def produk_list_toko(request, toko_id=None):
 def toko_profil(request):
     current_user = request.user
     pelanggan = Pelanggan.objects.get(user_id=current_user.id)
-    tokos = Toko.objects.get(pelanggan_id=pelanggan.id)
-    ratings = Ratingtoko.objects.all().filter(toko_id=tokos).aggregate(sum=Sum('ratingtoko'))['sum']
-    count = Ratingtoko.objects.all().filter(toko_id=tokos).count()
-    if count == 0:
-        rating = ratings
-    else:
-        rating = ratings / count
     if (pelanggan is not None):
         try:
             toko = Toko.objects.get(pelanggan_id=pelanggan.id)
@@ -49,6 +42,13 @@ def toko_profil(request):
             return render(request, 'toko/views.html')
     else:
         return render(request, 'toko/views.html')
+    tokos = Toko.objects.get(pelanggan_id=pelanggan.id)
+    ratings = Ratingtoko.objects.all().filter(toko_id=tokos).aggregate(sum=Sum('ratingtoko'))['sum']
+    count = Ratingtoko.objects.all().filter(toko_id=tokos).count()
+    if count == 0:
+        rating = ratings
+    else:
+        rating = ratings / count
     return render(request, 'toko/toko_profil.html', {'toko': toko, 'produks': produks, 'rating':rating})
 
 

@@ -12,11 +12,11 @@
             <li {% if not kategori %}class="selected"{% endif %}>
                 <a href="{% url "shop:produk_list" %}">All</a>
             </li>
-        {% for c in kategoris %}
-            <li {% if kategori.id == c.id %}class="selected"{% endif %}>
-                <a href="{{ c.get_absolute_url }}">{{ c.nama }}</a>
-            </li>
-        {% endfor %}
+            {% for c in kategoris %}
+                <li {% if kategori.id == c.id %}class="selected"{% endif %}>
+                    <a href="{{ c.get_absolute_url }}">{{ c.nama }}</a>
+                </li>
+            {% endfor %}
         </ul>
     </div>
     <div id="main" class="product-list">
@@ -27,7 +27,7 @@
                     <img src="{% if produk.gambar %}{{ produk.gambar.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
                 </a>
                 <a href="{{ produk.get_absolute_url }}">{{ produk.nama }}</a><br>
-                Rp.{{ produk.harga }} diskon {{ produk.diskon }}%
+                Rp.{{ produk.harga }}
             </div>
         {% endfor %}
     </div>

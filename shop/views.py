@@ -11,13 +11,16 @@ from django.db.models import Sum
 
 # @login_required(login_url=settings.LOGIN_URL)
 def produk_list(request, kategori_id=None):
+    # query = request.GET.get("q")
+    # if query:
+    #     all_produk = Produk.filter(namaHotel__icontains=query)
     kategori = None
     kategoris = Kategori.objects.all()
     produks = Produk.objects.filter(available=True)
     if kategori_id:
         kategori = get_object_or_404(Kategori, id=kategori_id)
         produks = produks.filter(kategori=kategori)
-    return render(request, 'shop/produk/list.html', {'kategori': kategori, 'kategoris': kategoris, 'produks': produks})
+    return render(request, 'shop/produk/list.html', {'kategori': kategori, 'kategoris': kategoris, 'produks': produks})#, 'all_produk':all_produk})
 
 
 #@login_required(login_url=settings.LOGIN_URL)
@@ -33,7 +36,7 @@ def produk_detail(request, kategori_id, id):
     return render(request, 'shop/produk/detail.html', {'produk': produk, 'hargaakhir':hargaakhir, 'rating':rating})
 
 
-@login_required(login_url=settings.LOGIN_URL)
+#@login_required(login_url=settings.LOGIN_URL)
 def addproduk(request):
     if request.method == 'POST':
         form = CreatePrudukForm(request.POST)
@@ -47,9 +50,9 @@ def addproduk(request):
                                            gambar=form.cleaned_data['gambar'],
                                            deskripsi=form.cleaned_data['deskripsi'],
                                            harga=form.cleaned_data['harga'],
-                                           diskon=form.cleaned_data['diskon'],
                                            stok=form.cleaned_data['stok'],
                                            available=form.cleaned_data['available'],
+                                           diskon=form.cleaned_data['diskon'],
                                            toko_id_id=toko.id)
         return HttpResponseRedirect('/')
     context = {

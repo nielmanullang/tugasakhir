@@ -30,7 +30,7 @@ urlpatterns = [
     url(r'^pembelian/', transaksi_views.pembelian),
     url(r'^penjualan/', transaksi_views.penjualan),
     url(r'^toko-saya/', toko_views.toko_profil),
-#    url(r'^addproduk/', shop_views.addproduk),
+    url(r'^addproduk/', shop_views.addproduk),
     url(r'^register_toko/', toko_views.register_toko),
     url(r'^addpelanggan/', pelanggan_views.create_pelanggan),
     url(r'^toko/', include ('toko.urls', namespace='toko')),
