@@ -11,16 +11,19 @@ from django.db.models import Sum
 
 # @login_required(login_url=settings.LOGIN_URL)
 def produk_list(request, kategori_id=None):
-    # query = request.GET.get("q")
-    # if query:
-    #     all_produk = Produk.filter(namaHotel__icontains=query)
     kategori = None
     kategoris = Kategori.objects.all()
     produks = Produk.objects.filter(available=True)
+    query = request.GET.get("search_produk")
+    if query:
+        produks = Produk.objects.filter(nama__icontains=query)
     if kategori_id:
         kategori = get_object_or_404(Kategori, id=kategori_id)
         produks = produks.filter(kategori=kategori)
-    return render(request, 'shop/produk/list.html', {'kategori': kategori, 'kategoris': kategoris, 'produks': produks})#, 'all_produk':all_produk})
+        query = request.GET.get("search_produk")
+        if query:
+            produks = Produk.objects.filter(nama__icontains=query).filter(kategori=kategori_id)
+    return render(request, 'shop/produk/list.html', {'kategori': kategori, 'kategoris': kategoris, 'produks': produks})
 
 
 #@login_required(login_url=settings.LOGIN_URL)

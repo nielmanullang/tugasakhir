@@ -7,6 +7,7 @@ from django.conf import settings
 from .forms import CreateTokoForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Sum
+from django.contrib.auth.models import User
 from django.views.decorators.http import require_POST
 
 
@@ -30,18 +31,24 @@ def produk_list_toko(request, toko_id=None):
 @login_required(login_url=settings.LOGIN_URL)
 def toko_profil(request):
     current_user = request.user
-    pelanggan = Pelanggan.objects.get(user_id=current_user.id)
-    if (pelanggan is not None):
+    if (current_user is not None):
         try:
-            toko = Toko.objects.get(pelanggan_id=pelanggan.id)
-        except Toko.DoesNotExist:
-            toko = None
-        if (toko is not None):
-            produks = Produk.objects.filter(toko_id=toko.id)
+            pelanggan = Pelanggan.objects.get(user_id=current_user.id)
+        except Pelanggan.DoesNotExist:
+            pelanggan = None
+        if (pelanggan is not None):
+            try:
+                toko = Toko.objects.get(pelanggan_id=pelanggan.id)
+            except Toko.DoesNotExist:
+                toko = None
+            if (toko is not None):
+                produks = Produk.objects.filter(toko_id=toko.id)
+            else:
+                return render(request, 'toko/views.html')
         else:
-            return render(request, 'toko/views.html')
+            return render(request, 'toko/toko_null.html')
     else:
-        return render(request, 'toko/views.html')
+        return render(request, 'toko/toko_null.html')
     tokos = Toko.objects.get(pelanggan_id=pelanggan.id)
     ratings = Ratingtoko.objects.all().filter(toko_id=tokos).aggregate(sum=Sum('ratingtoko'))['sum']
     count = Ratingtoko.objects.all().filter(toko_id=tokos).count()

@@ -20,11 +20,21 @@
         </ul>
     </div>
     <div id="main" class="product-list">
-        <h1>{% if kategori %}{{ kategori.nama }}{% else %}Produks{% endif %}</h1>
+        <h1>{% if kategori %}{{ kategori.nama }}
+            <form action='' method="GET">
+                <input type="text" name="search_produk" placeholder="Search"/>
+                <input type="submit" value="Search">
+            </form>
+        {% else %}Produks <form action='' method="GET">
+                <input type="text" name="search_produk" placeholder="Search"/>
+                <input type="submit" value="Search">
+            </form>
+        {% endif %}</h1>
         {% for produk in produks %}
             <div class="item">
                 <a href="{{ produk.get_absolute_url }}">
-                    <img src="{% if produk.gambar %}{{ produk.gambar.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
+                    <img src="
+                            {% if produk.gambar %}{{ produk.gambar.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
                 </a>
                 <a href="{{ produk.get_absolute_url }}">{{ produk.nama }}</a><br>
                 Rp.{{ produk.harga }}
