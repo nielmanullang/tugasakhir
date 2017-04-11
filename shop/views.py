@@ -17,6 +17,10 @@ def produk_list(request, kategori_id=None):
     query = request.GET.get("search_produk")
     if query:
         produks = Produk.objects.filter(nama__icontains=query)
+        #     .count()
+        # median = produks/2
+        # mahal = < median
+        # mahal =
     if kategori_id:
         kategori = get_object_or_404(Kategori, id=kategori_id)
         produks = produks.filter(kategori=kategori)

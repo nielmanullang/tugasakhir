@@ -2,11 +2,15 @@
 {% block title %}Tambah Produk{% endblock %}
 {% block head %}Tambah Produk{% endblock %}
 {% block content %}
-    <form method="post" action="." >
+    <form method="post" enctype="multipart/form-data" action=".">
         {% csrf_token %}
+        <input type="file" name="gambar">
         {{ form.as_p }}
         <p>
             <input class="btn btn-lg btn-success btn-block" type="submit" value="register"/>
         </p>
     </form>
+    {% if uploaded_file_url %}
+        <p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
+    {% endif %}
 {% endblock %}
