@@ -29,6 +29,7 @@ class Ongkoskirim(models.Model):
         ('kabupaten Tapanuli Selatan', 'Kabupaten Tapanuli Selatan'),
         ('Kabupaten Tapanuli Tengah', 'Kabupaten Tapanuli Tengah'),
         ('Kabupaten Tapanuli Utara', 'Kabupaten Tapanuli Utara'),
+        ('Kabupaten Toba Samosir', 'Kabupaten Toba Samosir'),
         ('Kota Binjai', 'Kota Binjai'),
         ('Kota Gunung Sitoli', 'Kota Gunung Sitoli'),
         ('Kota Medan', 'Kota Medan'),

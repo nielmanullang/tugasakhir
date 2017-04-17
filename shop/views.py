@@ -16,18 +16,25 @@ def produk_list(request, kategori_id=None):
     produks = Produk.objects.filter(available=True)
     query = request.GET.get("search_produk")
     if query:
-        produks = Produk.objects.filter(nama__icontains=query)
-        #     .count()
-        # median = produks/2
-        # mahal = < median
-        # mahal =
+        produks = Produk.objects.filter(nama__icontains=query).count()
+        total = produks / 2
+        if total % 2 == 0:
+            if (total < total):
+                kategoriharga = 'murah'
+            else:
+                kategoriharga = 'mahal'
+        else:
+            if (total < total):
+                kategoriharga = 'murah'
+            else:
+                kategoriharga = 'mahal'
     if kategori_id:
         kategori = get_object_or_404(Kategori, id=kategori_id)
         produks = produks.filter(kategori=kategori)
         query = request.GET.get("search_produk")
         if query:
             produks = Produk.objects.filter(nama__icontains=query).filter(kategori=kategori_id)
-    return render(request, 'shop/produk/list.html', {'kategori': kategori, 'kategoris': kategoris, 'produks': produks})
+    return render(request, 'shop/produk/list.html', {'kategori': kategori, 'kategoris': kategoris, 'produks': produks, 'kategoriharga':kategoriharga})
 
 
 #@login_required(login_url=settings.LOGIN_URL)
@@ -37,7 +44,7 @@ def produk_detail(request, kategori_id, id):
     ratings = Ratingproduk.objects.all().filter(produk_id=id).aggregate(sum=Sum('ratingproduk'))['sum']
     count = Ratingproduk.objects.all().filter(produk_id=id).count()
     if count == 0:
-        rating = ratings
+        rating = 'belum tersedia'
     else:
         rating = ratings/count
     return render(request, 'shop/produk/detail.html', {'produk': produk, 'hargaakhir':hargaakhir, 'rating':rating})
@@ -61,7 +68,7 @@ def addproduk(request):
                                            available=form.cleaned_data['available'],
                                            diskon=form.cleaned_data['diskon'],
                                            toko_id_id=toko.id)
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect('/toko-saya/')
     context = {
         'form': CreatePrudukForm,
     }

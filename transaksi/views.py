@@ -18,7 +18,7 @@ def beli(request, produk_id, pelanggan_id):
         transaksi = Transaksi.objects.create(
             produk_id=produks.id,
             harga=hargaakhir,
-            kategori_harga='murah',
+            kategori_harga = kategoriharga,
             biaya_pengiriman=ongkoskirim.biaya,
             pelanggan_id=pelanggans.id,
             toko=produks.toko_id
@@ -27,11 +27,27 @@ def beli(request, produk_id, pelanggan_id):
 
 
 def pembelian(request):
-    if request.user.is_authenticated():
-        current_user = request.user
-        pelanggan = Pelanggan.objects.get(user_id=current_user.id)
-        pembelian = Transaksi.objects.filter(pelanggan_id=pelanggan.id)
-        return render(request, 'transaksi/pembelian.html', {'pembelian': pembelian})
+    current_user = request.user
+    if (current_user is not None):
+        try:
+            pelanggan = Pelanggan.objects.get(user_id=current_user.id)
+        except Pelanggan.DoesNotExist:
+            pelanggan = None
+        if (pelanggan is not None):
+            pembelian = Transaksi.objects.filter(pelanggan_id=pelanggan.id)
+            return render(request, 'transaksi/pembelian.html', {'pembelian': pembelian})
+        else:
+            return render(request, 'toko/toko_null.html')
+    else:
+        return render(request, 'toko/toko_null.html')
+
+    # if request.user.is_authenticated():
+    #     current_user = request.user
+    #     pelanggan = Pelanggan.objects.get(user_id=current_user.id)
+    #     pembelian = Transaksi.objects.filter(pelanggan_id=pelanggan.id)
+    #     return render(request, 'transaksi/pembelian.html', {'pembelian': pembelian})
+    # else:
+    #     return render(request, 'pelanggan/create_pelanggan.html')
 
 
 def penjualan(request):

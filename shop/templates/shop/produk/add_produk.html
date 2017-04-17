@@ -4,7 +4,6 @@
 {% block content %}
     <form method="post" enctype="multipart/form-data" action=".">
         {% csrf_token %}
-        <input type="file" name="gambar">
         {{ form.as_p }}
         <p>
             <input class="btn btn-lg btn-success btn-block" type="submit" value="register"/>

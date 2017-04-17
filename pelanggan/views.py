@@ -30,7 +30,7 @@ def create_pelanggan(request):
                                                  alamat=form.cleaned_data.get('alamat'),
                                                  kodepos=form.cleaned_data.get('kodepos'),
                                                  user_id_id=user.id)
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect('/pelanggan/')
     context = {
         'form': CreatePelangganForm,
     }

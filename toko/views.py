@@ -18,7 +18,7 @@ def produk_list_toko(request, toko_id=None):
     ratings = Ratingtoko.objects.all().filter(toko_id=toko_id).aggregate(sum=Sum('ratingtoko'))['sum']
     count = Ratingtoko.objects.all().filter(toko_id=toko_id).count()
     if count == 0:
-        rating = ratings
+        rating = 'belum tersedia'
     else:
         rating = ratings / count
     if toko_id:
@@ -53,7 +53,7 @@ def toko_profil(request):
     ratings = Ratingtoko.objects.all().filter(toko_id=tokos).aggregate(sum=Sum('ratingtoko'))['sum']
     count = Ratingtoko.objects.all().filter(toko_id=tokos).count()
     if count == 0:
-        rating = ratings
+        rating = 'belum tersedia'
     else:
         rating = ratings / count
     return render(request, 'toko/toko_profil.html', {'toko': toko, 'produks': produks, 'rating':rating})
@@ -71,7 +71,7 @@ def register_toko(request):
                                        deskripsi=form.cleaned_data['deskripsi'],
                                        alamat=pelanggan.kabupaten,
                                        pelanggan_id_id=pelanggan.id)
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect('/toko-saya/')
     context = {
         'form': CreateTokoForm,
     }
