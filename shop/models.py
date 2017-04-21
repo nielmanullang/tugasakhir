@@ -24,7 +24,7 @@ class Produk(models.Model):
     available = models.BooleanField(default=True)
     toko_id = models.ForeignKey(Toko, on_delete=models.CASCADE, null=True, related_name='tokopr')
 
-    def __str__(self):
+    def __unicode__(self):
         return self.nama
 
     def get_absolute_url(self):

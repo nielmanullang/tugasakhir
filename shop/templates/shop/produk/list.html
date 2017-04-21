@@ -33,8 +33,7 @@
         {% for produk in produks %}
             <div class="item">
                 <a href="{{ produk.get_absolute_url }}">
-                    <img src="
-                            {% if produk.gambar %}{{ produk.gambar.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
+                    <img src="{% if produk.gambar %}{{ produk.gambar.url }} {% else %}{% static "img/no_image.png" %}{% endif %}">
                 </a>
                 <a href="{{ produk.get_absolute_url }}">{{ produk.nama }}</a><br>
                 Rp.{{ produk.harga }}

@@ -13,29 +13,39 @@ from django.db.models import Sum
 def produk_list(request, kategori_id=None):
     kategori = None
     kategoris = Kategori.objects.all()
-    produks = Produk.objects.filter(available=True)
+    produks = Produk.objects.filter(available=True)#.order_by('-id')[:9:1]
     query = request.GET.get("search_produk")
     if query:
-        produks = Produk.objects.filter(nama__icontains=query).count()
-        total = produks / 2
-        if total % 2 == 0:
-            if (total < total):
-                kategoriharga = 'murah'
-            else:
-                kategoriharga = 'mahal'
-        else:
-            if (total < total):
-                kategoriharga = 'murah'
-            else:
-                kategoriharga = 'mahal'
+        produks = Produk.objects.filter(nama__icontains=query)
+        #     .count()
+        # total = produks / 2
+        # if total % 2 == 0:
+        #     if (total < total):
+        #         kategoriharga = 'murah'
+        #     else:
+        #         kategoriharga = 'mahal'
+        # else:
+        #     if (total < total):
+        #         kategoriharga = 'murah'
+        #     else:
+        #         kategoriharga = 'mahal'
     if kategori_id:
         kategori = get_object_or_404(Kategori, id=kategori_id)
         produks = produks.filter(kategori=kategori)
         query = request.GET.get("search_produk")
         if query:
-            produks = Produk.objects.filter(nama__icontains=query).filter(kategori=kategori_id)
-    return render(request, 'shop/produk/list.html', {'kategori': kategori, 'kategoris': kategoris, 'produks': produks, 'kategoriharga':kategoriharga})
-
+            produks = Produk.objects.filter(nama__icontains=query).filter(kategori=kategori_id)#.order_by('-id')[:9:1]
+            # if total % 2 == 0:
+            #     if (total < total):
+            #         kategoriharga = 'murah'
+            #     else:
+            #         kategoriharga = 'mahal'
+            # else:
+            #     if (total < total):
+            #         kategoriharga = 'murah'
+            #     else:
+            #         kategoriharga = 'mahal'
+    return render(request, 'shop/produk/list.html', {'kategori': kategori, 'kategoris': kategoris, 'produks': produks})#, 'kategoriharga':kategoriharga})
 
 #@login_required(login_url=settings.LOGIN_URL)
 def produk_detail(request, kategori_id, id):
