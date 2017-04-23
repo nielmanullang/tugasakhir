@@ -13,7 +13,7 @@
         Harga awal Rp.{{ produk.harga }} || Diskon {{ produk.diskon }}% || Rating {{ rating }}
         <p class="price">Rp.{{ hargaakhir }} </p>
         {% if user.is_authenticated %}
-        <form action="{% url "transaksi:beli" produk.id request.user.id %}" method="post">
+        <form action="{% url "pesanan:beli" produk.id request.user.id %}" method="post">
             {% csrf_token %}
             <input type="submit" value="Beli">
         </form>

@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'toko',
     'transaksi',
     'referensiongkir',
-    'sorl.thumbnail',
+    'pesanan',
 ]
 
 MIDDLEWARE = [

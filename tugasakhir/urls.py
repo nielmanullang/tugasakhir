@@ -23,23 +23,25 @@ from pelanggan import views as pelanggan_views
 from toko import views as toko_views
 from shop import views as shop_views
 from transaksi import views as transaksi_views
+from pesanan import views as pesanan_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^pelanggan/', pelanggan_views.profil),
-    url(r'^pembelian/', transaksi_views.pembelian),
-    url(r'^penjualan/', transaksi_views.penjualan),
+    url(r'^pembelian/', pesanan_views.pembelian),
+    url(r'^penjualan/', pesanan_views.penjualan),
     url(r'^toko-saya/', toko_views.toko_profil),
     url(r'^addproduk/', shop_views.addproduk),
     url(r'^register_toko/', toko_views.register_toko),
     url(r'^addpelanggan/', pelanggan_views.create_pelanggan),
     url(r'^toko/', include ('toko.urls', namespace='toko')),
     url(r'^transaksi/', include('transaksi.urls', namespace='transaksi')),
+    url(r'^pesanan/', include('pesanan.urls', namespace='pesanan')),
     url(r'^login/', homepage_views.login_view),
     url(r'^register/', homepage_views.register_page),
     url(r'^logout/', homepage_views.logout_view),
     url(r'^', include('shop.urls', namespace='shop')),
-    url(r'^beli/',transaksi_views.beli),
+    url(r'^beli/',pesanan_views.beli),
 ]
 
 if settings.DEBUG:

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from pelanggan.models import Pelanggan
-from transaksi.models import Transaksi
+from pesanan.models import Pesanan
 from referensiongkir.models import Ongkoskirim
 from shop.models import Produk, Ratingproduk
 from toko.models import Toko, Ratingtoko
@@ -28,7 +28,7 @@ def beli(request, produk_id, pelanggan_id):
         else:
             ratingtoko = ratingtokos / counts
         ongkoskirim = Ongkoskirim.objects.get(kabupaten_asal=pelanggans.kabupaten, kabupaten_tujuan=toko.alamat)
-        transaksi = Transaksi.objects.create(
+        pesanan = Pesanan.objects.create(
             produk_id=produks.id,
             harga=hargaakhir,
             kategori_harga='murah',
@@ -39,7 +39,7 @@ def beli(request, produk_id, pelanggan_id):
             pelanggan_id=pelanggans.id,
             toko=produks.toko_id
         )
-    return render(request, 'transaksi/order/created.html')
+    return render(request, 'pesanan/order/created.html')
 
 
 def pembelian(request):
@@ -50,20 +50,12 @@ def pembelian(request):
         except Pelanggan.DoesNotExist:
             pelanggan = None
         if (pelanggan is not None):
-            pembelian = Transaksi.objects.filter(pelanggan_id=pelanggan.id)
-            return render(request, 'transaksi/pembelian.html', {'pembelian': pembelian})
+            pembelian = Pesanan.objects.filter(pelanggan_id=pelanggan.id)
+            return render(request, 'pesanan/pembelian.html', {'pembelian': pembelian})
         else:
             return render(request, 'toko/toko_null.html')
     else:
         return render(request, 'toko/toko_null.html')
-
-        # if request.user.is_authenticated():
-        #     current_user = request.user
-        #     pelanggan = Pelanggan.objects.get(user_id=current_user.id)
-        #     pembelian = Transaksi.objects.filter(pelanggan_id=pelanggan.id)
-        #     return render(request, 'transaksi/pembelian.html', {'pembelian': pembelian})
-        # else:
-        #     return render(request, 'pelanggan/create_pelanggan.html')
 
 
 def penjualan(request):
@@ -71,5 +63,5 @@ def penjualan(request):
         current_user = request.user
         pelanggan = Pelanggan.objects.get(user_id=current_user.id)
         toko = Toko.objects.get(pelanggan_id=pelanggan.id)
-        penjualan = Transaksi.objects.filter(toko_id=toko.id)
-        return render(request, 'transaksi/penjualan.html', {'penjualan': penjualan})
+        penjualan = Pesanan.objects.filter(toko_id=toko.id)
+        return render(request, 'pesanan/penjualan.html', {'penjualan': penjualan})
