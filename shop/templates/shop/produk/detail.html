@@ -1,6 +1,6 @@
 {% extends "shop/base.html" %}
 {% load static %}
-
+{% load humanize %}
 {% block title %}
     {{ produk.nama }}
 {% endblock %}
@@ -10,8 +10,8 @@
         <img src="{% if produk.gambar %}{{ produk.gambar.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
         <h1>{{ produk.nama }}</h1>
         <h2><a href="{{ produk.kategori.get_absolute_url }}">{{ produk.kategori }}</a></h2>
-        Harga awal Rp.{{ produk.harga }} || Diskon {{ produk.diskon }}% || Rating {{ rating }}
-        <p class="price">Rp.{{ hargaakhir }} </p>
+        Harga awal Rp.{{ produk.harga | intcomma }} || Diskon {{ produk.diskon }}% || Rating {{ rating }}
+        <p class="price">Rp.{{ produk.harga | intcomma }} </p>
         {% if user.is_authenticated %}
         <form action="{% url "pesanan:beli" produk.id request.user.id %}" method="post">
             {% csrf_token %}

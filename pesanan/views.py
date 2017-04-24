@@ -7,7 +7,7 @@ from shop.models import Produk, Ratingproduk
 from toko.models import Toko, Ratingtoko
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Sum
-
+from pohonkeputusan.models import Pohonkeputusan
 
 def beli(request, produk_id, pelanggan_id):
     if request.method == 'POST':
@@ -49,17 +49,23 @@ def beli(request, produk_id, pelanggan_id):
             nilaikategoriharga = 0
         else:
             nilaikategoriharga = 1
-        pesanan = Pesanan.objects.create(
-            produk_id=produks.id,
-            harga=hargaakhir,
-            kategori_harga=nilaikategoriharga,
-            biaya_pengiriman=nilaiongkoskirim,
-            diskon=nilaidiskon,
-            ratingproduk=nilairatingproduk,
-            ratingtoko=nilairatingtoko,
-            pelanggan_id=pelanggans.id,
-            toko=produks.toko_id
-        )
+        pesanan = Pesanan.objects.create(produk_id=produks.id,
+                                         harga=hargaakhir,
+                                         kategori_harga=nilaikategoriharga,
+                                         biaya_pengiriman=ongkoskirim.biaya,
+                                         diskon=produks.diskon,
+                                         ratingproduk=nilairatingproduk,
+                                         ratingtoko=nilairatingtoko,
+                                         pelanggan_id=pelanggans.id,
+                                         toko=produks.toko_id)
+        pesanan.save()
+        pohonkeputusan = Pohonkeputusan.objects.create(kategoriharga=nilaikategoriharga,
+                                                      ongkoskirim=nilaiongkoskirim,
+                                                      diskon=nilaidiskon,
+                                                      ratingproduk=nilairatingproduk,
+                                                      ratingtoko=nilairatingtoko,
+                                                      label=1,
+                                                      pelanggan=pelanggans.id)
     return render(request, 'pesanan/order/created.html')
 
 

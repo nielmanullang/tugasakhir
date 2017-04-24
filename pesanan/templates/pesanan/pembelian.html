@@ -1,6 +1,6 @@
 {% extends "shop/base.html" %}
 {% load static %}
-
+{% load humanize %}
 {% block title %}
     Pembelian
 {% endblock %}
@@ -23,10 +23,10 @@
             <tr>
                 <td width="180">{{ pembelians.waktu_pembelian }}</td>
                 <td width="180">{{ pembelians.produk.nama }}</td>
-                <td width="180">{{ pembelians.harga }}</td>
+                <td width="180">Rp.{{ pembelians.harga | intcomma}}</td>
                 <td width="180">{{ pembelians.toko }}</td>
                 <td width="180">{{ pembelians.toko.alamat }}</td>
-                <td width="180">{{ pembelians.biaya_pengiriman }}</td>
+                <td width="180">Rp.{{ pembelians.biaya_pengiriman | intcomma}}</td>
             </tr>
         </table>
         {% endfor %}

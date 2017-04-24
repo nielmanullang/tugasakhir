@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'referensiongkir',
     'pesanan',
     'django.contrib.humanize',
+    'pohonkeputusan'
 ]
 
 MIDDLEWARE = [
