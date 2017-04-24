@@ -21,21 +21,42 @@ def beli(request, produk_id, pelanggan_id):
             ratingproduk = 0
         else:
             ratingproduk = ratingproduks / count
+        if ratingproduk > 3:
+            nilairatingproduk = 1
+        else:
+            nilairatingproduk = 0
         ratingtokos = Ratingtoko.objects.all().filter(toko_id=toko.id).aggregate(sum=Sum('ratingtoko'))['sum']
         counts = Ratingtoko.objects.all().filter(toko_id=toko.id).count()
         if counts == 0:
             ratingtoko = 0
         else:
             ratingtoko = ratingtokos / counts
+        if ratingtoko > 3:
+            nilairatingtoko = 1
+        else:
+            nilairatingtoko = 0
+        if produks.diskon > 0:
+            nilaidiskon = 1
+        else:
+            nilaidiskon = 0
         ongkoskirim = Ongkoskirim.objects.get(kabupaten_asal=pelanggans.kabupaten, kabupaten_tujuan=toko.alamat)
+        if ongkoskirim.biaya > 0:
+            nilaiongkoskirim = 0
+        else:
+            nilaiongkoskirim = 1
+        kategoriharga = 10000
+        if kategoriharga > 10000:
+            nilaikategoriharga = 0
+        else:
+            nilaikategoriharga = 1
         pesanan = Pesanan.objects.create(
             produk_id=produks.id,
             harga=hargaakhir,
-            kategori_harga='murah',
-            biaya_pengiriman=ongkoskirim.biaya,
-            diskon=produks.diskon,
-            ratingproduk=ratingproduk,
-            ratingtoko=ratingtoko,
+            kategori_harga=nilaikategoriharga,
+            biaya_pengiriman=nilaiongkoskirim,
+            diskon=nilaidiskon,
+            ratingproduk=nilairatingproduk,
+            ratingtoko=nilairatingtoko,
             pelanggan_id=pelanggans.id,
             toko=produks.toko_id
         )

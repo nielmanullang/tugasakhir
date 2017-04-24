@@ -41,9 +41,9 @@ INSTALLED_APPS = [
     'homepage',
     'shop',
     'toko',
-    'transaksi',
     'referensiongkir',
     'pesanan',
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [
