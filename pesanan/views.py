@@ -11,6 +11,7 @@ from pohonkeputusan.models import Pohonkeputusan
 import psycopg2 as pg
 import pandas.io.sql as psql
 
+
 def beli(request, produk_id, pelanggan_id):
     if request.method == 'POST':
         pelanggans = Pelanggan.objects.get(user_id=pelanggan_id)
@@ -73,46 +74,16 @@ def beli(request, produk_id, pelanggan_id):
                                          toko=produks.toko_id)
         pesanan.save()
         pohonkeputusan = Pohonkeputusan.objects.create(kategoriharga=nilaikategoriharga,
-                                                      ongkoskirim=nilaiongkoskirim,
-                                                      diskon=nilaidiskon,
-                                                      ratingproduk=nilairatingproduk,
-                                                      ratingtoko=nilairatingtoko,
-                                                      label=1,
-                                                      pelanggan=pelanggans.id)
+                                                       ongkoskirim=nilaiongkoskirim,
+                                                       diskon=nilaidiskon,
+                                                       ratingproduk=nilairatingproduk,
+                                                       ratingtoko=nilairatingtoko,
+                                                       label=1,
+                                                       pelanggan=pelanggans.id)
         pohonkeputusan.save()
-
-
-        # X = dataset.iloc[:, [1, 2, 3, 4, 5]].values
-        # y = dataset.iloc[:, 6].values
-        #
-        # # Splitting the dataset `into the Training set and Test set
-        # from sklearn.cross_validation import train_test_split
-        # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=0)
-        #
-        # # Fitting Decision Tree Classification to the Training set
-        # from sklearn.tree import DecisionTreeClassifier
-        # from sklearn import tree
-        # classifier = DecisionTreeClassifier(criterion='entropy', random_state=0)
-        # clf = classifier.fit(X, y)
-        #
-        # # Predicting the Test set results
-        # y_pred = classifier.predict(X_test)
-        #
-        # import pydotplus
-        # dot_data = tree.export_graphviz(clf, out_file=None)
-        # graph = pydotplus.graph_from_dot_data(dot_data)
-        # graph.write_png(pelanggan.nama)
-
     return render(request, 'pesanan/order/created.html')
 
-
 def pembelian(request):
-    #current_user = request.user
-    #pelanggan = Pelanggan.objects.get(user_id=current_user.id)
-    #connection = pg.connect("dbname=tugasakhir user=postgres password=password")
-
-    #dataset = psql.read_sql("SELECT * FROM pohonkeputusan_pohonkeputusan where pelanggan=" + pelanggan.id, connection)
-    # dataset = Pohonkeputusan.objects.filter(pelanggan=pelanggan_id)
     current_user = request.user
     if (current_user is not None):
         try:

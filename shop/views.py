@@ -30,33 +30,6 @@ def produk_list(request, kategori_id=None):
 
 #@login_required(login_url=settings.LOGIN_URL)
 def produk_detail(request, kategori_id, id):
-    from django_pandas.io import read_frame
-    qs = Pohonkeputusan.objects.all()
-    df = read_frame(qs, fieldnames=['kategoriharga', 'ongkoskirim', 'diskon', 'ratingproduk', 'ratingtoko', 'label'])
-    X = df.iloc[:, [0,1,2,3,4]].values
-    Y = df.iloc[:, [5]].values
-
-
-    import numpy as np
-    from sklearn.cross_validation import train_test_split
-    X_train, X_test, Y_train, Y_test = train_test_split(X,Y, test_size=0.25, random_state = 0)
-    X_train_count = X_train.shape
-    Y_train_count2 = Y_train.shape
-    # Fitting Decision Tree Classification to the Training set
-    from sklearn.tree import DecisionTreeClassifier
-    from sklearn import tree
-    classifier = DecisionTreeClassifier(criterion='entropy', random_state=0)
-    clf = classifier.fit(X, Y)
-
-    # Predicting the Test set results
-    y_pred = classifier.predict(X_test)
-
-    import pydotplus
-    dot_data = tree.export_graphviz(clf, out_file=None)
-    graph = pydotplus.graph_from_dot_data(dot_data)
-    graph.write_png("2.PNG")
-
-
     produk = get_object_or_404(Produk, kategori_id=kategori_id, id=id, available=True)
     hargaakhir = produk.harga - (produk.harga * produk.diskon / 100)
     ratings = Ratingproduk.objects.all().filter(produk_id=id).aggregate(sum=Sum('ratingproduk'))['sum']
@@ -65,7 +38,7 @@ def produk_detail(request, kategori_id, id):
         rating = 'belum tersedia'
     else:
         rating = ratings/count
-    return render(request, 'shop/produk/detail.html', {'produk': produk, 'hargaakhir':hargaakhir, 'rating':rating, 'X':X, 'Y':Y, 'X_train':X_train, 'Y_train':Y_train, 'X_train_count':X_train_count, 'Y_train_count2':Y_train_count2, 'clf':clf, 'y_pred':y_pred})
+    return render(request, 'shop/produk/detail.html', {'produk': produk, 'hargaakhir':hargaakhir, 'rating':rating})
 
 
 #@login_required(login_url=settings.LOGIN_URL)

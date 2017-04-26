@@ -1,0 +1,19 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% load humanize %}
+{% block title %}
+{{ pelanggan.nama }}
+{% endblock %}
+
+{% block content %}
+<h1> {{ pelanggan.nama }} <b>Nama login</b></h1>
+<p> {{X_count}} <b>X_count</b></p>
+<p>{{X_train_count}} <b>X_train_shape</b></p>
+<p>{{Y_train_count2}} <b>Y_train_shape</b></p>
+<p>{{X_train}} <b>X_train</b></p>
+<p>{{y_pred}} <b>y_pred !!!</b></p>
+
+<p>{{Y_train}}<b></b></p>
+<p>{{X}} <b></b></p>
+<p>{{qs}} <b></b></p>
+{% endblock %}

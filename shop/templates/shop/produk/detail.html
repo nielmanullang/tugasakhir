@@ -7,11 +7,6 @@
 
 {% block content %}
 
-<p>{{X_train_count}}</p>
-<p>{{Y_train_count2}}</p>
-<p>{{X_train}}</p>
-<p>{{y_pred}} <b>---> ini y_pred dan!!!</b></p>
-
 <p>{{Y_train}}</p>
 <p>{{X}}</p>
     <div class="product-detail">
@@ -21,10 +16,10 @@
         Harga awal Rp.{{ produk.harga | intcomma }} || Diskon {{ produk.diskon }}% || Rating {{ rating }}
         <p class="price">Rp.{{ produk.harga | intcomma }} </p>
         {% if user.is_authenticated %}
-        <form action="{% url "pesanan:beli" produk.id request.user.id %}" method="post">
-            {% csrf_token %}
-            <input type="submit" value="Beli">
-        </form>
+            <form action="{% url "pesanan:beli" produk.id request.user.id %}" method="post">
+                {% csrf_token %}
+                <input type="submit" value="Beli">
+            </form>
         {% else %}
             Silahkan <a href="/login/">Login</a>untuk melakukan pembelian.
         {% endif %}

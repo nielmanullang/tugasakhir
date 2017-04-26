@@ -23,6 +23,7 @@ from pelanggan import views as pelanggan_views
 from toko import views as toko_views
 from shop import views as shop_views
 from pesanan import views as pesanan_views
+from pohonkeputusan import views as pohonkeputusan_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -38,6 +39,7 @@ urlpatterns = [
     url(r'^login/', homepage_views.login_view),
     url(r'^register/', homepage_views.register_page),
     url(r'^logout/', homepage_views.logout_view),
+    url(r'^decisiontree/', pohonkeputusan_views.decisiontree),
     url(r'^', include('shop.urls', namespace='shop')),
     url(r'^beli/',pesanan_views.beli),
 ]
