@@ -6,6 +6,14 @@
 {% endblock %}
 
 {% block content %}
+
+<p>{{X_train_count}}</p>
+<p>{{Y_train_count2}}</p>
+<p>{{X_train}}</p>
+<p>{{y_pred}} <b>---> ini y_pred dan!!!</b></p>
+
+<p>{{Y_train}}</p>
+<p>{{X}}</p>
     <div class="product-detail">
         <img src="{% if produk.gambar %}{{ produk.gambar.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
         <h1>{{ produk.nama }}</h1>
@@ -20,7 +28,7 @@
         {% else %}
             Silahkan <a href="/login/">Login</a>untuk melakukan pembelian.
         {% endif %}
-        {{ produk.deskripsi|linebreaks }}
+        {{ produk.deskripsi|linebreaks }} nilai: {{nilai}}
         Pedagang : <a href="/toko/{{ produk.toko_id_id }}">{{ produk.toko_id }}</a>
     </div>
 {% endblock %}
