@@ -15,5 +15,8 @@
 
 <p>{{Y_train}}<b></b></p>
 <p>{{X}} <b></b></p>
-<p>{{qs}} <b></b></p>
+<p>{{qs}} <b>ini qs</b></p>
+{% for q in qs %}
+    {{q.label}}
+{% endfor %}
 {% endblock %}
