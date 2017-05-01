@@ -37,6 +37,9 @@
                 </a>
                 <a href="{{ produk.get_absolute_url }}">{{ produk.nama }}</a><br>
                 Rp.{{ produk.harga | intcomma }}
+                {% if produk.diskon != 0 %}
+                    diskon {{ produk.diskon }}%
+                {% endif %}
             </div>
         {% endfor %}
     </div>

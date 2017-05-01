@@ -26,10 +26,10 @@ def beli(request, produk_id, pelanggan_id):
             if request.method == 'POST':
                 pelanggans = Pelanggan.objects.get(user_id=pelanggan_id)
                 produks = Produk.objects.get(id=produk_id)
-                #kategori = Kategori.objects.get(id=produks.kategori_id)
                 toko = Toko.objects.get(id=produks.toko_id_id)
                 hargaakhir = produks.harga - (produks.harga * produks.diskon / 100)
-                ratingproduks = Ratingproduk.objects.all().filter(produk_id=produk_id).aggregate(sum=Sum('ratingproduk'))['sum']
+                ratingproduks = \
+                Ratingproduk.objects.all().filter(produk_id=produk_id).aggregate(sum=Sum('ratingproduk'))['sum']
                 count = Ratingproduk.objects.all().filter(produk_id=produk_id).count()
                 if count == 0:
                     ratingproduk = 0
@@ -58,25 +58,22 @@ def beli(request, produk_id, pelanggan_id):
                     nilaiongkoskirim = 0
                 else:
                     nilaiongkoskirim = 1
-                kategoriharga = 10000
-                if kategoriharga > 10000:
-                    nilaikategoriharga = 0
-                else:
-                    nilaikategoriharga = 1
 
-                # # Importing the dataset
-                # qs = Produk.objects.all().filter(kategori_id=kategori.id)
-                # df = read_frame(qs, fieldnames=['nama', 'gambar', 'deskripsi', 'harga', 'diskon', 'stok', 'available'])
-                # # y = df.iloc[:, 4].values
-                # X = df.iloc[:, [4]].values
-                #
-                # # Fitting K-Means to the dataset
-                # kmeans = KMeans(n_clusters=2, init='k-means++', random_state=42)
-                # y_kmeans = kmeans.fit_predict(X)
+                # pesanan = Pesanan.objects.filter(pelanggan_id=pelanggan.id).order_by('-id')[0]
+                produk = Produk.objects.get(id=produk_id)
+                kategori = Produk.objects.all().filter(kategori_id=produk.kategori)
+                # kmeans
+                # Importing the dataset untuk harga
+                dff = read_frame(kategori,
+                                 fieldnames=['nama', 'gambar', 'deskripsi', 'harga', 'diskon', 'stok', 'available'])
+                Z = dff.iloc[:, [4]].values
+                # Fitting K-Means to the dataset
+                kmeans = KMeans(n_clusters=2, init='k-means++', random_state=42)
+                y_kmeans = kmeans.fit_predict(Z)
 
                 pesanan = Pesanan.objects.create(produk_id=produks.id,
                                                  harga=hargaakhir,
-                                                 kategori_harga=nilaikategoriharga,
+                                                 kategori_harga=y_kmeans[0],
                                                  biaya_pengiriman=ongkoskirim.biaya,
                                                  diskon=produks.diskon,
                                                  ratingproduk=nilairatingproduk,
@@ -84,7 +81,7 @@ def beli(request, produk_id, pelanggan_id):
                                                  pelanggan_id=pelanggans.id,
                                                  toko=produks.toko_id)
                 pesanan.save()
-                pohonkeputusan = Pohonkeputusan.objects.create(kategoriharga=nilaikategoriharga,
+                pohonkeputusan = Pohonkeputusan.objects.create(kategoriharga=y_kmeans[0],
                                                                ongkoskirim=nilaiongkoskirim,
                                                                diskon=nilaidiskon,
                                                                ratingproduk=nilairatingproduk,
@@ -97,6 +94,7 @@ def beli(request, produk_id, pelanggan_id):
             return render(request, 'pesanan/pelanggan_null.html')
     else:
         return render(request, 'pesanan/pelanggan_null.html')
+
 
 def pembelian(request):
     current_user = request.user

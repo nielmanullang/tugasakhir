@@ -30,7 +30,6 @@ def login_view(request):
                 messages.add_message(request, messages.INFO, 'User belum terverifikasi')
         else:
             messages.add_message(request, messages.INFO, 'Username atau password Anda salah')
-
     return render(request, 'login.html')
 
 

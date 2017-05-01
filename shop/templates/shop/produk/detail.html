@@ -13,8 +13,8 @@
         <img src="{% if produk.gambar %}{{ produk.gambar.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
         <h1>{{ produk.nama }}</h1>
         <h2><a href="{{ produk.kategori.get_absolute_url }}">{{ produk.kategori }}</a></h2>
-        Harga awal Rp.{{ produk.harga | intcomma }} || Diskon {{ produk.diskon }}% || Rating {{ rating }}
-        <p class="price">Rp.{{ produk.harga | intcomma }} </p>
+        Harga awal Rp.{{ produk.harga | intcomma }} || Diskon {{ produk.diskon }}% || Rating {{ rating | floatformat:0}}
+        <p class="price">Rp.{{ hargaakhir | intcomma }} </p>
         {% if user.is_authenticated %}
             <form action="{% url "pesanan:beli" produk.id request.user.id %}" method="post">
                 {% csrf_token %}
@@ -23,7 +23,8 @@
         {% else %}
             Silahkan <a href="/login/">Login</a>untuk melakukan pembelian.
         {% endif %}
-        {{ produk.deskripsi|linebreaks }} nilai: {{nilai}}
+        {{ produk.deskripsi | linebreaks }}
         Pedagang : <a href="/toko/{{ produk.toko_id_id }}">{{ produk.toko_id }}</a>
+        {{y_kmeans | first}}
     </div>
 {% endblock %}

@@ -1,6 +1,6 @@
 {% extends "shop/base.html" %}
 {% load static %}
-
+{% load humanize %}
 {% block title %}
     {% if toko %}{{ toko.nama }}{% else %}My Shop{% endif %}
 {% endblock %}
@@ -20,14 +20,17 @@
         </ul>
     </div>
     <div id="main" class="product-list">
-        <h1>{% if toko %}{{ toko.nama }} Rating {{ rating }} dari {{ count }} pelanggan {% else %}Produks{% endif %}</h1>
+        <h1>{% if toko %}{{ toko.nama }} Rating {{ rating | floatformat:0}} dari {{ count }} pelanggan {% else %}Produks{% endif %}</h1>
         {% for produk in produks %}
             <div class="item">
                 <a href="{{ produk.get_absolute_url }}">
                     <img src="{% if produk.gambar %}{{ produk.gambar.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
                 </a>
                 <a href="{{ produk.get_absolute_url }}">{{ produk.nama }}</a><br>
-                Rp.{{ produk.harga }} diskon {{ produk.diskon }}
+                Rp.{{ produk.harga | intcomma }}
+                {% if produk.diskon != 0 %}
+                    diskon {{ produk.diskon }}%
+                {% endif %}
             </div>
         {% endfor %}
     </div>
