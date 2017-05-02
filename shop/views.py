@@ -42,16 +42,7 @@ def produk_detail(request, kategori_id, id):
         rating = 'belum tersedia'
     else:
         rating = ratings/count
-    # Importing the dataset
-    qs = Produk.objects.all().filter(kategori_id=kategori_id)
-    df = read_frame(qs, fieldnames=['nama', 'gambar', 'deskripsi', 'harga', 'diskon', 'stok', 'available'])
-    # y = df.iloc[:, 4].values
-    X = df.iloc[:, [4]].values
-
-    # Fitting K-Means to the dataset
-    kmeans = KMeans(n_clusters=2, init='k-means++', random_state=42)
-    y_kmeans = kmeans.fit_predict(X)
-    return render(request, 'shop/produk/detail.html', {'produk': produk, 'hargaakhir':hargaakhir, 'rating':rating, 'y_kmeans':y_kmeans})
+    return render(request, 'shop/produk/detail.html', {'produk': produk, 'hargaakhir':hargaakhir, 'rating':rating})
 
 
 #@login_required(login_url=settings.LOGIN_URL)
