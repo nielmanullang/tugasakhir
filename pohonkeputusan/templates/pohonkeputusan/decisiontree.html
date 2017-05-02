@@ -8,18 +8,39 @@
 {% block content %}
 <h1> {{ pelanggan.nama }} <b>Nama login</b></h1>
 <p> {{X_count}} <b>X_count</b></p>
-<p>{{X_train_count}} <b>X_train_shape</b></p>
 <p>{{Y_train_count2}} <b>Y_train_shape</b></p>
-<p>{{X_train}} <b>X_train</b></p>
-<p>{{y_pred}} <b>y_pred !!!</b></p>
-
-<p>{{Y_train}}<b></b></p>
-<p>{{X}} <b></b></p>
-<p>{{qs}} <b>ini qs</b></p>
-<p>{{produk.nama}} <b>ini produk</b></p>
-<p>{{y_kmeans }} <b>ini kategori harga berdasarkan kategori produk</b></p>
-<p>{{A}} <b>ini susah</b></p>
-{% for q in qs %}
-    {{q.label}}
-{% endfor %}
+<table>
+    <tr>
+         <td>
+            <p><b>X</b></p>
+            {% for Xs in X %}
+                <p>{{Xs}}</p>
+            {% endfor %}
+        </td>
+         <td>
+            <p>{{X_train_count}} <b>X_train_shape</b></p>
+            {% for X_trains in X_train %}
+                <p>{{X_trains}}</p>
+            {% endfor %}
+        </td>
+        <td>
+            <p><b>Ini Y_train</b></p>
+            {% for Y_trains in Y_train %}
+                {{Y_trains}}<p>
+            {% endfor %}
+        </td>
+        <td>
+            <p><b>y_pred !!!</b></p>
+            {% for y_preds in y_pred %}
+                <p>{{y_preds}}</p>
+            {% endfor %}
+        </td>
+        <!--<td>-->
+            <!--<p><b>ini qs</b></p>-->
+            <!--{% for q in qs %}-->
+                <!--<p>{{q.label}}</p>-->
+            <!--{% endfor %}-->
+        <!--</td>-->
+    </tr>
+</table>
 {% endblock %}

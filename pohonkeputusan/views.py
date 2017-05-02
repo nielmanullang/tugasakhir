@@ -19,9 +19,7 @@ import numpy as np
 def decisiontree(request):
     current_user = request.user
     pelanggan = Pelanggan.objects.get(user_id=current_user.id)
-    pesanan = Pesanan.objects.filter(pelanggan_id=pelanggan.id).order_by('-id')[0]
-    produk = Produk.objects.get(id=pesanan.produk_id)
-    kategori = Produk.objects.all().filter(kategori_id=produk.kategori)
+    #pesanan = Pesanan.objects.filter(pelanggan_id=pelanggan.id).order_by('-id')[0]
     # qs untuk mencari data yang login dan pelanggan ber id 0
     qa = Pohonkeputusan.objects.all().filter(pelanggan=0)
     qb = Pohonkeputusan.objects.all().filter(pelanggan=pelanggan.id)
@@ -34,10 +32,8 @@ def decisiontree(request):
     # # Fitting K-Means to the dataset
     # kmeans = KMeans(n_clusters=2, init='k-means++', random_state=42)
     # y_kmeans = kmeans.fit_predict(Z)
-    # df = read_frame(qs, fieldnames=['kategoriharga', 'ongkoskirim', 'diskon', 'ratingproduk', 'ratingtoko', 'label'])
-    # X = df.iloc[:, [1, 2, 3, 4]].values
-    # A = np.concatenate((X, Z), axis=1)
-
+    df = read_frame(qs, fieldnames=['kategoriharga', 'ongkoskirim', 'diskon', 'ratingproduk', 'ratingtoko', 'label'])
+    X = df.iloc[:, [0, 1, 2, 3, 4]].values
     Y = df.iloc[:, [5]].values
     X_count = qs.count()
 
@@ -58,4 +54,4 @@ def decisiontree(request):
     return render(request, 'pohonkeputusan/decisiontree.html',
                   {'X': X, 'Y': Y, 'X_train': X_train, 'Y_train': Y_train, 'X_train_count': X_train_count,
                    'Y_train_count2': Y_train_count2, 'clf': clf, 'y_pred': y_pred, 'pelanggan': pelanggan, 'qs': qs,
-                   'X_count': X_count, 'produk': produk, 'y_kmeans': y_kmeans})
+                   'X_count': X_count})
