@@ -38,11 +38,28 @@ def produk_detail(request, kategori_id, id):
     hargaakhir = produk.harga - (produk.harga * produk.diskon / 100)
     ratings = Ratingproduk.objects.all().filter(produk_id=id).aggregate(sum=Sum('ratingproduk'))['sum']
     count = Ratingproduk.objects.all().filter(produk_id=id).count()
+
+    # kategori = Produk.objects.all().filter(kategori_id=kategori_id)
+    # kamus = []
+    # index = 0
+    # cek={}
+    # for kategoris in kategori:
+    #     kamus.append(kategoris.harga)
+    #     cek[kategoris.id]=index
+    #     index+=1
+    # # kmeans
+    # # Importing the dataset untuk harga
+    # dff = read_frame(kategori, fieldnames=['nama', 'gambar', 'deskripsi', 'harga', 'diskon', 'stok', 'available'])
+    # Z = dff.iloc[:, [3]].values
+    # # Fitting K-Means to the dataset
+    # kmeans = KMeans(n_clusters=2, init='k-means++', random_state=42)
+    # y_kmeans = kmeans.fit_predict(Z)
+    # clusterharga = cek[produk.id]
     if count == 0:
         rating = 'belum tersedia'
     else:
         rating = ratings/count
-    return render(request, 'shop/produk/detail.html', {'produk': produk, 'hargaakhir':hargaakhir, 'rating':rating})
+    return render(request, 'shop/produk/detail.html', {'produk': produk, 'hargaakhir':hargaakhir, 'rating':rating})#,'y_kmeans':y_kmeans[clusterharga]
 
 
 #@login_required(login_url=settings.LOGIN_URL)

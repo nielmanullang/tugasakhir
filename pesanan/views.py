@@ -59,9 +59,16 @@ def beli(request, produk_id, pelanggan_id):
                 else:
                     nilaiongkoskirim = 1
 
-                # pesanan = Pesanan.objects.filter(pelanggan_id=pelanggan.id).order_by('-id')[0]
                 produk = Produk.objects.get(id=produk_id)
                 kategori = Produk.objects.all().filter(kategori_id=produk.kategori)
+                kamus = []
+                index = 0
+                cek = {}
+                for kategoris in kategori:
+                    kamus.append(kategoris.harga)
+                    cek[kategoris.id] = index
+                    index += 1
+                clusterharga = cek[produk.id]
                 # kmeans
                 # Importing the dataset untuk harga
                 dff = read_frame(kategori,
@@ -73,7 +80,7 @@ def beli(request, produk_id, pelanggan_id):
 
                 pesanan = Pesanan.objects.create(produk_id=produks.id,
                                                  harga=hargaakhir,
-                                                 kategori_harga=y_kmeans[0],
+                                                 kategori_harga=y_kmeans[clusterharga],
                                                  biaya_pengiriman=ongkoskirim.biaya,
                                                  diskon=produks.diskon,
                                                  ratingproduk=nilairatingproduk,
@@ -81,7 +88,7 @@ def beli(request, produk_id, pelanggan_id):
                                                  pelanggan_id=pelanggans.id,
                                                  toko=produks.toko_id)
                 pesanan.save()
-                pohonkeputusan = Pohonkeputusan.objects.create(kategoriharga=y_kmeans[0],
+                pohonkeputusan = Pohonkeputusan.objects.create(kategoriharga=y_kmeans[clusterharga],
                                                                ongkoskirim=nilaiongkoskirim,
                                                                diskon=nilaidiskon,
                                                                ratingproduk=nilairatingproduk,

@@ -37,6 +37,7 @@ def decisiontree(request):
     Y = df.iloc[:, [5]].values
     X_count = qs.count()
 
+    #gakpenting
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25, random_state=0)
     X_train_count = X_train.shape
     Y_train_count2 = Y_train.shape
@@ -45,8 +46,9 @@ def decisiontree(request):
     classifier = DecisionTreeClassifier(criterion='entropy', random_state=0)
     clf = classifier.fit(X, Y)
 
-    # Predicting the Test set results
+    # Predicting the Test set results / gakpenting
     y_pred = classifier.predict(X_test)
+
     dot_data = tree.export_graphviz(clf, out_file=None)
     graph = pydotplus.graph_from_dot_data(dot_data)
     graph.write_png(current_user.username + '.PNG')
