@@ -6,7 +6,7 @@ from django.db import models
 class Ongkoskirim(models.Model):
     KABUPATEN_CHOICES = (
         ('Kabupaten Asahan', 'Kabupaten Asahan'),
-        ('kabupaten Batubara', 'Kabupaten Batubara'),
+        ('Kabupaten Batubara', 'Kabupaten Batubara'),
         ('Kabupaten Dairi', 'Kabupaten Dairi'),
         ('Kabupaten Deli Serdang', 'Kabupaten Deli Serdang'),
         ('Kabupaten Humbang Hasudutan', 'Kabupaten Humbang Hasudutan'),
@@ -14,7 +14,7 @@ class Ongkoskirim(models.Model):
         ('Kabupaten Labuhan Batu', 'Kabupaten Labuhan Batu'),
         ('Kabupaten Labuhan Batu Selatan', 'Kabupaten Labuhan Batu Selatan'),
         ('Kabupaten Labuhan Batu Utara', 'Kabupaten Labuhan Batu Utara'),
-        ('Kabupaten Humbang Langkat', 'Kabupaten Humbang Langkat'),
+        ('Kabupaten Langkat', 'Kabupaten Langkat'),
         ('Kabupaten Mandailing Natal', 'Kabupaten Mandailing Natal'),
         ('Kabupaten Nias', 'Kabupaten Nias'),
         ('Kabupaten Nias Barat', 'Kabupaten Nias Barat'),
@@ -25,8 +25,8 @@ class Ongkoskirim(models.Model):
         ('Kabupaten Pakpak Bharat', 'Kabupaten Pakpak Bharat'),
         ('Kabupaten Samosir', 'Kabupaten Samosir'),
         ('Kabupaten Serdang Bedagai', 'Kabupaten Serdang Bedagai'),
-        ('Kabupaten Tapanuli', 'Kabupaten Tapanuli'),
-        ('kabupaten Tapanuli Selatan', 'Kabupaten Tapanuli Selatan'),
+        ('Kabupaten Simalungun', 'Kabupaten Simalungun'),
+        ('Kabupaten Tapanuli Selatan', 'Kabupaten Tapanuli Selatan'),
         ('Kabupaten Tapanuli Tengah', 'Kabupaten Tapanuli Tengah'),
         ('Kabupaten Tapanuli Utara', 'Kabupaten Tapanuli Utara'),
         ('Kabupaten Toba Samosir', 'Kabupaten Toba Samosir'),
