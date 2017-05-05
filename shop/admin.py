@@ -8,7 +8,7 @@ admin.site.register(Kategori, KategoriAdmin)
 class ProdukAdmin(admin.ModelAdmin):
     list_display = ['nama', 'kategori', 'harga', 'stok', 'diskon', 'available']
     list_filter = ['available', 'kategori', 'diskon']
-    list_editable = ['harga', 'stok', 'available']
+    # list_editable = ['harga', 'stok', 'available']
 admin.site.register(Produk, ProdukAdmin)
 
 class RatingprodukAdmin(admin.ModelAdmin):
