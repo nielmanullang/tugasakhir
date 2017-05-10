@@ -85,3 +85,18 @@ def addproduk(request):
         'form': CreatePrudukForm,
     }
     return render(request, 'shop/produk/add_produk.html', context)
+
+def rekomendasi(request, kategori_id=None):
+    kategori = None
+    kategoris = Kategori.objects.all()
+    produks = Produk.objects.filter(available=True)  # .order_by('-id')[:9:1]
+    ratingproduks = Ratingproduk.objects.all().filter(produk_id=produk_id).aggregate(sum=Sum('ratingproduk'))['sum']
+    count = Ratingproduk.objects.all().filter(produk_id=produk_id).count()
+    if count == 0:
+        ratingproduk = 0
+    else:
+        ratingproduk = ratingproduks / count
+    # kategori = Produk.objects.all().filter(kategori_id=produk.kategori)
+    df = read_frame(produks, fieldnames=['nama', 'gambar', 'deskripsi', 'harga', 'diskon', 'stok', 'available'])
+    produk = df.iloc[:, [0,3,4]].values
+    return render(request, 'shop/produk/rekomendasi.html', {'kategori': kategori, 'kategoris': kategoris, 'produks': produks, 'produk':produk})

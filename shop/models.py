@@ -3,8 +3,10 @@ from django.core.urlresolvers import reverse
 from pelanggan.models import Pelanggan
 from toko.models import Toko
 
+
 class Kategori(models.Model):
     nama = models.CharField(max_length=200, db_index=True, unique=True)
+
     # slug = models.SlugField(max_length=200, db_index=True)
 
     def __str__(self):
@@ -12,6 +14,7 @@ class Kategori(models.Model):
 
     def get_absolute_url(self):
         return reverse('shop:produk_list_by_kategori', args=[self.id])
+
 
 class Produk(models.Model):
     kategori = models.ForeignKey(Kategori, related_name='produks')
@@ -23,12 +26,18 @@ class Produk(models.Model):
     stok = models.PositiveIntegerField()
     available = models.BooleanField(default=True)
     toko_id = models.ForeignKey(Toko, on_delete=models.CASCADE, null=True, related_name='tokopr')
+    kmeansharga = models.PositiveIntegerField(null=True)
+    ongkoskirim = models.PositiveIntegerField(null=True)
+    diskon = models.PositiveIntegerField(null=True)
+    ratingproduk = models.PositiveIntegerField(null=True)
+    ratingtoko = models.PositiveIntegerField(null=True)
 
     def __unicode__(self):
         return self.nama
 
     def get_absolute_url(self):
         return reverse('shop:produk_detail', args=[self.kategori_id, self.id])
+
 
 class Ratingproduk(models.Model):
     produk_id = models.ForeignKey(Produk, related_name='produkr')

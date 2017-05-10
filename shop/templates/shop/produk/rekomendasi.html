@@ -1,0 +1,12 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}
+    Penjualan
+{% endblock %}
+
+{% block content %}
+    {% for produks in produk %}
+        {{produks}}
+    {% endfor %}
+{% endblock %}

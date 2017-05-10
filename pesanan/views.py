@@ -28,8 +28,7 @@ def beli(request, produk_id, pelanggan_id):
                 produks = Produk.objects.get(id=produk_id)
                 toko = Toko.objects.get(id=produks.toko_id_id)
                 hargaakhir = produks.harga - (produks.harga * produks.diskon / 100)
-                ratingproduks = \
-                Ratingproduk.objects.all().filter(produk_id=produk_id).aggregate(sum=Sum('ratingproduk'))['sum']
+                ratingproduks = Ratingproduk.objects.all().filter(produk_id=produk_id).aggregate(sum=Sum('ratingproduk'))['sum']
                 count = Ratingproduk.objects.all().filter(produk_id=produk_id).count()
                 if count == 0:
                     ratingproduk = 0
