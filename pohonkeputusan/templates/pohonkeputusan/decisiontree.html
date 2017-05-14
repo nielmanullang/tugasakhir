@@ -6,41 +6,10 @@
 {% endblock %}
 
 {% block content %}
-<h1> {{ pelanggan.nama }} <b>Nama login</b></h1>
-<p> {{X_count}} <b>X_count</b></p>
-<p>{{Y_train_count2}} <b>Y_train_shape</b></p>
-<table>
-    <tr>
-         <td>
-            <p><b>X</b></p>
-            {% for Xs in X %}
-                <p>{{Xs}}</p>
-            {% endfor %}
-        </td>
-         <td>
-            <p>{{X_train_count}} <b>X_train_shape</b></p>
-            {% for X_trains in X_train %}
-                <p>{{X_trains}}</p>
-            {% endfor %}
-        </td>
-        <td>
-            <p><b>Ini Y_train</b></p>
-            {% for Y_trains in Y_train %}
-                {{Y_trains}}<p>
-            {% endfor %}
-        </td>
-        <td>
-            <p><b>y_pred !!!</b></p>
-            {% for y_preds in y_pred %}
-                <p>{{y_preds}}</p>
-            {% endfor %}
-        </td>
-        <!--<td>-->
-            <!--<p><b>ini qs</b></p>-->
-            <!--{% for q in qs %}-->
-                <!--<p>{{q.label}}</p>-->
-            <!--{% endfor %}-->
-        <!--</td>-->
-    </tr>
-</table>
+<h1>Selamat datang, <b>{{ pelanggan.nama }} </b></h1>
+<!--<p> {{X_count}} <b>X_count</b></p>-->
+<!--<p>{{Y_train_count2}} <b>Y_train_shape</b></p>-->
+<p><a href="/pre_handphone/">Lihat Rekomendasi Handphone</a></p>
+<p><a href="/pre_televisi/">Lihat Rekomendasi Televisi</a></p>
+<p><a href="/pre_kulkas/">Lihat Rekomendasi Kulkas</a></p>
 {% endblock %}

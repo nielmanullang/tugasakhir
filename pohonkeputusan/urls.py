@@ -4,4 +4,7 @@ from . import views
 urlpatterns = [
     url(r'^$', views.decisiontree, name='decisiontree'),
     url(r'^$', views.some_view, name='some_view'),
+    url(r'^$', views.pre_handphone, name='pre_handphone'),
+    url(r'^$', views.pre_kulkas, name='pre_kulkas'),
+    url(r'^$', views.pre_televisi, name='pre_kulkas'),
 ]

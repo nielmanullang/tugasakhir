@@ -11,7 +11,7 @@ class Toko(models.Model):
     alamat = models.CharField(max_length=32)
     pelanggan_id = models.ForeignKey(Pelanggan, related_name='pelanggant')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.nama
 
     def get_absolute_url(self):

@@ -77,16 +77,17 @@ def beli(request, produk_id, pelanggan_id):
                 kmeans = KMeans(n_clusters=2, init='k-means++', random_state=42)
                 y_kmeans = kmeans.fit_predict(Z)
 
-                pesanan = Pesanan.objects.create(produk_id=produks.id,
-                                                 harga=hargaakhir,
-                                                 kategori_harga=y_kmeans[clusterharga],
-                                                 biaya_pengiriman=ongkoskirim.biaya,
-                                                 diskon=produks.diskon,
-                                                 ratingproduk=nilairatingproduk,
-                                                 ratingtoko=nilairatingtoko,
-                                                 pelanggan_id=pelanggans.id,
-                                                 toko=produks.toko_id)
-                pesanan.save()
+
+                # pesanan = Pesanan.objects.create(produk_id=produks.id,
+                #                                  harga=hargaakhir,
+                #                                  kategori_harga=y_kmeans[clusterharga],
+                #                                  biaya_pengiriman=ongkoskirim.biaya,
+                #                                  diskon=produks.diskon,
+                #                                  ratingproduk=nilairatingproduk,
+                #                                  ratingtoko=nilairatingtoko,
+                #                                  pelanggan_id=pelanggans.id,
+                #                                  toko= produks.toko_id)
+                # pesanan.save()
                 pohonkeputusan = Pohonkeputusan.objects.create(kategoriharga=y_kmeans[clusterharga],
                                                                ongkoskirim=nilaiongkoskirim,
                                                                diskon=nilaidiskon,

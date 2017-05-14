@@ -22,28 +22,30 @@ from homepage import views as homepage_views
 from pelanggan import views as pelanggan_views
 from toko import views as toko_views
 from shop import views as shop_views
-from pesanan import views as pesanan_views
+from pesan import views as pesan_views
 from pohonkeputusan import views as pohonkeputusan_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^pelanggan/', pelanggan_views.profil),
-    url(r'^pembelian/', pesanan_views.pembelian),
-    url(r'^penjualan/', pesanan_views.penjualan),
+    url(r'^pembelian/', pesan_views.pembelian),
+    url(r'^penjualan/', pesan_views.penjualan),
     url(r'^toko-saya/', toko_views.toko_profil),
     url(r'^addproduk/', shop_views.addproduk),
-    url(r'^rekomendasi/', shop_views.rekomendasi),
     url(r'^register_toko/', toko_views.register_toko),
     url(r'^addpelanggan/', pelanggan_views.create_pelanggan),
     url(r'^toko/', include ('toko.urls', namespace='toko')),
-    url(r'^pesanan/', include('pesanan.urls', namespace='pesanan')),
+    url(r'^pesan/', include('pesan.urls', namespace='pesan')),
     url(r'^login/', homepage_views.login_view),
     url(r'^register/', homepage_views.register_page),
     url(r'^logout/', homepage_views.logout_view),
     url(r'^some_view/', pohonkeputusan_views.some_view),
     url(r'^decisiontree/', pohonkeputusan_views.decisiontree),
+    url(r'^pre_kulkas/', pohonkeputusan_views.pre_kulkas),
+    url(r'^pre_handphone/', pohonkeputusan_views.pre_handphone),
+    url(r'^pre_televisi/', pohonkeputusan_views.pre_televisi),
     url(r'^', include('shop.urls', namespace='shop')),
-    url(r'^beli/',pesanan_views.beli),
+    url(r'^beli/',pesan_views.beli),
 ]
 
 if settings.DEBUG:

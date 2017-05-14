@@ -27,12 +27,12 @@ class Produk(models.Model):
     available = models.BooleanField(default=True)
     toko_id = models.ForeignKey(Toko, on_delete=models.CASCADE, null=True, related_name='tokopr')
     kmeansharga = models.PositiveIntegerField(null=True)
-    ongkoskirim = models.PositiveIntegerField(null=True)
-    diskon = models.PositiveIntegerField(null=True)
-    ratingproduk = models.PositiveIntegerField(null=True)
-    ratingtoko = models.PositiveIntegerField(null=True)
+    kategoriongkoskirim = models.PositiveIntegerField(null=True)
+    kategoridiskon = models.PositiveIntegerField(null=True)
+    kategoriratingproduk = models.PositiveIntegerField(null=True)
+    kategoriratingtoko = models.PositiveIntegerField(null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.nama
 
     def get_absolute_url(self):

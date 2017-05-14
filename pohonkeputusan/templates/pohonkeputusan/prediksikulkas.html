@@ -1,0 +1,46 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% load humanize %}
+{% block title %}
+{{ pelanggan.nama }}
+{% endblock %}
+
+{% block content %}
+<h1>Selamat datang, <b>{{ pelanggan.nama }} </b></h1>
+<!--<p> {{X_count}} <b>X_count</b></p>-->
+<!--<p>{{Y_train_count2}} <b>Y_train_shape</b></p>-->
+<table>
+    <tr>
+        <td>
+            <p><b>Nama Produk</b></p>
+            {% for q in produk %}
+            <p>{{q}}</p>
+            {% endfor %}
+        </td>
+        <td>
+            <p><b>Harga</b></p>
+            {% for q in produk %}
+            <p>{{q.harga | intcomma }}</p>
+            {% endfor %}
+        </td>
+        <td>
+            <p><b>Diskon</b></p>
+            {% for q in produk %}
+            <p>{{q.diskon}} %</p>
+            {% endfor %}
+        </td>
+        <td>
+            <p><b>harga,ongkir,diskon,ratingproduk,ratingtoko </b></p>
+            {% for q in X_xtrain %}
+            <p>{{q}}</p>
+            {% endfor %}
+        </td>
+        <td>
+            <p><b>Prediksi</b></p>
+            {% for q in y_pred %}
+            <p>{{q}}</p>
+            {% endfor %}
+        </td>
+    </tr>
+</table>
+{% endblock %}

@@ -4,7 +4,8 @@ from .forms import CreatePrudukForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from pelanggan.models import Pelanggan
-from toko.models import Toko
+from toko.models import Toko, Ratingtoko
+from referensiongkir.models import Ongkoskirim
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.db.models import Sum
@@ -14,55 +15,133 @@ import pandas.io.sql as psql
 from sklearn.cluster import KMeans
 from django_pandas.io import read_frame
 import numpy as np
+from django.db.models import Count
 
 
 # @login_required(login_url=settings.LOGIN_URL)
 def produk_list(request, kategori_id=None):
     kategori = None
     kategoris = Kategori.objects.all()
-    produks = Produk.objects.filter(available=True)#.order_by('-id')[:9:1]
+    produks = Produk.objects.filter(available=True)  # .order_by('-id')[:9:1]
+    #untuk mengupdate kategori rating produk
+    ratingproduks = Ratingproduk.objects.all()
+    for rp in ratingproduks:
+        if rp > 3:
+            produkupdate = Produk.objects.filter(id=rp.id).update(kategoriratingproduk=1)
+        else:
+            produkupdate = Produk.objects.filter(id=rp.id).update(kategoriratingproduk=0)
+    # untuk mengupdate kategori rating toko
+    ratingtokos = Ratingtoko.objects.all()
+    for rp in ratingtokos:
+        if rp > 3:
+            tokoupdate = Produk.objects.filter(id=rp.id).update(kategoriratingtoko=1)
+        else:
+            tokoupdate = Produk.objects.filter(id=rp.id).update(kategoriratingtoko=0)
+    # untuk mengupdate kategori rating diskon
+    diskons = Produk.objects.all()
+    for kd in diskons:
+        if kd.diskon > 0:
+            tokoupdate = Produk.objects.filter(id=kd.id).update(kategoridiskon=1)
+        else:
+            tokoupdate = Produk.objects.filter(id=kd.id).update(kategoridiskon=0)
+    # current_user = request.user
+    # pelanggans = Pelanggan.objects.get(user_id=current_user)
+    # alamattoko = Toko.objects.all()
+    # for at in alamattoko:
+    #     ongkir = Ongkoskirim.objects.get(kabupaten_asal=pelanggans.kabupaten, kabupaten_tujuan=alamattoko.alamat)
+    #     produkupdate = Produk.objects.filter(id=at.id).update(kategoriongkoskirim=ongkir.biaya)
     query = request.GET.get("search_produk")
     if query:
         produks = Produk.objects.filter(nama__icontains=query)
     if kategori_id:
+        kategori = Produk.objects.all().filter(kategori_id=kategori_id).order_by('id')
+        # kmeans
+        # Importing the dataset untuk harga
+        dff = read_frame(kategori, fieldnames=['nama', 'gambar', 'deskripsi', 'harga', 'diskon', 'stok', 'available'])
+        Z = dff.iloc[:, [3]].values
+        # Fitting K-Means to the dataset
+        kmeans = KMeans(n_clusters=2, init='k-means++', random_state=42)
+        kmeanshargasss = kmeans.fit_predict(Z)
+        i = 0
+        for k in kategori:
+            produk = Produk.objects.filter(id=k.id).update(kmeansharga=kmeanshargasss[i])
+            i += 1
         kategori = get_object_or_404(Kategori, id=kategori_id)
         produks = produks.filter(kategori=kategori)
         query = request.GET.get("search_produk")
         if query:
-            produks = Produk.objects.filter(nama__icontains=query).filter(kategori=kategori_id)#.order_by('-id')[:9:1]
-    return render(request, 'shop/produk/list.html', {'kategori': kategori, 'kategoris': kategoris, 'produks': produks})#, 'kategoriharga':kategoriharga})
+            produks = Produk.objects.filter(nama__icontains=query).filter(
+                kategori=kategori_id)  # .order_by('-id')[:9:1]
+    return render(request, 'shop/produk/list.html', {'kategori': kategori, 'kategoris': kategoris,
+                                                     'produks': produks})
 
-#@login_required(login_url=settings.LOGIN_URL)
+
+# @login_required(login_url=settings.LOGIN_URL)
 def produk_detail(request, kategori_id, id):
     produk = get_object_or_404(Produk, kategori_id=kategori_id, id=id, available=True)
     hargaakhir = produk.harga - (produk.harga * produk.diskon / 100)
     ratings = Ratingproduk.objects.all().filter(produk_id=id).aggregate(sum=Sum('ratingproduk'))['sum']
     count = Ratingproduk.objects.all().filter(produk_id=id).count()
-
-    # kategori = Produk.objects.all().filter(kategori_id=kategori_id)
-    # kamus = []
-    # index = 0
-    # cek={}
-    # for kategoris in kategori:
-    #     kamus.append(kategoris.harga)
-    #     cek[kategoris.id]=index
-    #     index+=1
-    # # kmeans
-    # # Importing the dataset untuk harga
-    # dff = read_frame(kategori, fieldnames=['nama', 'gambar', 'deskripsi', 'harga', 'diskon', 'stok', 'available'])
-    # Z = dff.iloc[:, [3]].values
-    # # Fitting K-Means to the dataset
-    # kmeans = KMeans(n_clusters=2, init='k-means++', random_state=42)
-    # y_kmeans = kmeans.fit_predict(Z)
-    # clusterharga = cek[produk.id]
     if count == 0:
         rating = 'belum tersedia'
     else:
-        rating = ratings/count
-    return render(request, 'shop/produk/detail.html', {'produk': produk, 'hargaakhir':hargaakhir, 'rating':rating})#,'y_kmeans':y_kmeans[clusterharga]
+        rating = ratings / count
+    produkss = Produk.objects.all().filter(kategori_id=kategori_id)
+    # alamattoko = Toko.objects.all()
+    # for at in alamattoko:
+    #     ongkir = Ongkoskirim.objects.get(kabupaten_asal=pelanggans.kabupaten, kabupaten_tujuan=toko.alamat)
+    #     produkupdate = Produk.objects.filter(id=at.id).update(kategoriongkoskirim=ongkir.biaya)
+    # ongkoskirim = Ongkoskirim.objects.get(kabupaten_asal=pelanggans.kabupaten, kabupaten_tujuan=toko.alamat)
+    # if ongkoskirim.biaya > 0:
+    #     nilaiongkoskirim = 0
+    # else:
+    #     nilaiongkoskirim = 1
+    ratingproduks = Ratingproduk.objects.all()
+    for rp in ratingproduks:
+        if rp > 3:
+            produkupdate = Produk.objects.filter(id=rp.id).update(kategoriratingproduk=1)
+        else:
+            produkupdate = Produk.objects.filter(id=rp.id).update(kategoriratingproduk=0)
+    ratingtokos = Ratingtoko.objects.all()
+    for rp in ratingtokos:
+        if rp > 3:
+            tokoupdate = Produk.objects.filter(id=rp.id).update(kategoriratingtoko=1)
+        else:
+            tokoupdate = Produk.objects.filter(id=rp.id).update(kategoriratingtoko=0)
+    diskons = Produk.objects.all()
+    for kd in diskons:
+        if kd.diskon > 0:
+            tokoupdate = Produk.objects.filter(id=kd.id).update(kategoridiskon=1)
+        else:
+            tokoupdate = Produk.objects.filter(id=kd.id).update(kategoridiskon=0)
+    toko = Toko.objects.get(id=produk.toko_id_id)
+    #untuk mengupdate nilai kmeans harga produk
+    kategori = Produk.objects.all().filter(kategori_id=kategori_id).order_by('id')
+    kamus = []
+    index = 0
+    cek = {}
+    for kategoris in kategori:
+        kamus.append(kategoris.harga)
+        cek[kategoris.id] = index
+        index += 1
+    # kmeans
+    # Importing the dataset untuk harga
+    dff = read_frame(kategori, fieldnames=['nama', 'gambar', 'deskripsi', 'harga', 'diskon', 'stok', 'available'])
+    Z = dff.iloc[:, [3]].values
+    # Fitting K-Means to the dataset
+    kmeans = KMeans(n_clusters=2, init='k-means++', random_state=42)
+    y_kmeans = kmeans.fit_predict(Z)
+    clusterharga = cek[produk.id]
+    kmeanshargasss = y_kmeans[clusterharga]
+    x = 0
+    for produksss in produkss:
+        produkupdate = Produk.objects.filter(id=produksss.id).update(kmeansharga=kmeanshargasss)
+        x += 1
+    return render(request, 'shop/produk/detail.html',
+                  {'produk': produk, 'hargaakhir': hargaakhir, 'rating': rating})
 
 
-#@login_required(login_url=settings.LOGIN_URL)
+# @login_required(login_url=settings.LOGIN_URL)
 def addproduk(request):
     if request.method == 'POST':
         form = CreatePrudukForm(request.POST)
@@ -85,18 +164,3 @@ def addproduk(request):
         'form': CreatePrudukForm,
     }
     return render(request, 'shop/produk/add_produk.html', context)
-
-def rekomendasi(request, kategori_id=None):
-    kategori = None
-    kategoris = Kategori.objects.all()
-    produks = Produk.objects.filter(available=True)  # .order_by('-id')[:9:1]
-    ratingproduks = Ratingproduk.objects.all().filter(produk_id=produk_id).aggregate(sum=Sum('ratingproduk'))['sum']
-    count = Ratingproduk.objects.all().filter(produk_id=produk_id).count()
-    if count == 0:
-        ratingproduk = 0
-    else:
-        ratingproduk = ratingproduks / count
-    # kategori = Produk.objects.all().filter(kategori_id=produk.kategori)
-    df = read_frame(produks, fieldnames=['nama', 'gambar', 'deskripsi', 'harga', 'diskon', 'stok', 'available'])
-    produk = df.iloc[:, [0,3,4]].values
-    return render(request, 'shop/produk/rekomendasi.html', {'kategori': kategori, 'kategoris': kategoris, 'produks': produks, 'produk':produk})
