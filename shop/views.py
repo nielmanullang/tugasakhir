@@ -23,40 +23,28 @@ def produk_list(request, kategori_id=None):
     kategori = None
     kategoris = Kategori.objects.all()
     produks = Produk.objects.filter(available=True)  # .order_by('-id')[:9:1]
-    #untuk mengupdate kategori rating produk
-    # ratingproduks = Ratingproduk.objects.all()
-    # for rp in ratingproduks:
-    #     if rp > 3:
-    #         produkupdate = Produk.objects.filter(id=rp.id).update(kategoriratingproduk=1)
-    #     else:
-    #         produkupdate = Produk.objects.filter(id=rp.id).update(kategoriratingproduk=0)
-    # # untuk mengupdate kategori rating toko
-    # ratingtokos = Ratingtoko.objects.all()
-    # for rp in ratingtokos:
-    #     if rp > 3:
-    #         tokoupdate = Produk.objects.filter(id=rp.id).update(kategoriratingtoko=1)
-    #     else:
-    #         tokoupdate = Produk.objects.filter(id=rp.id).update(kategoriratingtoko=0)
-    # # untuk mengupdate kategori rating diskon
-    # diskons = Produk.objects.all()
-    # for kd in diskons:
-    #     if kd.diskon > 0:
-    #         tokoupdate = Produk.objects.filter(id=kd.id).update(kategoridiskon=1)
-    #     else:
-    #         tokoupdate = Produk.objects.filter(id=kd.id).update(kategoridiskon=0)
-
-    # current_user = request.user
-    # pelanggans = Pelanggan.objects.get(user_id=current_user)
-    # # Hard Code
-    # asalToko = Toko.objects.get(id=40)
-    # biayaKirim = Ongkoskirim.objects.get(kabupaten_asal=pelanggans.kabupaten, kabupaten_tujuan=asalToko.alamat)
-    # ps = Produk.objects.all()
-    # for ok in ps:
-    #     if biayaKirim.biaya > 0:
-    #         tokoupdate = Produk.objects.filter(id=ok.id).update(kategoriongkoskirim=0)
-    #     else:
-    #         tokoupdate = Produk.objects.filter(id=ok.id).update(kategoriongkoskirim=1)
-
+    # untuk mengupdate kategori rating toko
+    ratingtokos = Ratingtoko.objects.all()
+    for rts in ratingtokos:
+        if rts.ratingtoko > 3:
+            produkupdate = Produk.objects.filter(toko_id=rts.toko_id_id).update(kategoriratingtoko=1)
+        else:
+            produkupdate = Produk.objects.filter(toko_id=rts.toko_id_id).update(kategoriratingtoko=0)
+    # untuk mengupdate kategori rating produk
+    ratingproduks = Ratingproduk.objects.all()
+    for rp in ratingproduks:
+        if rp.ratingproduk > 3:
+            produkupdate = Produk.objects.filter(id=rp.produk_id_id).update(kategoriratingproduk=1)
+        else:
+            produkupdate = Produk.objects.filter(id=rp.produk_id_id).update(kategoriratingproduk=0)
+    # untuk mengupdate kategori rating diskon
+    jumlah = len(ratingtokos)
+    diskons = Produk.objects.all()
+    for dk in diskons:
+        if dk.diskon > 0:
+            produkupdate = Produk.objects.filter(id=dk.id).update(kategoridiskon=1)
+        else:
+            produkupdate = Produk.objects.filter(id=dk.id).update(kategoridiskon=0)
     query = request.GET.get("search_produk")
     if query:
         produks = Produk.objects.filter(nama__icontains=query)
@@ -80,7 +68,7 @@ def produk_list(request, kategori_id=None):
             produks = Produk.objects.filter(nama__icontains=query).filter(
                 kategori=kategori_id)  # .order_by('-id')[:9:1]
     return render(request, 'shop/produk/list.html', {'kategori': kategori, 'kategoris': kategoris,
-                                                     'produks': produks})
+                                                     'produks': produks, 'jumlah': jumlah})
 
 
 # @login_required(login_url=settings.LOGIN_URL)
@@ -104,48 +92,6 @@ def produk_detail(request, kategori_id, id):
         tokoupdate = Produk.objects.filter(id=pks.id).update(kategoriongkoskirim=0)
     else:
         tokoupdate = Produk.objects.filter(id=pks.id).update(kategoriongkoskirim=1)
-
-    ratingproduks = Ratingproduk.objects.all()
-    for rp in ratingproduks:
-        if rp > 3:
-            produkupdate = Produk.objects.filter(id=rp.id).update(kategoriratingproduk=1)
-        else:
-            produkupdate = Produk.objects.filter(id=rp.id).update(kategoriratingproduk=0)
-    ratingtokos = Ratingtoko.objects.all()
-    for rp in ratingtokos:
-        if rp > 3:
-            tokoupdate = Produk.objects.filter(id=rp.id).update(kategoriratingtoko=1)
-        else:
-            tokoupdate = Produk.objects.filter(id=rp.id).update(kategoriratingtoko=0)
-    diskons = Produk.objects.all()
-    for kd in diskons:
-        if kd.diskon > 0:
-            tokoupdate = Produk.objects.filter(id=kd.id).update(kategoridiskon=1)
-        else:
-            tokoupdate = Produk.objects.filter(id=kd.id).update(kategoridiskon=0)
-    toko = Toko.objects.get(id=produk.toko_id_id)
-    #untuk mengupdate nilai kmeans harga produk
-    kategori = Produk.objects.all().filter(kategori_id=kategori_id).order_by('id')
-    kamus = []
-    index = 0
-    cek = {}
-    for kategoris in kategori:
-        kamus.append(kategoris.harga)
-        cek[kategoris.id] = index
-        index += 1
-    # kmeans
-    # Importing the dataset untuk harga
-    dff = read_frame(kategori, fieldnames=['nama', 'gambar', 'deskripsi', 'harga', 'diskon', 'stok', 'available'])
-    Z = dff.iloc[:, [3]].values
-    # Fitting K-Means to the dataset
-    kmeans = KMeans(n_clusters=2, init='k-means++', random_state=42)
-    y_kmeans = kmeans.fit_predict(Z)
-    clusterharga = cek[produk.id]
-    kmeanshargasss = y_kmeans[clusterharga]
-    x = 0
-    for produksss in produkss:
-        produkupdate = Produk.objects.filter(id=produksss.id).update(kmeansharga=kmeanshargasss)
-        x += 1
     return render(request, 'shop/produk/detail.html',
                   {'produk': produk, 'hargaakhir': hargaakhir, 'rating': rating})
 
