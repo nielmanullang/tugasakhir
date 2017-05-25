@@ -18,11 +18,22 @@ import numpy as np
 from django.db.models import Count
 
 
-# @login_required(login_url=settings.LOGIN_URL)
+@login_required(login_url=settings.LOGIN_URL)
 def produk_list(request, kategori_id=None):
     kategori = None
     kategoris = Kategori.objects.all()
     produks = Produk.objects.filter(available=True)  # .order_by('-id')[:9:1]
+    # untuk mengupdate kategori ongkos kirim berdasarkan yang login
+    current_user = request.user
+    pelanggan = Pelanggan.objects.get(user_id=current_user.id)
+    selectsemuaproduk = Produk.objects.all()
+    for produs in selectsemuaproduk:
+        toko = Toko.objects.get(id=produs.toko_id_id)
+        biayakirim = Ongkoskirim.objects.get(kabupaten_asal=pelanggan.kabupaten, kabupaten_tujuan=toko.alamat)
+        if biayakirim.biaya > 0:
+            produkupdate = Produk.objects.filter(id=produs.id).update(kategoriongkoskirim=0)
+        else:
+            produkupdate = Produk.objects.filter(id=produs.id).update(kategoriongkoskirim=1)
     # untuk mengupdate kategori rating toko
     ratingtokos = Ratingtoko.objects.all()
     for rts in ratingtokos:
@@ -38,7 +49,6 @@ def produk_list(request, kategori_id=None):
         else:
             produkupdate = Produk.objects.filter(id=rp.produk_id_id).update(kategoriratingproduk=0)
     # untuk mengupdate kategori rating diskon
-    jumlah = len(ratingtokos)
     diskons = Produk.objects.all()
     for dk in diskons:
         if dk.diskon > 0:
@@ -68,7 +78,7 @@ def produk_list(request, kategori_id=None):
             produks = Produk.objects.filter(nama__icontains=query).filter(
                 kategori=kategori_id)  # .order_by('-id')[:9:1]
     return render(request, 'shop/produk/list.html', {'kategori': kategori, 'kategoris': kategoris,
-                                                     'produks': produks, 'jumlah': jumlah})
+                                                     'produks': produks,'dict':dict})
 
 
 # @login_required(login_url=settings.LOGIN_URL)
