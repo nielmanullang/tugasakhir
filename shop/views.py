@@ -18,22 +18,27 @@ import numpy as np
 from django.db.models import Count
 
 
-@login_required(login_url=settings.LOGIN_URL)
+# @login_required(login_url=settings.LOGIN_URL)
 def produk_list(request, kategori_id=None):
     kategori = None
     kategoris = Kategori.objects.all()
     produks = Produk.objects.filter(available=True)  # .order_by('-id')[:9:1]
     # untuk mengupdate kategori ongkos kirim berdasarkan yang login
     current_user = request.user
-    pelanggan = Pelanggan.objects.get(user_id=current_user.id)
-    selectsemuaproduk = Produk.objects.all()
-    for produs in selectsemuaproduk:
-        toko = Toko.objects.get(id=produs.toko_id_id)
-        biayakirim = Ongkoskirim.objects.get(kabupaten_asal=pelanggan.kabupaten, kabupaten_tujuan=toko.alamat)
-        if biayakirim.biaya > 0:
-            produkupdate = Produk.objects.filter(id=produs.id).update(kategoriongkoskirim=0)
-        else:
-            produkupdate = Produk.objects.filter(id=produs.id).update(kategoriongkoskirim=1)
+    if (current_user is not None):
+        try:
+            pelanggan = Pelanggan.objects.get(user_id=current_user.id)
+        except Pelanggan.DoesNotExist:
+            pelanggan = None
+        if (pelanggan is not None):
+            selectsemuaproduk = Produk.objects.all()
+            for produs in selectsemuaproduk:
+                toko = Toko.objects.get(id=produs.toko_id_id)
+                biayakirim = Ongkoskirim.objects.get(kabupaten_asal=pelanggan.kabupaten, kabupaten_tujuan=toko.alamat)
+                if biayakirim.biaya > 0:
+                    produkupdate = Produk.objects.filter(id=produs.id).update(kategoriongkoskirim=0)
+                else:
+                    produkupdate = Produk.objects.filter(id=produs.id).update(kategoriongkoskirim=1)
     # untuk mengupdate kategori rating toko
     ratingtokos = Ratingtoko.objects.all()
     for rts in ratingtokos:
@@ -60,8 +65,7 @@ def produk_list(request, kategori_id=None):
         produks = Produk.objects.filter(nama__icontains=query)
     if kategori_id:
         kategori = Produk.objects.all().filter(kategori_id=kategori_id).order_by('id')
-        # kmeans
-        # Importing the dataset untuk harga
+        # Importing the dataset untuk kmeans harga
         dff = read_frame(kategori, fieldnames=['nama', 'gambar', 'deskripsi', 'harga', 'diskon', 'stok', 'available'])
         Z = dff.iloc[:, [3]].values
         # Fitting K-Means to the dataset
@@ -75,10 +79,9 @@ def produk_list(request, kategori_id=None):
         produks = produks.filter(kategori=kategori)
         query = request.GET.get("search_produk")
         if query:
-            produks = Produk.objects.filter(nama__icontains=query).filter(
-                kategori=kategori_id)  # .order_by('-id')[:9:1]
+            produks = Produk.objects.filter(nama__icontains=query).filter(kategori=kategori_id)  # .order_by('-id')[:9:1]
     return render(request, 'shop/produk/list.html', {'kategori': kategori, 'kategoris': kategoris,
-                                                     'produks': produks,'dict':dict})
+                                                     'produks': produks})
 
 
 # @login_required(login_url=settings.LOGIN_URL)
@@ -91,17 +94,17 @@ def produk_detail(request, kategori_id, id):
         rating = 'belum tersedia'
     else:
         rating = ratings / count
-    produkss = Produk.objects.all().filter(kategori_id=kategori_id)
-    ps = Produk.objects.get(id=id)
-    tk = Toko.objects.get(nama=ps.toko_id)
-    current_user = request.user
-    pelanggans = Pelanggan.objects.get(user_id=current_user)
-    biayaKirim = Ongkoskirim.objects.get(kabupaten_asal=pelanggans.kabupaten, kabupaten_tujuan=tk.alamat)
-    pks = Produk.objects.get(id=id)
-    if biayaKirim.biaya > 0:
-        tokoupdate = Produk.objects.filter(id=pks.id).update(kategoriongkoskirim=0)
-    else:
-        tokoupdate = Produk.objects.filter(id=pks.id).update(kategoriongkoskirim=1)
+    # produkss = Produk.objects.all().filter(kategori_id=kategori_id)
+    # ps = Produk.objects.get(id=id)
+    # tk = Toko.objects.get(nama=ps.toko_id)
+    # current_user = request.user
+    # pelanggans = Pelanggan.objects.get(user_id=current_user)
+    # biayaKirim = Ongkoskirim.objects.get(kabupaten_asal=pelanggans.kabupaten, kabupaten_tujuan=tk.alamat)
+    # pks = Produk.objects.get(id=id)
+    # if biayaKirim.biaya > 0:
+    #     tokoupdate = Produk.objects.filter(id=pks.id).update(kategoriongkoskirim=0)
+    # else:
+    #     tokoupdate = Produk.objects.filter(id=pks.id).update(kategoriongkoskirim=1)
     return render(request, 'shop/produk/detail.html',
                   {'produk': produk, 'hargaakhir': hargaakhir, 'rating': rating})
 
