@@ -58,30 +58,30 @@ def beli(request, produk_id, pelanggan_id):
                 else:
                     nilaiongkoskirim = 1
 
-                produk = Produk.objects.get(id=produk_id)
-                kategori = Produk.objects.all().filter(kategori_id=produk.kategori).order_by('id')
-                kamus = []
-                index = 0
-                cek = {}
-                for kategoris in kategori:
-                    kamus.append(kategoris.harga)
-                    cek[kategoris.id] = index
-                    index += 1
-                # kmeans
-                # Importing the dataset untuk harga
-                dff = read_frame(kategori,
-                                 fieldnames=['nama', 'gambar', 'deskripsi', 'harga', 'diskon', 'stok', 'available'])
-                Z = dff.iloc[:, [4]].values
-                # Fitting K-Means to the dataset
-                kmeans = KMeans(n_clusters=2, init='k-means++', random_state=42)
-                y_kmeans = kmeans.fit_predict(Z)
-                clusterharga = cek[produk.id]
-                kmeanshargasss = y_kmeans[clusterharga]
+                # produk = Produk.objects.get(id=produk_id)
+                # kategori = Produk.objects.all().filter(kategori_id=produk.kategori).order_by('id')
+                # kamus = []
+                # index = 0
+                # cek = {}
+                # for kategoris in kategori:
+                #     kamus.append(kategoris.harga)
+                #     cek[kategoris.id] = index
+                #     index += 1
+                # # kmeans
+                # # Importing the dataset untuk harga
+                # dff = read_frame(kategori,
+                #                  fieldnames=['nama', 'gambar', 'deskripsi', 'harga', 'diskon', 'stok', 'available'])
+                # Z = dff.iloc[:, [4]].values
+                # # Fitting K-Means to the dataset
+                # kmeans = KMeans(n_clusters=2, init='k-means++', random_state=42)
+                # y_kmeans = kmeans.fit_predict(Z)
+                # clusterharga = cek[produk.id]
+                # kmeanshargasss = y_kmeans[clusterharga]
 
 
                 pesan = Pesan.objects.create(produk_id=produks.id,
                                                  harga=hargaakhir,
-                                                 kategori_harga=kmeanshargasss,
+                                                 kategori_harga=produks.kmeansharga,
                                                  biaya_pengiriman=ongkoskirim.biaya,
                                                  diskon=produks.diskon,
                                                  ratingproduk=nilairatingproduk,
@@ -89,7 +89,7 @@ def beli(request, produk_id, pelanggan_id):
                                                  pelanggan_id=pelanggans.id,
                                                  toko= produks.toko_id)
                 pesan.save()
-                pohonkeputusan = Pohonkeputusan.objects.create(kategoriharga=kmeanshargasss,
+                pohonkeputusan = Pohonkeputusan.objects.create(kategoriharga=produks.kmeansharga,
                                                                ongkoskirim=nilaiongkoskirim,
                                                                diskon=nilaidiskon,
                                                                ratingproduk=nilairatingproduk,

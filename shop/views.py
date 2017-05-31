@@ -39,6 +39,19 @@ def produk_list(request, kategori_id=None):
                     produkupdate = Produk.objects.filter(id=produs.id).update(kategoriongkoskirim=0)
                 else:
                     produkupdate = Produk.objects.filter(id=produs.id).update(kategoriongkoskirim=1)
+    #untuk mengupdate kmeans harga
+    selectsemuakategori = Kategori.objects.all()
+    for kateg in selectsemuakategori:
+        ketegori = Produk.objects.all().filter(kategori_id=kateg).order_by('id')
+        dff = read_frame(ketegori, fieldnames=['nama', 'gambar', 'deskripsi', 'harga', 'diskon', 'stok', 'available'])
+        Z = dff.iloc[:, [3]].values
+        # Fitting K-Means to the dataset
+        kmeans = KMeans(n_clusters=2, init='k-means++', random_state=42)
+        kmeanshargasss = kmeans.fit_predict(Z)
+        i = 0
+        for k in ketegori:
+            produk = Produk.objects.filter(id=k.id).update(kmeansharga=kmeanshargasss[i])
+            i += 1
     # untuk mengupdate kategori rating toko
     ratingtokos = Ratingtoko.objects.all()
     for rts in ratingtokos:
@@ -65,16 +78,16 @@ def produk_list(request, kategori_id=None):
         produks = Produk.objects.filter(nama__icontains=query)
     if kategori_id:
         kategori = Produk.objects.all().filter(kategori_id=kategori_id).order_by('id')
-        # Importing the dataset untuk kmeans harga
-        dff = read_frame(kategori, fieldnames=['nama', 'gambar', 'deskripsi', 'harga', 'diskon', 'stok', 'available'])
-        Z = dff.iloc[:, [3]].values
-        # Fitting K-Means to the dataset
-        kmeans = KMeans(n_clusters=2, init='k-means++', random_state=42)
-        kmeanshargasss = kmeans.fit_predict(Z)
-        i = 0
-        for k in kategori:
-            produk = Produk.objects.filter(id=k.id).update(kmeansharga=kmeanshargasss[i])
-            i += 1
+        # # Importing the dataset untuk kmeans harga
+        # dff = read_frame(kategori, fieldnames=['nama', 'gambar', 'deskripsi', 'harga', 'diskon', 'stok', 'available'])
+        # Z = dff.iloc[:, [3]].values
+        # # Fitting K-Means to the dataset
+        # kmeans = KMeans(n_clusters=2, init='k-means++', random_state=42)
+        # kmeanshargasss = kmeans.fit_predict(Z)
+        # i = 0
+        # for k in kategori:
+        #     produk = Produk.objects.filter(id=k.id).update(kmeansharga=kmeanshargasss[i])
+        #     i += 1
         kategori = get_object_or_404(Kategori, id=kategori_id)
         produks = produks.filter(kategori=kategori)
         query = request.GET.get("search_produk")
@@ -84,7 +97,6 @@ def produk_list(request, kategori_id=None):
                                                      'produks': produks})
 
 
-# @login_required(login_url=settings.LOGIN_URL)
 def produk_detail(request, kategori_id, id):
     produk = get_object_or_404(Produk, kategori_id=kategori_id, id=id, available=True)
     hargaakhir = produk.harga - (produk.harga * produk.diskon / 100)
@@ -94,17 +106,6 @@ def produk_detail(request, kategori_id, id):
         rating = 'belum tersedia'
     else:
         rating = ratings / count
-    # produkss = Produk.objects.all().filter(kategori_id=kategori_id)
-    # ps = Produk.objects.get(id=id)
-    # tk = Toko.objects.get(nama=ps.toko_id)
-    # current_user = request.user
-    # pelanggans = Pelanggan.objects.get(user_id=current_user)
-    # biayaKirim = Ongkoskirim.objects.get(kabupaten_asal=pelanggans.kabupaten, kabupaten_tujuan=tk.alamat)
-    # pks = Produk.objects.get(id=id)
-    # if biayaKirim.biaya > 0:
-    #     tokoupdate = Produk.objects.filter(id=pks.id).update(kategoriongkoskirim=0)
-    # else:
-    #     tokoupdate = Produk.objects.filter(id=pks.id).update(kategoriongkoskirim=1)
     return render(request, 'shop/produk/detail.html',
                   {'produk': produk, 'hargaakhir': hargaakhir, 'rating': rating})
 

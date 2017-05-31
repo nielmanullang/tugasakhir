@@ -66,25 +66,25 @@ def pre_handphone(request):
     Y = df.iloc[:, [5]].values
     X_count = qs.count()
 
+    # Fitting Decision Tree Classification to the Training set
+    classifier = DecisionTreeClassifier(criterion='entropy', random_state=0)
+    classifier.fit(X, Y)
+
     produk = Produk.objects.all().filter(kategori_id=3).order_by('id')
     df_xtrain = read_frame(produk,
                            fieldnames=['kmeansharga', 'kategoriongkoskirim', 'kategoridiskon', 'kategoriratingproduk',
                                        'kategoriratingtoko'])
     X_xtrain = df_xtrain.iloc[:, [0, 1, 2, 3, 4]].values
 
-    # Fitting Decision Tree Classification to the Training set
-    classifier = DecisionTreeClassifier(criterion='entropy', random_state=0)
-    clf = classifier.fit(X, Y)
-
     # Predicting the Test set results / gakpenting
     y_pred = classifier.predict(X_xtrain)
 
-    dot_data = tree.export_graphviz(clf, out_file=None)
-    graph = pydotplus.graph_from_dot_data(dot_data)
-    graph.write_png(current_user.username + '.PNG')
+    # dot_data = tree.export_graphviz(clf, out_file=None)
+    # graph = pydotplus.graph_from_dot_data(dot_data)
+    # graph.write_png(current_user.username + '.PNG')
 
     return render(request, 'pohonkeputusan/prediksihandphone.html',
-                  {'X': X, 'Y': Y, 'clf': clf, 'pelanggan': pelanggan, 'qs': qs,
+                  {'X': X, 'Y': Y, 'pelanggan': pelanggan, 'qs': qs,
                    'X_count': X_count, 'X_xtrain': X_xtrain, 'y_pred': y_pred, 'produk': produk})
 
 
@@ -114,9 +114,9 @@ def pre_televisi(request):
     # Predicting the Test set results / gakpenting
     y_pred = classifier.predict(X_xtrain)
 
-    dot_data = tree.export_graphviz(clf, out_file=None)
-    graph = pydotplus.graph_from_dot_data(dot_data)
-    graph.write_png(current_user.username + '.PNG')
+    # dot_data = tree.export_graphviz(clf, out_file=None)
+    # graph = pydotplus.graph_from_dot_data(dot_data)
+    # graph.write_png(current_user.username + '.PNG')
 
     return render(request, 'pohonkeputusan/prediksitelevisi.html',
                   {'X': X, 'Y': Y, 'clf': clf, 'pelanggan': pelanggan, 'qs': qs,
@@ -149,9 +149,9 @@ def pre_kulkas(request):
     # Predicting the Test set results / gakpenting
     y_pred = classifier.predict(X_xtrain)
 
-    dot_data = tree.export_graphviz(clf, out_file=None)
-    graph = pydotplus.graph_from_dot_data(dot_data)
-    graph.write_png(current_user.username + '.PNG')
+    # dot_data = tree.export_graphviz(clf, out_file=None)
+    # graph = pydotplus.graph_from_dot_data(dot_data)
+    # graph.write_png(current_user.username + '.PNG')
 
     return render(request, 'pohonkeputusan/prediksikulkas.html',
                   {'X': X, 'Y': Y, 'clf': clf, 'pelanggan': pelanggan, 'qs': qs,
