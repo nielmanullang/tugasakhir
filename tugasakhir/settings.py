@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'shop',
     'toko',
     'referensiongkir',
-    'pesanan',
     'django.contrib.humanize',
     'pohonkeputusan',
     'pesan'

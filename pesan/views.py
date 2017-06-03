@@ -13,6 +13,36 @@ import pandas.io.sql as psql
 import pandas as pd
 from sklearn.cluster import KMeans
 from django_pandas.io import read_frame
+import itertools
+
+
+def hitung(request):
+    current_user = request.user
+    if (current_user is not None):
+        try:
+            pelanggan = Pelanggan.objects.get(user_id=current_user.id)
+        except Pelanggan.DoesNotExist:
+            pelanggan = None
+        if (pelanggan is not None):
+            countdata = Pohonkeputusan.objects.all().filter(pelanggan=pelanggan.id).count()
+            if (countdata == 0):
+                pohonkeputusan = Pohonkeputusan.objects.create(kategoriharga=0,
+                                                               ongkoskirim=0,
+                                                               diskon=0,
+                                                               ratingproduk=0,
+                                                               ratingtoko=0,
+                                                               label=0,
+                                                               pelanggan=pelanggans.id)
+                pohonkeputusan = Pohonkeputusan.objects.create(kategoriharga=0,
+                                                               ongkoskirim=0,
+                                                               diskon=0,
+                                                               ratingproduk=0,
+                                                               ratingtoko=0,
+                                                               label=0,
+                                                               pelanggan=pelanggans.id)
+                pohonkeputusan.save()
+
+                return render(request, 'pesan/pembelian.html', {'pembelian': pembelian})
 
 
 def beli(request, produk_id, pelanggan_id):
@@ -28,7 +58,8 @@ def beli(request, produk_id, pelanggan_id):
                 produks = Produk.objects.get(id=produk_id)
                 toko = Toko.objects.get(id=produks.toko_id_id)
                 hargaakhir = produks.harga - (produks.harga * produks.diskon / 100)
-                ratingproduks = Ratingproduk.objects.all().filter(produk_id=produk_id).aggregate(sum=Sum('ratingproduk'))['sum']
+                ratingproduks = \
+                    Ratingproduk.objects.all().filter(produk_id=produk_id).aggregate(sum=Sum('ratingproduk'))['sum']
                 count = Ratingproduk.objects.all().filter(produk_id=produk_id).count()
                 if count == 0:
                     ratingproduk = 0
@@ -58,45 +89,46 @@ def beli(request, produk_id, pelanggan_id):
                 else:
                     nilaiongkoskirim = 1
 
-                # produk = Produk.objects.get(id=produk_id)
-                # kategori = Produk.objects.all().filter(kategori_id=produk.kategori).order_by('id')
-                # kamus = []
-                # index = 0
-                # cek = {}
-                # for kategoris in kategori:
-                #     kamus.append(kategoris.harga)
-                #     cek[kategoris.id] = index
-                #     index += 1
-                # # kmeans
-                # # Importing the dataset untuk harga
-                # dff = read_frame(kategori,
-                #                  fieldnames=['nama', 'gambar', 'deskripsi', 'harga', 'diskon', 'stok', 'available'])
-                # Z = dff.iloc[:, [4]].values
-                # # Fitting K-Means to the dataset
-                # kmeans = KMeans(n_clusters=2, init='k-means++', random_state=42)
-                # y_kmeans = kmeans.fit_predict(Z)
-                # clusterharga = cek[produk.id]
-                # kmeanshargasss = y_kmeans[clusterharga]
-
-
                 pesan = Pesan.objects.create(produk_id=produks.id,
-                                                 harga=hargaakhir,
-                                                 kategori_harga=produks.kmeansharga,
-                                                 biaya_pengiriman=ongkoskirim.biaya,
-                                                 diskon=produks.diskon,
-                                                 ratingproduk=nilairatingproduk,
-                                                 ratingtoko=nilairatingtoko,
-                                                 pelanggan_id=pelanggans.id,
-                                                 toko= produks.toko_id)
+                                             harga=hargaakhir,
+                                             kategori_harga=produks.kmeansharga,
+                                             biaya_pengiriman=ongkoskirim.biaya,
+                                             diskon=produks.diskon,
+                                             ratingproduk=nilairatingproduk,
+                                             ratingtoko=nilairatingtoko,
+                                             pelanggan_id=pelanggans.id,
+                                             toko=produks.toko_id)
                 pesan.save()
-                pohonkeputusan = Pohonkeputusan.objects.create(kategoriharga=produks.kmeansharga,
-                                                               ongkoskirim=nilaiongkoskirim,
-                                                               diskon=nilaidiskon,
-                                                               ratingproduk=nilairatingproduk,
-                                                               ratingtoko=nilairatingtoko,
-                                                               label=1,
-                                                               pelanggan=pelanggans.id)
-                pohonkeputusan.save()
+                # pohonkeputusan = Pohonkeputusan.objects.create(kategoriharga=produks.kmeansharga,
+                #                                                ongkoskirim=nilaiongkoskirim,
+                #                                                diskon=nilaidiskon,
+                #                                                ratingproduk=nilairatingproduk,
+                #                                                ratingtoko=nilairatingtoko,
+                #                                                label=1,
+                #                                                pelanggan=pelanggans.id)
+                # pohonkeputusan.save()
+                countdata = Pohonkeputusan.objects.all().filter(pelanggan=pelanggan.id).count()
+                belanjasaya = str(produks.kmeansharga)+str(nilaiongkoskirim)+str(nilaidiskon)+str(nilairatingproduk)+str(nilairatingtoko)
+                if (countdata == 0):
+                    kombinasi = ["".join(seq) for seq in itertools.product("01", repeat=5)]
+                    for kom in kombinasi:
+                        label = 0
+                        if kom == belanjasaya:
+                            label = 1
+                        pohonkeputusan = Pohonkeputusan.objects.create(kategoriharga=kom[0],
+                                                                       ongkoskirim=kom[1],
+                                                                       diskon=kom[2],
+                                                                       ratingproduk=kom[3],
+                                                                       ratingtoko=kom[4],
+                                                                       label=label,
+                                                                       pelanggan=pelanggans.id)
+                else:
+                    pohonkeputusanupdate = Pohonkeputusan.objects.filter(kategoriharga=produks.kmeansharga,
+                                                                         ongkoskirim=nilaiongkoskirim,
+                                                                         diskon=nilaidiskon,
+                                                                         ratingproduk=nilairatingproduk,
+                                                                         ratingtoko=nilairatingtoko).update(label=1)
+
             return render(request, 'pesan/order/created.html')
         else:
             return render(request, 'pesan/pelanggan_null.html')
