@@ -88,6 +88,33 @@ def pre_handphone(request):
                    'X_count': X_count, 'X_xtrain': X_xtrain, 'y_pred': y_pred, 'produk': produk})
 
 
+def prediksi(request):
+    current_user = request.user
+    pelanggan = Pelanggan.objects.get(user_id=current_user.id)
+    # qs untuk mencari data yang login dan pelanggan ber id 0
+    qs = Pohonkeputusan.objects.all().filter(pelanggan=pelanggan.id)
+
+    df = read_frame(qs, fieldnames=['kategoriharga', 'ongkoskirim', 'diskon', 'ratingproduk', 'ratingtoko', 'label'])
+    X = df.iloc[:, [0, 1, 2, 3, 4]].values
+    Y = df.iloc[:, [5]].values
+    X_count = qs.count()
+
+    # Fitting Decision Tree Classification to the Training set
+    classifier = DecisionTreeClassifier(criterion='entropy', random_state=0)
+    classifier.fit(X, Y)
+
+    produk = Produk.objects.all()
+    df_xtrain = read_frame(produk,
+                           fieldnames=['kmeansharga', 'kategoriongkoskirim', 'kategoridiskon', 'kategoriratingproduk',
+                                       'kategoriratingtoko'])
+    X_xtrain = df_xtrain.iloc[:, [0, 1, 2, 3, 4]].values
+    y_pred = classifier.predict(X_xtrain)
+
+    return render(request, 'pohonkeputusan/prediksihandphone.html',
+                  {'X': X, 'Y': Y, 'pelanggan': pelanggan, 'qs': qs,
+                   'X_count': X_count, 'X_xtrain': X_xtrain, 'y_pred': y_pred, 'produk': produk})
+
+
 def pre_televisi(request):
     current_user = request.user
     pelanggan = Pelanggan.objects.get(user_id=current_user.id)
@@ -156,15 +183,3 @@ def pre_kulkas(request):
     return render(request, 'pohonkeputusan/prediksikulkas.html',
                   {'X': X, 'Y': Y, 'clf': clf, 'pelanggan': pelanggan, 'qs': qs,
                    'X_count': X_count, 'X_xtrain': X_xtrain, 'y_pred': y_pred, 'produk': produk})
-
-
-def some_view(request):
-    # Create the HttpResponse object with the appropriate CSV header.
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="somefilename.csv"'
-
-    writer = csv.writer(response)
-    writer.writerow(['First row', 'Foo', 'Bar', 'Baz'])
-    writer.writerow(['Second row', 'A', 'B', 'C', '"Testing"', "Here's a quote"])
-
-    return response

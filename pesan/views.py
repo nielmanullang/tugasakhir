@@ -16,35 +16,6 @@ from django_pandas.io import read_frame
 import itertools
 
 
-def hitung(request):
-    current_user = request.user
-    if (current_user is not None):
-        try:
-            pelanggan = Pelanggan.objects.get(user_id=current_user.id)
-        except Pelanggan.DoesNotExist:
-            pelanggan = None
-        if (pelanggan is not None):
-            countdata = Pohonkeputusan.objects.all().filter(pelanggan=pelanggan.id).count()
-            if (countdata == 0):
-                pohonkeputusan = Pohonkeputusan.objects.create(kategoriharga=0,
-                                                               ongkoskirim=0,
-                                                               diskon=0,
-                                                               ratingproduk=0,
-                                                               ratingtoko=0,
-                                                               label=0,
-                                                               pelanggan=pelanggans.id)
-                pohonkeputusan = Pohonkeputusan.objects.create(kategoriharga=0,
-                                                               ongkoskirim=0,
-                                                               diskon=0,
-                                                               ratingproduk=0,
-                                                               ratingtoko=0,
-                                                               label=0,
-                                                               pelanggan=pelanggans.id)
-                pohonkeputusan.save()
-
-                return render(request, 'pesan/pembelian.html', {'pembelian': pembelian})
-
-
 def beli(request, produk_id, pelanggan_id):
     current_user = request.user
     if (current_user is not None):
@@ -99,16 +70,9 @@ def beli(request, produk_id, pelanggan_id):
                                              pelanggan_id=pelanggans.id,
                                              toko=produks.toko_id)
                 pesan.save()
-                # pohonkeputusan = Pohonkeputusan.objects.create(kategoriharga=produks.kmeansharga,
-                #                                                ongkoskirim=nilaiongkoskirim,
-                #                                                diskon=nilaidiskon,
-                #                                                ratingproduk=nilairatingproduk,
-                #                                                ratingtoko=nilairatingtoko,
-                #                                                label=1,
-                #                                                pelanggan=pelanggans.id)
-                # pohonkeputusan.save()
                 countdata = Pohonkeputusan.objects.all().filter(pelanggan=pelanggan.id).count()
-                belanjasaya = str(produks.kmeansharga)+str(nilaiongkoskirim)+str(nilaidiskon)+str(nilairatingproduk)+str(nilairatingtoko)
+                belanjasaya = str(produks.kmeansharga) + str(nilaiongkoskirim) + str(nilaidiskon) + str(
+                    nilairatingproduk) + str(nilairatingtoko)
                 if (countdata == 0):
                     kombinasi = ["".join(seq) for seq in itertools.product("01", repeat=5)]
                     for kom in kombinasi:

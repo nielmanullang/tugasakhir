@@ -39,11 +39,11 @@ urlpatterns = [
     url(r'^login/', homepage_views.login_view),
     url(r'^register/', homepage_views.register_page),
     url(r'^logout/', homepage_views.logout_view),
-    url(r'^some_view/', pohonkeputusan_views.some_view),
     url(r'^decisiontree/', pohonkeputusan_views.decisiontree),
     url(r'^pre_kulkas/', pohonkeputusan_views.pre_kulkas),
     url(r'^pre_handphone/', pohonkeputusan_views.pre_handphone),
     url(r'^pre_televisi/', pohonkeputusan_views.pre_televisi),
+    url(r'^prediksi/', pohonkeputusan_views.prediksi),
     url(r'^', include('shop.urls', namespace='shop')),
     url(r'^beli/',pesan_views.beli),
 ]
