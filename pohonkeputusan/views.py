@@ -91,24 +91,47 @@ def pre_handphone(request):
 def prediksi(request):
     current_user = request.user
     pelanggan = Pelanggan.objects.get(user_id=current_user.id)
-    # qs untuk mencari data yang login dan pelanggan ber id 0
-    qs = Pohonkeputusan.objects.all().filter(pelanggan=pelanggan.id)
+    countdata = Pohonkeputusan.objects.all().filter(pelanggan=pelanggan.id).count()
+    if (countdata == 0):
+        qs = Pohonkeputusan.objects.all().filter(perdaerah=pelanggan.kabupaten)
 
-    df = read_frame(qs, fieldnames=['kategoriharga', 'ongkoskirim', 'diskon', 'ratingproduk', 'ratingtoko', 'label'])
-    X = df.iloc[:, [0, 1, 2, 3, 4]].values
-    Y = df.iloc[:, [5]].values
-    X_count = qs.count()
+        df = read_frame(qs,
+                        fieldnames=['kategoriharga', 'ongkoskirim', 'diskon', 'ratingproduk', 'ratingtoko', 'label'])
+        X = df.iloc[:, [0, 1, 2, 3, 4]].values
+        Y = df.iloc[:, [5]].values
+        X_count = qs.count()
 
-    # Fitting Decision Tree Classification to the Training set
-    classifier = DecisionTreeClassifier(criterion='entropy', random_state=0)
-    classifier.fit(X, Y)
+        # Fitting Decision Tree Classification to the Training set
+        classifier = DecisionTreeClassifier(criterion='entropy', random_state=0)
+        classifier.fit(X, Y)
 
-    produk = Produk.objects.all()
-    df_xtrain = read_frame(produk,
-                           fieldnames=['kmeansharga', 'kategoriongkoskirim', 'kategoridiskon', 'kategoriratingproduk',
-                                       'kategoriratingtoko'])
-    X_xtrain = df_xtrain.iloc[:, [0, 1, 2, 3, 4]].values
-    y_pred = classifier.predict(X_xtrain)
+        produk = Produk.objects.all()
+        df_xtrain = read_frame(produk,
+                               fieldnames=['kmeansharga', 'kategoriongkoskirim', 'kategoridiskon',
+                                           'kategoriratingproduk',
+                                           'kategoriratingtoko'])
+        X_xtrain = df_xtrain.iloc[:, [0, 1, 2, 3, 4]].values
+        y_pred = classifier.predict(X_xtrain)
+    else:
+        qs = Pohonkeputusan.objects.all().filter(pelanggan=pelanggan.id)
+
+        df = read_frame(qs,
+                        fieldnames=['kategoriharga', 'ongkoskirim', 'diskon', 'ratingproduk', 'ratingtoko', 'label'])
+        X = df.iloc[:, [0, 1, 2, 3, 4]].values
+        Y = df.iloc[:, [5]].values
+        X_count = qs.count()
+
+        # Fitting Decision Tree Classification to the Training set
+        classifier = DecisionTreeClassifier(criterion='entropy', random_state=0)
+        classifier.fit(X, Y)
+
+        produk = Produk.objects.all()
+        df_xtrain = read_frame(produk,
+                               fieldnames=['kmeansharga', 'kategoriongkoskirim', 'kategoridiskon',
+                                           'kategoriratingproduk',
+                                           'kategoriratingtoko'])
+        X_xtrain = df_xtrain.iloc[:, [0, 1, 2, 3, 4]].values
+        y_pred = classifier.predict(X_xtrain)
 
     return render(request, 'pohonkeputusan/prediksihandphone.html',
                   {'X': X, 'Y': Y, 'pelanggan': pelanggan, 'qs': qs,

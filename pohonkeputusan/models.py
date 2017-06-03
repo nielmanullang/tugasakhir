@@ -11,3 +11,4 @@ class Pohonkeputusan(models.Model):
     ratingtoko = models.PositiveIntegerField()
     label = models.PositiveIntegerField()
     pelanggan = models.PositiveIntegerField()
+    perdaerah = models.CharField(max_length=32, null=True)

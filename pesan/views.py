@@ -85,7 +85,8 @@ def beli(request, produk_id, pelanggan_id):
                                                                        ratingproduk=kom[3],
                                                                        ratingtoko=kom[4],
                                                                        label=label,
-                                                                       pelanggan=pelanggans.id)
+                                                                       pelanggan=pelanggans.id,
+                                                                       perdaerah=pelanggan.kabupaten)
                 else:
                     pohonkeputusanupdate = Pohonkeputusan.objects.filter(kategoriharga=produks.kmeansharga,
                                                                          ongkoskirim=nilaiongkoskirim,
