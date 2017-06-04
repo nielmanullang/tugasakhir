@@ -1,11 +1,11 @@
 {% extends "shop/base.html" %}
 {% load static %}
-
+{% load humanize %}
 {% block title %}
-    Prediksi
+{{ pelanggan.nama }}
 {% endblock %}
 
 {% block content %}
 <h1>Selamat datang, <b>{{ pelanggan.nama }} </b></h1>
-    <p>Belum tersedia rekomendasi untuk Anda.<p>
+Decision Tree tidak berhasil digenerate
 {% endblock %}

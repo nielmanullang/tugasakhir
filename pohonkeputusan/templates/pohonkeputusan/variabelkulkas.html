@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-<h1>Selamat datang, <b>{{ pelanggan.nama }} </b></h1>
+<h2>Berikut dataset versi {{ pelanggan.nama }} :</h2>
 <table>
     <tr>
         <td>
@@ -30,12 +30,6 @@
         <td>
             <p><b>harga,ongkir,diskon,ratingproduk,ratingtoko </b></p>
             {% for q in X_xtrain %}
-            <p>{{q}}</p>
-            {% endfor %}
-        </td>
-        <td>
-            <p><b>Prediksi</b></p>
-            {% for q in y_pred %}
             <p>{{q}}</p>
             {% endfor %}
         </td>
