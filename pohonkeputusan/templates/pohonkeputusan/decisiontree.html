@@ -8,4 +8,8 @@
 {% block content %}
 <h1>Selamat datang, <b>{{ pelanggan.nama }} </b></h1>
 Decision Tree berhasil digenerate
+<p>Banyak Sample: {{ userlogin.count}}</p>
+{% for q in userlogin %}
+    <p>{{q}}</p>
+{% endfor %}
 {% endblock %}

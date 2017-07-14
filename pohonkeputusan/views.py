@@ -44,10 +44,13 @@ def decisiontree(request):
         pelanggan = Pelanggan.objects.get(user_id=current_user.id)
         sedaerah = Pohonkeputusan.objects.all().filter(perdaerah=pelanggan.kabupaten).count()
         if sedaerah > 0:
-            userlogin = Pohonkeputusan.objects.all().filter(perdaerah=pelanggan.kabupaten)
-            df = read_frame(userlogin,
-                            fieldnames=['kategoriharga', 'ongkoskirim', 'diskon', 'ratingproduk', 'ratingtoko',
-                                        'label'])
+            userlogin = Pohonkeputusan.objects.filter(perdaerah=pelanggan.kabupaten).order_by('-label').values_list('kategoriharga', 'ongkoskirim', 'diskon', 'ratingproduk', 'ratingtoko',).distinct()
+            # userlogins = Pohonkeputusan.objects.values('designation').annotate(dcount=Count('designation'))
+            #userlogin = Pohonkeputusan.objects.filter(perdaerah='Kabupaten Toba Samosir').order_by('-label').values_list('kategoriharga', 'ongkoskirim', 'diskon', 'ratingproduk', 'ratingtoko').annotate(dcount=Count('kategoriharga')).annotate(dcount=Count('ongkoskirim')).annotate(dcount=Count('diskon')).annotate(dcount=Count('ratingproduk')).annotate(dcount=Count('ratingtoko')).annotate(dcount=Count('label'))
+            #userlogins = Pohonkeputusan.objects.filter(perdaerah=pelanggan.kabupaten).order_by('-label').values_list('kategoriharga', 'ongkoskirim', 'diskon', 'ratingproduk', 'ratingtoko').annotate(dcount=Count('kategoriharga')).annotate(dcount=Count('ongkoskirim')).annotate(dcount=Count('diskon')).annotate(dcount=Count('ratingproduk')).annotate(dcount=Count('ratingtoko')).annotate(dcount=Count('label'))
+            #user = Pohonkeputusan.objects.filter(perdaerah=pelanggan.kabupaten).order_by('-label').values_list('kategoriharga', 'ongkoskirim', 'diskon', 'ratingproduk', 'ratingtoko')
+            #userlogins = login.annotate(Count('kategoriharga'), Count('ongkoskirim'), Count('diskon'), Count('ratingproduk'), Count('ratingtoko'))
+            df = read_frame(userlogin, fieldnames=['kategoriharga', 'ongkoskirim', 'diskon', 'ratingproduk', 'ratingtoko', 'label'])
             X = df.iloc[:, [0, 1, 2, 3, 4]].values
             Y = df.iloc[:, [5]].values
 
@@ -60,8 +63,8 @@ def decisiontree(request):
             graph.write_png(current_user.username + '.PNG')
         else:
             return render(request, 'pohonkeputusan/belumadatree.html', {'pelanggan': pelanggan})
-        return render(request, 'pohonkeputusan/decisiontree.html', {'pelanggan': pelanggan})
-    return render(request, 'pohonkeputusan/decisiontree.html', {'pelanggan': pelanggan})
+        return render(request, 'pohonkeputusan/decisiontree.html', {'pelanggan': pelanggan, 'userlogin':userlogin})
+    return render(request, 'pohonkeputusan/decisiontree.html', {'pelanggan': pelanggan, 'userlogin':userlogin})
 
 
 def pre_handphone(request):
@@ -70,8 +73,7 @@ def pre_handphone(request):
     countdata = Pohonkeputusan.objects.all().filter(pelanggan=pelanggan.id).count()
     if countdata > 0:
         userlogin = Pohonkeputusan.objects.all().filter(pelanggan=pelanggan.id)
-        df = read_frame(userlogin,
-                        fieldnames=['kategoriharga', 'ongkoskirim', 'diskon', 'ratingproduk', 'ratingtoko', 'label'])
+        df = read_frame(userlogin, fieldnames=['kategoriharga', 'ongkoskirim', 'diskon', 'ratingproduk', 'ratingtoko', 'label'])
         X = df.iloc[:, [0, 1, 2, 3, 4]].values
         Y = df.iloc[:, [5]].values
 

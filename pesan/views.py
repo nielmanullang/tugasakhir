@@ -14,7 +14,7 @@ import pandas as pd
 from sklearn.cluster import KMeans
 from django_pandas.io import read_frame
 import itertools
-
+from datetime import datetime
 
 def beli(request, produk_id, pelanggan_id):
     current_user = request.user

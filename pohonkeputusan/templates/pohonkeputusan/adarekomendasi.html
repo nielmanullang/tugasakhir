@@ -10,9 +10,15 @@
 <table>
     <tr>
         <td>
+            <p><b>Id Produk</b></p>
+            {% for q in produk %}
+            <p>{{q.id}}</p>
+            {% endfor %}
+        </td>
+        <td>
             <p><b>Nama Produk</b></p>
             {% for q in produk %}
-            <p>{{q}}</p>
+            <p>{{q.nama}}</p>
             {% endfor %}
         </td>
         <td>
