@@ -32,6 +32,15 @@ def produk_list(request, kategori_id=None):
         except Pelanggan.DoesNotExist:
             pelanggan = None
         if (pelanggan is not None):
+            rekomendasi = Rekomendasi.objects.filter(prediksi=1, pelanggan=pelanggan.id)
+        else:
+            rekomendasi = 'Belum ada rekomendasi untuk Anda'
+    if (current_user is not None):
+        try:
+            pelanggan = Pelanggan.objects.get(user_id=current_user.id)
+        except Pelanggan.DoesNotExist:
+            pelanggan = None
+        if (pelanggan is not None):
             selectsemuaproduk = Produk.objects.all()
             for produs in selectsemuaproduk:
                 toko = Toko.objects.get(id=produs.toko_id_id)

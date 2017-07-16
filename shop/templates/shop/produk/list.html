@@ -30,7 +30,8 @@
                 <input type="submit" value="Search">
             </form>
         {% endif %}</h1>
-        {% for rek in rekomendasi %}
+        {% if user.is_authenticated %}
+            {% for rek in rekomendasi %}
             <div class="rekomendasi">
                 Rekomendasi untuk Anda
                 <a href="{{ rek.get_absolute_url }}">
@@ -43,7 +44,10 @@
                 {% endif %}
             </div>
         {% endfor %}
-            <div class="enter"></div>
+        {% else %}
+
+        {% endif %}
+        <div class="enter"></div>
         {% for produk in produks %}
             <div class="item">
                 <a href="{{ produk.get_absolute_url }}">

@@ -133,8 +133,10 @@ def login_view(request):
 
 
 def logout_view(request):
+    current_user = request.user
+    pelanggan = Pelanggan.objects.get(user_id=current_user.id)
+    Rekomendasi.objects.filter(pelanggan=pelanggan.id).delete()
     logout(request)
-    Rekomendasi.objects.all().delete()
     return redirect('/login/')
 
 
