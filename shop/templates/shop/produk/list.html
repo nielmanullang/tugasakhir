@@ -30,6 +30,20 @@
                 <input type="submit" value="Search">
             </form>
         {% endif %}</h1>
+        {% for rek in rekomendasi %}
+            <div class="rekomendasi">
+                Rekomendasi untuk Anda
+                <a href="{{ rek.get_absolute_url }}">
+                    <img src="{% if rek.produk_gambar %}{{ rek.produk_gambar.url }} {% else %}{% static "img/no_image.png" %}{% endif %}">
+                </a>
+                <a href="{{ rek.get_absolute_url }}">{{ rek.produk_nama }}</a><br>
+                Rp.{{ rek.produk_harga | intcomma }}
+                {% if rek.diskon != 0 %}
+                    diskon {{ rek.produk_diskon }}%
+                {% endif %}
+            </div>
+        {% endfor %}
+            <div class="enter"></div>
         {% for produk in produks %}
             <div class="item">
                 <a href="{{ produk.get_absolute_url }}">

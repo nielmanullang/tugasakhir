@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Kategori, Produk, Ratingproduk
+from .models import Kategori, Produk, Ratingproduk, Rekomendasi
 from .forms import CreatePrudukForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
@@ -25,6 +25,7 @@ def produk_list(request, kategori_id=None):
     produks = Produk.objects.filter(available=True)  # .order_by('-id')[:9:1]
     # untuk mengupdate kategori ongkos kirim berdasarkan yang login
     current_user = request.user
+    rekomendasi = Rekomendasi.objects.filter(prediksi=1)
     if (current_user is not None):
         try:
             pelanggan = Pelanggan.objects.get(user_id=current_user.id)
@@ -94,7 +95,7 @@ def produk_list(request, kategori_id=None):
         if query:
             produks = Produk.objects.filter(nama__icontains=query).filter(kategori=kategori_id)  # .order_by('-id')[:9:1]
     return render(request, 'shop/produk/list.html', {'kategori': kategori, 'kategoris': kategoris,
-                                                     'produks': produks})
+                                                     'produks': produks, 'rekomendasi':rekomendasi})
 
 
 def produk_detail(request, kategori_id, id):

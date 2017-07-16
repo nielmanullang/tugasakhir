@@ -44,3 +44,25 @@ class Ratingproduk(models.Model):
     pelanggan_id = models.ForeignKey(Pelanggan, related_name='pelangganr')
     ratingproduk = models.DecimalField(max_digits=2, decimal_places=0)
     komentar = models.TextField(blank=True)
+
+
+class Rekomendasi(models.Model):
+    produk_id = models.PositiveIntegerField()
+    produk_kategori = models.PositiveIntegerField(null=True)
+    produk_nama = models.CharField(max_length=200, db_index=True)
+    produk_gambar = models.ImageField(upload_to='produk/', blank=True)
+    produk_harga = models.DecimalField(max_digits=10, decimal_places=0)
+    produk_diskon = models.DecimalField(max_digits=2, decimal_places=0)
+    n_harga = models.PositiveIntegerField()
+    n_ongkir = models.PositiveIntegerField()
+    n_diskon = models.PositiveIntegerField()
+    n_ratingproduk =  models.PositiveIntegerField()
+    n_ratingtoko =  models.PositiveIntegerField()
+    prediksi = models.PositiveIntegerField()
+    pelanggan = models.PositiveIntegerField()
+
+    def __str__(self):
+        return self.produk_nama
+
+    def get_absolute_url(self):
+        return reverse('shop:produk_detail', args=[self.produk_kategori, self.produk_id])

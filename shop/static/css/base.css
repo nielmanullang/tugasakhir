@@ -217,6 +217,19 @@ ul.errorlist {
     line-height:1.2;
 }
 
+.product-list .rekomendasi {
+    width:25%;
+    padding:10px 20px 10px 0;
+    float:left;
+    text-align:center;
+    line-height:1.2;
+}
+
+.product-list .rekomendasi img {
+    width:300px;
+    height:300px
+}
+
 .product-list .item img {
     width:300px;
     height:300px

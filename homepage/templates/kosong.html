@@ -1,0 +1,15 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% load humanize %}
+{% block title %}
+{{ pelanggan.nama }}
+{% endblock %}
+
+{% block content %}
+<h1>Selamat datang, <b>{{ pelanggan.nama}} </b></h1>
+a: {{produks}}
+<br>
+b: {{X_xtrain}}
+<br>
+c: {{y_pred}}
+{% endblock %}
