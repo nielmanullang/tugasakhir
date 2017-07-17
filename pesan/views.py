@@ -15,6 +15,7 @@ from sklearn.cluster import KMeans
 from django_pandas.io import read_frame
 import itertools
 from datetime import datetime
+from django.utils import timezone
 
 def beli(request, produk_id, pelanggan_id):
     current_user = request.user
@@ -79,7 +80,8 @@ def beli(request, produk_id, pelanggan_id):
                         label = 0
                         if kom == belanjasaya:
                             label = 1
-                        pohonkeputusan = Pohonkeputusan.objects.create(kategoriharga=kom[0],
+                        pohonkeputusan = Pohonkeputusan.objects.create(waktu_transaksi=datetime.now(),
+                                                                       kategoriharga=kom[0],
                                                                        ongkoskirim=kom[1],
                                                                        diskon=kom[2],
                                                                        ratingproduk=kom[3],
@@ -92,7 +94,7 @@ def beli(request, produk_id, pelanggan_id):
                                                                          ongkoskirim=nilaiongkoskirim,
                                                                          diskon=nilaidiskon,
                                                                          ratingproduk=nilairatingproduk,
-                                                                         ratingtoko=nilairatingtoko).update(label=1)
+                                                                         ratingtoko=nilairatingtoko).update(label=1, waktu_transaksi=datetime.today())
 
             return render(request, 'pesan/order/created.html')
         else:
