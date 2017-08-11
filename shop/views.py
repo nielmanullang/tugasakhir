@@ -35,93 +35,93 @@ def produk_list(request, kategori_id=None):
     current_user = request.user
     rekomendasi = Rekomendasi.objects.filter(prediksi=1)
 
-    if (current_user is not None):
-        try:
-            pelanggan = Pelanggan.objects.get(user_id=current_user.id)
-        except Pelanggan.DoesNotExist:
-            pelanggan = None
-        if (pelanggan is not None):
-            # rekomendasi insert to table
-            countdata = Pohonkeputusan.objects.all().filter(pelanggan=pelanggan.id).count()
-            if countdata > 0:
-                userlogin = Pohonkeputusan.objects.all().filter(pelanggan=pelanggan.id)
-                df = read_frame(userlogin,
-                                fieldnames=['kategoriharga', 'ongkoskirim', 'diskon', 'ratingproduk',
-                                            'ratingtoko', 'label'])
-                X = df.iloc[:, [0, 1, 2, 3, 4]].values
-                Y = df.iloc[:, [5]].values
-
-                # Fitting Decision Tree Classification to the Training set
-                classifier = DecisionTreeClassifier(criterion='entropy', random_state=0)
-                classifier.fit(X, Y)
-
-                produks = Produk.objects.all().order_by('id')
-                df_xtrain = read_frame(produks,
-                                       fieldnames=['kmeansharga', 'kategoriongkoskirim', 'kategoridiskon',
-                                                   'kategoriratingproduk',
-                                                   'kategoriratingtoko'])
-                X_xtrain = df_xtrain.iloc[:, [0, 1, 2, 3, 4]].values
-                y_pred = classifier.predict(X_xtrain)
-                i = 0
-                for produk in produks:
-                    rekomendasi = Rekomendasi.objects.create(produk_id=produk.id,
-                                                             produk_kategori=produk.kategori_id,
-                                                             produk_nama=produk.nama,
-                                                             produk_gambar=produk.gambar,
-                                                             produk_harga=produk.harga,
-                                                             produk_diskon=produk.diskon,
-                                                             n_harga=X_xtrain[i][0],
-                                                             n_ongkir=X_xtrain[i][1],
-                                                             n_diskon=X_xtrain[i][2],
-                                                             n_ratingproduk=X_xtrain[i][3],
-                                                             n_ratingtoko=X_xtrain[i][4],
-                                                             prediksi=y_pred[i],
-                                                             pelanggan=pelanggan.id)
-                    i = i + 1
-            else:
-                current_user = request.user
-                pelanggan = Pelanggan.objects.get(user_id=current_user.id)
-                sedaerah = Pohonkeputusan.objects.all().filter(perdaerah=pelanggan.kabupaten).count()
-                if sedaerah > 0:
-                    userlogin = Pohonkeputusan.objects.filter(perdaerah=pelanggan.kabupaten).order_by(
-                        '-label').values_list('kategoriharga', 'ongkoskirim', 'diskon', 'ratingproduk',
-                                              'ratingtoko').distinct()
-                    df = read_frame(userlogin,
-                                    fieldnames=['kategoriharga', 'ongkoskirim', 'diskon', 'ratingproduk',
-                                                'ratingtoko',
-                                                'label'])
-                    X = df.iloc[:, [0, 1, 2, 3, 4]].values
-                    Y = df.iloc[:, [5]].values
-
-                    # Fitting Decision Tree Classification to the Training set
-                    classifier = DecisionTreeClassifier(criterion='entropy', random_state=0)
-                    classifier.fit(X, Y)
-
-                    produk = Produk.objects.all().order_by('id')
-                    df_xtrain = read_frame(produk,
-                                           fieldnames=['kmeansharga', 'kategoriongkoskirim', 'kategoridiskon',
-                                                       'kategoriratingproduk',
-                                                       'kategoriratingtoko'])
-                    X_xtrain = df_xtrain.iloc[:, [0, 1, 2, 3, 4]].values
-                    y_pred = classifier.predict(X_xtrain)
-
-                    i = 0
-                    for produk in produks:
-                        rekomendasi = Rekomendasi.objects.create(produk_id=produk.id,
-                                                                 produk_kategori=produk.kategori_id,
-                                                                 produk_nama=produk.nama,
-                                                                 produk_gambar=produk.gambar,
-                                                                 produk_harga=produk.harga,
-                                                                 produk_diskon=produk.diskon,
-                                                                 n_harga=X_xtrain[i][0],
-                                                                 n_ongkir=X_xtrain[i][1],
-                                                                 n_diskon=X_xtrain[i][2],
-                                                                 n_ratingproduk=X_xtrain[i][3],
-                                                                 n_ratingtoko=X_xtrain[i][4],
-                                                                 prediksi=y_pred[i],
-                                                                 pelanggan=pelanggan.id)
-                        i = i + 1
-                        # end rekomendasi insert to table
+    # if (current_user is not None):
+    #     try:
+    #         pelanggan = Pelanggan.objects.get(user_id=current_user.id)
+    #     except Pelanggan.DoesNotExist:
+    #         pelanggan = None
+    #     if (pelanggan is not None):
+    #         # rekomendasi insert to table
+    #         countdata = Pohonkeputusan.objects.all().filter(pelanggan=pelanggan.id).count()
+    #         if countdata > 0:
+    #             userlogin = Pohonkeputusan.objects.all().filter(pelanggan=pelanggan.id)
+    #             df = read_frame(userlogin,
+    #                             fieldnames=['kategoriharga', 'ongkoskirim', 'diskon', 'ratingproduk',
+    #                                         'ratingtoko', 'label'])
+    #             X = df.iloc[:, [0, 1, 2, 3, 4]].values
+    #             Y = df.iloc[:, [5]].values
+    #
+    #             # Fitting Decision Tree Classification to the Training set
+    #             classifier = DecisionTreeClassifier(criterion='entropy', random_state=0)
+    #             classifier.fit(X, Y)
+    #
+    #             produks = Produk.objects.all().order_by('id')
+    #             df_xtrain = read_frame(produks,
+    #                                    fieldnames=['kmeansharga', 'kategoriongkoskirim', 'kategoridiskon',
+    #                                                'kategoriratingproduk',
+    #                                                'kategoriratingtoko'])
+    #             X_xtrain = df_xtrain.iloc[:, [0, 1, 2, 3, 4]].values
+    #             y_pred = classifier.predict(X_xtrain)
+    #             i = 0
+    #             for produk in produks:
+    #                 rekomendasi = Rekomendasi.objects.create(produk_id=produk.id,
+    #                                                          produk_kategori=produk.kategori_id,
+    #                                                          produk_nama=produk.nama,
+    #                                                          produk_gambar=produk.gambar,
+    #                                                          produk_harga=produk.harga,
+    #                                                          produk_diskon=produk.diskon,
+    #                                                          n_harga=X_xtrain[i][0],
+    #                                                          n_ongkir=X_xtrain[i][1],
+    #                                                          n_diskon=X_xtrain[i][2],
+    #                                                          n_ratingproduk=X_xtrain[i][3],
+    #                                                          n_ratingtoko=X_xtrain[i][4],
+    #                                                          prediksi=y_pred[i],
+    #                                                          pelanggan=pelanggan.id)
+    #                 i = i + 1
+    #         else:
+    #             current_user = request.user
+    #             pelanggan = Pelanggan.objects.get(user_id=current_user.id)
+    #             sedaerah = Pohonkeputusan.objects.all().filter(perdaerah=pelanggan.kabupaten).count()
+    #             if sedaerah > 0:
+    #                 userlogin = Pohonkeputusan.objects.filter(perdaerah=pelanggan.kabupaten).order_by(
+    #                     '-label').values_list('kategoriharga', 'ongkoskirim', 'diskon', 'ratingproduk',
+    #                                           'ratingtoko').distinct()
+    #                 df = read_frame(userlogin,
+    #                                 fieldnames=['kategoriharga', 'ongkoskirim', 'diskon', 'ratingproduk',
+    #                                             'ratingtoko',
+    #                                             'label'])
+    #                 X = df.iloc[:, [0, 1, 2, 3, 4]].values
+    #                 Y = df.iloc[:, [5]].values
+    #
+    #                 # Fitting Decision Tree Classification to the Training set
+    #                 classifier = DecisionTreeClassifier(criterion='entropy', random_state=0)
+    #                 classifier.fit(X, Y)
+    #
+    #                 produk = Produk.objects.all().order_by('id')
+    #                 df_xtrain = read_frame(produk,
+    #                                        fieldnames=['kmeansharga', 'kategoriongkoskirim', 'kategoridiskon',
+    #                                                    'kategoriratingproduk',
+    #                                                    'kategoriratingtoko'])
+    #                 X_xtrain = df_xtrain.iloc[:, [0, 1, 2, 3, 4]].values
+    #                 y_pred = classifier.predict(X_xtrain)
+    #
+    #                 i = 0
+    #                 for produk in produks:
+    #                     rekomendasi = Rekomendasi.objects.create(produk_id=produk.id,
+    #                                                              produk_kategori=produk.kategori_id,
+    #                                                              produk_nama=produk.nama,
+    #                                                              produk_gambar=produk.gambar,
+    #                                                              produk_harga=produk.harga,
+    #                                                              produk_diskon=produk.diskon,
+    #                                                              n_harga=X_xtrain[i][0],
+    #                                                              n_ongkir=X_xtrain[i][1],
+    #                                                              n_diskon=X_xtrain[i][2],
+    #                                                              n_ratingproduk=X_xtrain[i][3],
+    #                                                              n_ratingtoko=X_xtrain[i][4],
+    #                                                              prediksi=y_pred[i],
+    #                                                              pelanggan=pelanggan.id)
+    #                     i = i + 1
+    #                     # end rekomendasi insert to table
 
     if (current_user is not None):
         try:
