@@ -5,11 +5,7 @@
     <option name="CUSTOM_SCOPE_NAME" value="All Places" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cf64f9f3-4c23-4dfc-bb65-e0c550ea9a78" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/homepage/views.py" afterPath="$PROJECT_DIR$/homepage/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shop/views.py" afterPath="$PROJECT_DIR$/shop/views.py" />
-    </list>
+    <list default="true" id="cf64f9f3-4c23-4dfc-bb65-e0c550ea9a78" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -26,7 +22,7 @@
         <entry file="file://$PROJECT_DIR$/shop/views.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="102">
-              <caret line="32" column="77" lean-forward="true" selection-start-line="32" selection-start-column="4" selection-end-line="32" selection-end-column="77" />
+              <caret line="32" column="77" lean-forward="false" selection-start-line="32" selection-start-column="4" selection-end-line="32" selection-end-column="77" />
               <folding />
             </state>
           </provider>
@@ -36,7 +32,7 @@
         <entry file="file://$PROJECT_DIR$/homepage/views.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="491">
-              <caret line="164" column="0" lean-forward="true" selection-start-line="164" selection-start-column="0" selection-end-line="164" selection-end-column="0" />
+              <caret line="164" column="0" lean-forward="false" selection-start-line="164" selection-start-column="0" selection-end-line="164" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -398,12 +394,12 @@
       <workItem from="1502336444624" duration="702000" />
       <workItem from="1502440498595" duration="17000" />
       <workItem from="1502462717536" duration="1720000" />
-      <workItem from="1502473696474" duration="628000" />
+      <workItem from="1502473696474" duration="1231000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3272000" />
+    <option name="totallyTimeSpent" value="3875000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="754" extended-state="0" />
@@ -745,7 +741,7 @@
     <entry file="file://$PROJECT_DIR$/shop/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
-          <caret line="32" column="77" lean-forward="true" selection-start-line="32" selection-start-column="4" selection-end-line="32" selection-end-column="77" />
+          <caret line="32" column="77" lean-forward="false" selection-start-line="32" selection-start-column="4" selection-end-line="32" selection-end-column="77" />
           <folding />
         </state>
       </provider>
@@ -753,7 +749,7 @@
     <entry file="file://$PROJECT_DIR$/homepage/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="491">
-          <caret line="164" column="0" lean-forward="true" selection-start-line="164" selection-start-column="0" selection-end-line="164" selection-end-column="0" />
+          <caret line="164" column="0" lean-forward="false" selection-start-line="164" selection-start-column="0" selection-end-line="164" selection-end-column="0" />
           <folding />
         </state>
       </provider>
