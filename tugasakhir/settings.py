@@ -85,10 +85,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'tugasakhir',
-        'USER': 'posgres@borong-pedia',
-        'PASSWORD' : 'M4has!swa',
-        'HOST': 'borong-pedia.postgres.database.azure.com',
-        'PORT': '5432',
+        'USER': 'postgres',
+        'PASSWORD' : 'password',
+        'HOST': '',
+        'PORT': '',
     }
 }
 
