@@ -84,7 +84,7 @@ def login_view(request):
                         pelanggan = Pelanggan.objects.get(user_id=current_user.id)
                         sedaerah = Pohonkeputusan.objects.all().filter(perdaerah=pelanggan.kabupaten).count()
                         if sedaerah > 0:
-                            userlogin = Pohonkeputusan.objects.filter(perdaerah=pelanggan.kabupaten).order_by(
+                            userlogin = Pohonkeputusan.objects.all().filter(perdaerah=pelanggan.kabupaten).order_by(
                                 '-label').values_list('kategoriharga', 'ongkoskirim', 'diskon', 'ratingproduk',
                                                       'ratingtoko').distinct()
                             df = read_frame(userlogin,
@@ -98,8 +98,8 @@ def login_view(request):
                             classifier = DecisionTreeClassifier(criterion='entropy', random_state=0)
                             classifier.fit(X, Y)
 
-                            produk = Produk.objects.all().order_by('id')
-                            df_xtrain = read_frame(produk,
+                            produks = Produk.objects.all().order_by('id')
+                            df_xtrain = read_frame(produks,
                                                    fieldnames=['kmeansharga', 'kategoriongkoskirim', 'kategoridiskon',
                                                                'kategoriratingproduk',
                                                                'kategoriratingtoko'])
@@ -121,7 +121,7 @@ def login_view(request):
                                                                          n_ratingtoko=X_xtrain[i][4],
                                                                          prediksi=y_pred[i],
                                                                          pelanggan=pelanggan.id)
-                                i = i + 1
+                                i=i+1
                     #end rekomendasi insert to table
                 except:
                     messages.add_message(request, messages.INFO,
