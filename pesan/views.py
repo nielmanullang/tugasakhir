@@ -30,27 +30,45 @@ def beli(request, produk_id, pelanggan_id):
                 produks = Produk.objects.get(id=produk_id)
                 toko = Toko.objects.get(id=produks.toko_id_id)
                 hargaakhir = produks.harga - (produks.harga * produks.diskon / 100)
-                ratingproduks = \
-                    Ratingproduk.objects.all().filter(produk_id=produk_id).aggregate(sum=Sum('ratingproduk'))['sum']
+
+                ratingproduks = Ratingproduk.objects.all().filter(produk_id=produk_id).aggregate(sum=Sum('ratingproduk'))['sum']
                 count = Ratingproduk.objects.all().filter(produk_id=produk_id).count()
                 if count == 0:
                     ratingproduk = 0
                 else:
                     ratingproduk = ratingproduks / count
-                if ratingproduk > 3:
-                    nilairatingproduk = 1
-                else:
+                if ratingproduk == 0:
                     nilairatingproduk = 0
+                elif ratingproduk == 1:
+                    nilairatingproduk = 1
+                elif ratingproduk == 2:
+                    nilairatingproduk = 2
+                elif ratingproduk == 3:
+                    nilairatingproduk = 3
+                elif ratingproduk == 4:
+                    nilairatingproduk = 4
+                elif ratingproduk == 5:
+                    nilairatingproduk = 5
+
                 ratingtokos = Ratingtoko.objects.all().filter(toko_id=toko.id).aggregate(sum=Sum('ratingtoko'))['sum']
                 counts = Ratingtoko.objects.all().filter(toko_id=toko.id).count()
                 if counts == 0:
                     ratingtoko = 0
                 else:
                     ratingtoko = ratingtokos / counts
-                if ratingtoko > 3:
-                    nilairatingtoko = 1
-                else:
+                if ratingtoko == 0:
                     nilairatingtoko = 0
+                elif ratingtoko == 1:
+                    nilairatingtoko = 1
+                elif ratingtoko == 2:
+                    nilairatingtoko = 2
+                elif ratingtoko == 3:
+                    nilairatingtoko = 3
+                elif ratingtoko == 4:
+                    nilairatingtoko = 4
+                elif ratingtoko == 5:
+                    nilairatingtoko = 5
+
                 if produks.diskon > 0:
                     nilaidiskon = 1
                 else:
@@ -72,10 +90,10 @@ def beli(request, produk_id, pelanggan_id):
                                              toko=produks.toko_id)
                 pesan.save()
                 countdata = Pohonkeputusan.objects.all().filter(pelanggan=pelanggan.id).count()
-                belanjasaya = str(produks.kmeansharga) + str(nilaiongkoskirim) + str(nilaidiskon) + str(
-                    nilairatingproduk) + str(nilairatingtoko)
+                belanjasaya = str(produks.kmeansharga) + str(nilaiongkoskirim) + str(nilaidiskon) + str(nilairatingproduk) + str(nilairatingtoko)
                 if (countdata == 0):
-                    kombinasi = ["".join(seq) for seq in itertools.product("01", repeat=5)]
+                    # kombinasi = ["".join(seq) for seq in itertools.product("01", repeat=5)]
+                    kombinasi = ["".join(seq) for seq in itertools.product(["0","1"], ["0","1"], ["0","1"], ["0","1","2","3","4","5"], ["0","1","2","3","4","5"])]
                     for kom in kombinasi:
                         label = 0
                         if kom == belanjasaya:

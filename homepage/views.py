@@ -9,8 +9,9 @@ from pelanggan.models import Pelanggan
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from pohonkeputusan.models import Pohonkeputusan
-from shop.models import Produk, Rekomendasi
+from shop.models import Produk, Rekomendasi, Ratingproduk
 from pesan.models import Pesan
+from toko.models import Toko, Ratingtoko
 import psycopg2 as pg
 import pandas.io.sql as psql
 from django_pandas.io import read_frame
@@ -25,6 +26,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.db.models import Count
+from django.db.models import Sum
 
 # Create your views here.
 def login_view(request):
@@ -63,6 +65,7 @@ def login_view(request):
                                                            'kategoriratingtoko'])
                         X_xtrain = df_xtrain.iloc[:, [0, 1, 2, 3, 4]].values
                         y_pred = classifier.predict(X_xtrain)
+
                         i = 0
                         for produk in produks:
                             rekomendasi = Rekomendasi.objects.create(produk_id=produk.id,
@@ -136,8 +139,17 @@ def login_view(request):
 
 def logout_view(request):
     current_user = request.user
-    pelanggan = Pelanggan.objects.get(user_id=current_user.id)
-    Rekomendasi.objects.filter(pelanggan=pelanggan.id).delete()
+    if (current_user is not None):
+        try:
+            pelanggan = Pelanggan.objects.get(user_id=current_user.id)
+        except Pelanggan.DoesNotExist:
+            pelanggan = None
+        if (pelanggan is not None):
+            Rekomendasi.objects.filter(pelanggan=pelanggan.id).delete()
+    #         pelanggan = Pelanggan.objects.get(user_id=current_user.id)
+    #         if (pelanggan is not None):
+    #             Rekomendasi.objects.filter(pelanggan=pelanggan.id).delete()
+    #Rekomendasi.objects.filter(pelanggan=pelanggan.id).delete()
     logout(request)
     return redirect('/login/')
 
